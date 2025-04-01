@@ -207,47 +207,23 @@
     <audio id="wrongAudio" src="Sai.mp3"></audio>
 
     <script>
-    async function fetchCompletedCount() {
-        try {
-            const response = await fetch('https://script.google.com/macros/s/AKfycbyN73yXupfJf7kFNJS4ToB2LdbA3CdXy318EpEQik3EMP_uPypRRZgY9jH1wgT-lHjO/exec');
-            const data = await response.json();
-            return data.completedCount;
-        } catch (error) {
-            console.error('Lỗi khi tải số đếm:', error);
-            return 0;
-        }
-    }
-
-    async function incrementCompletedCount() {
-        try {
-            const response = await fetch('https://script.google.com/macros/s/AKfycbyN73yXupfJf7kFNJS4ToB2LdbA3CdXy318EpEQik3EMP_uPypRRZgY9jH1wgT-lHjO/exec', {
-                method: 'POST'
-            });
-            const data = await response.json();
-            return data.completedCount;
-        } catch (error) {
-            console.error('Lỗi khi tăng số đếm:', error);
-            return 0;
-        }
-    }
-
     const audio = document.getElementById('mainAudio');
-    const correctAudio = document.getElementById('correctAudio');
-    const wrongAudio = document.getElementById('wrongAudio');
-    const answerInput = document.getElementById('answerInput');
-    const indicator = document.getElementById('indicator');
-    const sentenceNumber = document.getElementById('sentenceNumber');
-    const prevBtn = document.getElementById('prevBtn');
-    const nextBtn = document.getElementById('nextBtn');
-    const replayBtn = document.getElementById('replayBtn');
-    const freeModeBtn = document.getElementById('freeModeBtn');
-    const testModeBtn = document.getElementById('testModeBtn');
-    const autoContinueBtn = document.getElementById('autoContinueBtn');
-    const showHideBtn = document.getElementById('showHideBtn');
-    const scoreDisplay = document.getElementById('score');
-    const wrongSentencesDisplay = document.getElementById('wrongSentences');
+const correctAudio = document.getElementById('correctAudio');
+const wrongAudio = document.getElementById('wrongAudio');
+const answerInput = document.getElementById('answerInput');
+const indicator = document.getElementById('indicator');
+const sentenceNumber = document.getElementById('sentenceNumber');
+const prevBtn = document.getElementById('prevBtn');
+const nextBtn = document.getElementById('nextBtn');
+const replayBtn = document.getElementById('replayBtn');
+const freeModeBtn = document.getElementById('freeModeBtn');
+const testModeBtn = document.getElementById('testModeBtn');
+const autoContinueBtn = document.getElementById('autoContinueBtn');
+const showHideBtn = document.getElementById('showHideBtn');
+const scoreDisplay = document.getElementById('score');
+const wrongSentencesDisplay = document.getElementById('wrongSentences');
 
-    const buttons = [prevBtn, nextBtn, replayBtn, freeModeBtn, testModeBtn, autoContinueBtn, showHideBtn];
+const buttons = [prevBtn, nextBtn, replayBtn, freeModeBtn, testModeBtn, autoContinueBtn, showHideBtn];
 
     const sentences = [
     { start: 0, end: 1.999655, text: "Anh ấy đang ăn cơm trưa với gia đình.", text2: "他正在和家人一起吃午饭。", text3: "Ăn - 吃", audioFile: "1-100.mp3" },
@@ -853,227 +829,221 @@
 ];
 
     let currentIndex = 0;
-    let isFreeMode = true;
-    let correctCount = 0;
-    let isPlaying = false;
-    let correctSentences = new Set();
-    let wrongSentences = new Set();
-    let autoContinue = false;
-    let showAnswer = false;
+let isFreeMode = true;
+let correctCount = 0;
+let isPlaying = false;
+let correctSentences = new Set();
+let wrongSentences = new Set();
+let autoContinue = false;
+let showAnswer = false;
 
-    // Khởi tạo ngay từ đầu, không cần mật khẩu
-    init();
+// Khởi tạo ngay từ đầu, không cần mật khẩu
+init();
 
-    function init() {
-        updateSentenceDisplay();
-        answerInput.focus();
+function init() {
+    updateSentenceDisplay();
+    answerInput.focus();
+}
+
+function updateSentenceDisplay() {
+    sentenceNumber.value = currentIndex + 1;
+    answerInput.value = '';
+    indicator.style.background = '#ffffff';
+    if (isFreeMode && showAnswer) {
+        indicator.innerHTML = `
+            <div style="font-size: 24px; font-weight: bold; color: #54683e;">${sentences[currentIndex].text}</div>
+            <div style="font-size: 22px; color: #1d1c1c;">${sentences[currentIndex].text2}</div>
+            <div style="font-size: 22px; font-weight: bold; color: #734A2E;"><strong>${sentences[currentIndex].text3}</strong></div>
+        `;
+    } else {
+        indicator.innerHTML = '';
+        indicator.style.color = '';
+        indicator.style.fontSize = '';
+        indicator.style.fontWeight = '';
+        indicator.style.textAlign = '';
+        indicator.style.lineHeight = '';
+    }
+    if (!isFreeMode) updateWrongSentences();
+}
+
+function playCurrentSentence() {
+    if (isPlaying) audio.pause();
+    buttons.forEach(btn => btn.classList.add('disabled'));
+    sentenceNumber.disabled = true;
+    isPlaying = true;
+
+    // Cập nhật nguồn audio dựa trên audioFile của câu hiện tại
+    const currentAudioFile = sentences[currentIndex].audioFile;
+    if (audio.src !== currentAudioFile) {
+        audio.src = currentAudioFile;
     }
 
-    function updateSentenceDisplay() {
-        sentenceNumber.value = currentIndex + 1;
-        answerInput.value = '';
-        indicator.style.background = '#ffffff';
-        if (isFreeMode && showAnswer) {
-            indicator.innerHTML = `
-                <div style="font-size: 24px; font-weight: bold; color: #54683e;">${sentences[currentIndex].text}</div>
-                <div style="font-size: 22px; color: #1d1c1c;">${sentences[currentIndex].text2}</div>
-                <div style="font-size: 22px; font-weight: bold; color: #734A2E;"><strong>${sentences[currentIndex].text3}</strong></div>
-            `;
+    audio.currentTime = sentences[currentIndex].start;
+    audio.play();
+
+    audio.ontimeupdate = () => {
+        if (audio.currentTime >= sentences[currentIndex].end) {
+            audio.pause();
+            audio.ontimeupdate = null;
+            buttons.forEach(btn => btn.classList.remove('disabled'));
+            sentenceNumber.disabled = false;
+            isPlaying = false;
+        }
+    };
+}
+
+function moveSentence(direction) {
+    currentIndex = (currentIndex + direction + sentences.length) % sentences.length;
+    updateSentenceDisplay();
+    playCurrentSentence();
+}
+
+function removePunctuation(text) {
+    return text.replace(/[,.!?]/g, '');
+}
+
+function checkAnswer() {
+    const userAnswer = removePunctuation(answerInput.value.toLowerCase()).trim();
+    const correctAnswer = removePunctuation(sentences[currentIndex].text.toLowerCase()).trim();
+    
+    if (userAnswer === correctAnswer) {
+        indicator.style.background = '#B7D7AA';
+        correctAudio.play();
+        if (!isFreeMode && !correctSentences.has(currentIndex)) {
+            correctCount++;
+            correctSentences.add(currentIndex);
+            wrongSentences.delete(currentIndex);
+            correctAudio.onended = () => setTimeout(() => moveSentence(1), 200);
+        } else if (isFreeMode && autoContinue) {
+            correctAudio.onended = () => setTimeout(() => moveSentence(1), 200);
         } else {
-            indicator.innerHTML = '';
-            indicator.style.color = '';
-            indicator.style.fontSize = '';
-            indicator.style.fontWeight = '';
-            indicator.style.textAlign = '';
-            indicator.style.lineHeight = '';
-        }
-        if (!isFreeMode) updateWrongSentences();
-    }
-
-			function playCurrentSentence() {
-			if (isPlaying) audio.pause();
-			buttons.forEach(btn => btn.classList.add('disabled'));
-			sentenceNumber.disabled = true;
-			isPlaying = true;
-
-			// Cập nhật nguồn audio dựa trên audioFile của câu hiện tại
-			const currentAudioFile = sentences[currentIndex].audioFile;
-			if (audio.src !== currentAudioFile) {
-				audio.src = currentAudioFile;
-			}
-
-			audio.currentTime = sentences[currentIndex].start;
-			audio.play();
-
-			audio.ontimeupdate = () => {
-				if (audio.currentTime >= sentences[currentIndex].end) {
-					audio.pause();
-					audio.ontimeupdate = null;
-					buttons.forEach(btn => btn.classList.remove('disabled'));
-					sentenceNumber.disabled = false;
-					isPlaying = false;
-				}
-			};
-		}
-
-    function moveSentence(direction) {
-        currentIndex = (currentIndex + direction + sentences.length) % sentences.length;
-        updateSentenceDisplay();
-        playCurrentSentence();
-    }
-
-    function removePunctuation(text) {
-        return text.replace(/[,.!?]/g, '');
-    }
-
-    function checkAnswer() {
-        const userAnswer = removePunctuation(answerInput.value.toLowerCase()).trim();
-        const correctAnswer = removePunctuation(sentences[currentIndex].text.toLowerCase()).trim();
-        
-        if (userAnswer === correctAnswer) {
-            indicator.style.background = '#B7D7AA';
-            correctAudio.play();
-            if (!isFreeMode && !correctSentences.has(currentIndex)) {
-                correctCount++;
-                correctSentences.add(currentIndex);
-                wrongSentences.delete(currentIndex);
-                correctAudio.onended = () => setTimeout(() => moveSentence(1), 200);
-            } else if (isFreeMode && autoContinue) {
-                correctAudio.onended = () => setTimeout(() => moveSentence(1), 200);
-            } else {
-                correctAudio.onended = null;
-            }
-        } else {
-            indicator.style.background = '#CE6D5E';
-            wrongAudio.play();
-            if (!isFreeMode && !correctSentences.has(currentIndex)) {
-                wrongSentences.add(currentIndex);
-            }
-        }
-        if (!isFreeMode) updateScore();
-    }
-
-    async function updateScore() {
-		scoreDisplay.textContent = `${correctCount}/${sentences.length}`;
-		updateWrongSentences();
-		if (correctCount === sentences.length) {
-			try {
-				const completedCount = await incrementCompletedCount();
-				setTimeout(() => {
-					alert(`你是第 ${completedCount} 个完成作业的人！`);
-				}, 100);
-			} catch (error) {
-				console.error('Lỗi khi tăng số đếm:', error);
-				// Không hiển thị thông báo nếu lỗi xảy ra
-			}
-		}
-	}
-
-    function updateWrongSentences() {
-        if (isFreeMode || wrongSentences.size === 0) {
-            wrongSentencesDisplay.style.display = 'none';
-        } else {
-            const wrongList = Array.from(wrongSentences).map(index => index + 1).join('/ ');
-            wrongSentencesDisplay.textContent = `解决问题：${wrongList}`;
-            wrongSentencesDisplay.style.display = 'block';
-        }
-    }
-
-    prevBtn.onclick = () => {
-        moveSentence(-1);
-    };
-
-    nextBtn.onclick = () => {
-        moveSentence(1);
-    };
-
-    replayBtn.onclick = () => {
-        playCurrentSentence();
-    };
-
-    freeModeBtn.onclick = () => {
-        isFreeMode = true;
-        freeModeBtn.classList.add('active-mode');
-        testModeBtn.classList.remove('active-mode');
-        scoreDisplay.style.display = 'none';
-        wrongSentencesDisplay.style.display = 'none';
-        autoContinueBtn.style.display = 'inline';
-        showHideBtn.style.display = 'inline';
-        updateSentenceDisplay();
-    };
-
-    testModeBtn.onclick = () => {
-        isFreeMode = false;
-        testModeBtn.classList.add('active-mode');
-        freeModeBtn.classList.remove('active-mode');
-        scoreDisplay.style.display = 'inline';
-        autoContinueBtn.style.display = 'none';
-        showHideBtn.style.display = 'none';
-        currentIndex = 0;
-        correctCount = 0;
-        correctSentences.clear();
-        wrongSentences.clear();
-        for (let i = 0; i < sentences.length; i++) {
-            wrongSentences.add(i);
-        }
-        updateSentenceDisplay();
-        playCurrentSentence();
-        updateScore();
-    };
-
-    autoContinueBtn.onclick = () => {
-        autoContinue = !autoContinue;
-        autoContinueBtn.classList.toggle('active-mode');
-        if (!autoContinue) {
             correctAudio.onended = null;
         }
-    };
-
-    showHideBtn.onclick = () => {
-        showAnswer = !showAnswer;
-        showHideBtn.classList.toggle('active-mode');
-        updateSentenceDisplay();
-    };
-
-    document.addEventListener('keydown', (e) => {
-        if (e.ctrlKey && !isPlaying) {
-            if (e.key === 'f') {
-                e.preventDefault();
-                playCurrentSentence();
-            } else if (e.key === '8') {
-                e.preventDefault();
-                moveSentence(-1);
-            } else if (e.key === '9') {
-                e.preventDefault();
-                moveSentence(1);
-            }
+    } else {
+        indicator.style.background = '#CE6D5E';
+        wrongAudio.play();
+        if (!isFreeMode && !correctSentences.has(currentIndex)) {
+            wrongSentences.add(currentIndex);
         }
-    });
+    }
+    if (!isFreeMode) updateScore();
+}
 
-    sentenceNumber.onchange = () => {
-        if (!isPlaying) {
-            const num = parseInt(sentenceNumber.value) - 1;
-            if (!isNaN(num) && num >= 0 && num < sentences.length) {
-                currentIndex = num;
-                updateSentenceDisplay();
-                playCurrentSentence();
-            } else {
-                alert(`输入范围： 1 到 ${sentences.length}`);
-                updateSentenceDisplay();
-            }
+function updateScore() {
+    scoreDisplay.textContent = `${correctCount}/${sentences.length}`;
+    updateWrongSentences();
+    if (correctCount === sentences.length) {
+        setTimeout(() => {
+            alert("Chúc mừng bạn đã hoàn thành!");
+        }, 100);
+    }
+}
+
+function updateWrongSentences() {
+    if (isFreeMode || wrongSentences.size === 0) {
+        wrongSentencesDisplay.style.display = 'none';
+    } else {
+        const wrongList = Array.from(wrongSentences).map(index => index + 1).join('/ ');
+        wrongSentencesDisplay.textContent = `解决问题：${wrongList}`;
+        wrongSentencesDisplay.style.display = 'block';
+    }
+}
+
+prevBtn.onclick = () => {
+    moveSentence(-1);
+};
+
+nextBtn.onclick = () => {
+    moveSentence(1);
+};
+
+replayBtn.onclick = () => {
+    playCurrentSentence();
+};
+
+freeModeBtn.onclick = () => {
+    isFreeMode = true;
+    freeModeBtn.classList.add('active-mode');
+    testModeBtn.classList.remove('active-mode');
+    scoreDisplay.style.display = 'none';
+    wrongSentencesDisplay.style.display = 'none';
+    autoContinueBtn.style.display = 'inline';
+    showHideBtn.style.display = 'inline';
+    updateSentenceDisplay();
+};
+
+testModeBtn.onclick = () => {
+    isFreeMode = false;
+    testModeBtn.classList.add('active-mode');
+    freeModeBtn.classList.remove('active-mode');
+    scoreDisplay.style.display = 'inline';
+    autoContinueBtn.style.display = 'none';
+    showHideBtn.style.display = 'none';
+    currentIndex = 0;
+    correctCount = 0;
+    correctSentences.clear();
+    wrongSentences.clear();
+    for (let i = 0; i < sentences.length; i++) {
+        wrongSentences.add(i);
+    }
+    updateSentenceDisplay();
+    playCurrentSentence();
+    updateScore();
+};
+
+autoContinueBtn.onclick = () => {
+    autoContinue = !autoContinue;
+    autoContinueBtn.classList.toggle('active-mode');
+    if (!autoContinue) {
+        correctAudio.onended = null;
+    }
+};
+
+showHideBtn.onclick = () => {
+    showAnswer = !showAnswer;
+    showHideBtn.classList.toggle('active-mode');
+    updateSentenceDisplay();
+};
+
+document.addEventListener('keydown', (e) => {
+    if (e.ctrlKey && !isPlaying) {
+        if (e.key === 'f') {
+            e.preventDefault();
+            playCurrentSentence();
+        } else if (e.key === '8') {
+            e.preventDefault();
+            moveSentence(-1);
+        } else if (e.key === '9') {
+            e.preventDefault();
+            moveSentence(1);
         }
-    };
+    }
+});
 
-    sentenceNumber.onkeydown = (e) => {
-        if (!isPlaying) {
-            if (e.key === 'ArrowLeft') moveSentence(-1);
-            if (e.key === 'ArrowRight') moveSentence(1);
+sentenceNumber.onchange = () => {
+    if (!isPlaying) {
+        const num = parseInt(sentenceNumber.value) - 1;
+        if (!isNaN(num) && num >= 0 && num < sentences.length) {
+            currentIndex = num;
+            updateSentenceDisplay();
+            playCurrentSentence();
+        } else {
+            alert(`输入范围： 1 到 ${sentences.length}`);
+            updateSentenceDisplay();
         }
-    };
+    }
+};
 
-    answerInput.onkeypress = (e) => {
-        if (e.key === 'Enter') checkAnswer();
-    };
+sentenceNumber.onkeydown = (e) => {
+    if (!isPlaying) {
+        if (e.key === 'ArrowLeft') moveSentence(-1);
+        if (e.key === 'ArrowRight') moveSentence(1);
+    }
+};
+
+answerInput.onkeypress = (e) => {
+    if (e.key === 'Enter') checkAnswer();
+};
     </script>
 </body>
 </html>
