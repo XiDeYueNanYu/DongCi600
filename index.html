@@ -1,0 +1,1079 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <body style="background-color: #f7fbf3;">
+    <title>越南语听力练习</title>
+    <style>
+    body { 
+        font-family: Arial, sans-serif; 
+        text-align: center; 
+        margin: 0;
+        padding: 10px;
+    }
+    #gameContainer {
+        display: block; /* Hiển thị ngay từ đầu */
+    }
+    #infoBox { 
+        width: 90%;
+        max-width: 800px;
+        height: auto;
+        min-height: 60px;
+        margin: 1px auto; 
+        border: 1px solid #ccc; 
+        background: #68838B; 
+        color: #D2B48C; 
+        display: flex; 
+        align-items: center; 
+        justify-content: center; 
+        font-size: clamp(20px, 6vw, 80px);
+        font-weight: bold;
+        padding: 10px;
+    }
+    #contactBox, #socialBox { 
+		width: 90%;
+		max-width: 750px;
+		height: auto;
+		min-height: 20px;
+		margin: 1px auto;
+		border: 1px solid #ccc; 
+		background: #68838B; 
+		color: #D2B48C; 
+		display: flex; 
+		flex-direction: column; /* Xếp dọc để <br> xuống dòng */
+		justify-content: flex-start; /* Bắt đầu từ trên */
+		align-items: flex-start; /* Căn trái toàn bộ khối */
+		padding: 3px;
+		font-size: clamp(14px, 3vw, 14px);
+		font-weight: bold;
+		text-align: left; /* Ép từng dòng văn bản căn trái */
+	}
+    #shortcutBox { 
+        width: 90%;
+        max-width: 750px;
+        height: auto;
+        min-height: 30px;
+        margin: 1px auto;
+        border: 1px solid #ccc; 
+        background: #68838B; 
+        color: #D2B48C; 
+        display: flex; 
+        align-items: center; 
+        justify-content: left; 
+        padding-left: 10px;
+        font-size: clamp(10px, 2.5vw, 13px);
+        font-weight: bold;
+    }
+    #controls { 
+        margin: 15px 0; 
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 5px;
+    }
+    button { 
+        padding: 8px 16px;
+        margin: 5px; 
+        cursor: pointer; 
+        border: 3px solid #89ACB7; 
+        background: #68838B; 
+        color: #E6E6FA; 
+        font-size: clamp(14px, 3.5vw, 20px);
+        border-radius: 5px; 
+        font-weight: bold;
+    }
+    #sentenceNumber { 
+        width: 60px; 
+        padding: 8px; 
+        text-align: center; 
+        border: 3px solid #68838B; 
+        background: #FFAD5B; 
+        color: #000; 
+        border-radius: 10px; 
+        font-size: clamp(14px, 4vw, 20px);
+        -moz-appearance: textfield; 
+    }
+    #sentenceNumber::-webkit-inner-spin-button, 
+    #sentenceNumber::-webkit-outer-spin-button { 
+        -webkit-appearance: none; 
+        margin: 0; 
+    }
+    #sentenceNumber:disabled { 
+        background: #eee; 
+    }
+    .disabled { 
+        cursor: not-allowed; 
+        pointer-events: none; 
+    }
+    .active-mode { 
+        border: 4px solid orange; 
+    }
+    #indicator { 
+        width: 90%;
+        max-width: 800px;
+        height: auto;
+        min-height: 60px;
+        margin: 10px auto; 
+        border: 3px solid #734A2E; 
+        background: #ffffff; 
+        border-radius: 20px; 
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 15px;
+    }
+    #answerInput { 
+    width: 90%;
+    max-width: 700px;
+    padding: 15px; 
+    margin: 10px 0; 
+    border: 3px solid #734A2E; 
+    background: #E6EDD9; 
+    color: #000; 
+    font-size: clamp(16px, 4vw, 30px);
+    outline: none; /* Loại bỏ viền đen mặc định khi focus */
+	}
+
+	#answerInput:focus {
+		border: 3px solid #734A2E; /* Giữ nguyên màu viền khi focus */
+		outline: none; /* Đảm bảo không có viền mặc định nào xuất hiện */
+	}
+    #score { 
+        display: none; 
+        margin-left: 10px; 
+        color: #FF6820;
+        font-size: clamp(16px, 4vw, 30px);
+    }
+    #wrongSentences { 
+        display: none; 
+        width: 90%;
+        max-width: 700px;
+        margin: 10px auto; 
+        padding: 10px; 
+        border: 2px solid #CE6D5E; 
+        background: #FFF0F0; 
+        color: #CE6D5E; 
+        font-size: clamp(14px, 3.5vw, 20px);
+        text-align: left; 
+        border-radius: 5px; 
+    }
+    @media (max-width: 600px) {
+        #infoBox {
+            font-size: clamp(18px, 5vw, 40px);
+        }
+        #contactBox, #shortcutBox, #socialBox {
+            font-size: clamp(12px, 2.5vw, 16px);
+        }
+        button {
+            padding: 6px 12px;
+        }
+        #sentenceNumber {
+            width: 35px;
+        }
+        #indicator {
+            border-width: 3px;
+            border-radius: 15px;
+        }
+        #answerInput {
+            padding: 10px;
+        }
+    }
+    </style>
+</head>
+<body>
+    <div id="gameContainer">
+        <div id="infoBox">习得越南语 - 动词-600</div>
+        <div id="socialBox">关注我们 - 天天练习: <br>YouTube: <br>TikTok: <br>Facebook: <br></div>
+		<div id="contactBox">阮玉煌 | Weixin：XiDeYueNanYu</div>
+        <div id="shortcutBox">快键: Ctrl+F (再听一遍) | Ctrl+8 (上一题) | Ctrl+9 (下一题)</div>
+        <div id="controls">
+            <button id="autoContinueBtn">自动继续</button>
+            <button id="showHideBtn">显示-隐藏</button>
+            <button id="prevBtn">◀</button>
+            <input type="text" id="sentenceNumber" inputmode="numeric" pattern="[0-9]*">
+            <button id="nextBtn">▶</button>
+            <button id="replayBtn">再听一遍</button>
+            <button id="freeModeBtn" class="active-mode">自由模式</button>
+            <button id="testModeBtn">作业模式</button>
+            <span id="score">0/0</span>
+        </div>
+        <div id="indicator"></div>
+        <input type="text" id="answerInput" placeholder="输入所听到的内容">
+        <div id="wrongSentences"></div>
+    </div>
+    <audio id="mainAudio" src="1-100.mp3"></audio>
+    <audio id="correctAudio" src="Dung.mp3"></audio>
+    <audio id="wrongAudio" src="Sai.mp3"></audio>
+
+    <script>
+    async function fetchCompletedCount() {
+        try {
+            const response = await fetch('https://script.google.com/macros/s/AKfycbyN73yXupfJf7kFNJS4ToB2LdbA3CdXy318EpEQik3EMP_uPypRRZgY9jH1wgT-lHjO/exec');
+            const data = await response.json();
+            return data.completedCount;
+        } catch (error) {
+            console.error('Lỗi khi tải số đếm:', error);
+            return 0;
+        }
+    }
+
+    async function incrementCompletedCount() {
+        try {
+            const response = await fetch('https://script.google.com/macros/s/AKfycbyN73yXupfJf7kFNJS4ToB2LdbA3CdXy318EpEQik3EMP_uPypRRZgY9jH1wgT-lHjO/exec', {
+                method: 'POST'
+            });
+            const data = await response.json();
+            return data.completedCount;
+        } catch (error) {
+            console.error('Lỗi khi tăng số đếm:', error);
+            return 0;
+        }
+    }
+
+    const audio = document.getElementById('mainAudio');
+    const correctAudio = document.getElementById('correctAudio');
+    const wrongAudio = document.getElementById('wrongAudio');
+    const answerInput = document.getElementById('answerInput');
+    const indicator = document.getElementById('indicator');
+    const sentenceNumber = document.getElementById('sentenceNumber');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const replayBtn = document.getElementById('replayBtn');
+    const freeModeBtn = document.getElementById('freeModeBtn');
+    const testModeBtn = document.getElementById('testModeBtn');
+    const autoContinueBtn = document.getElementById('autoContinueBtn');
+    const showHideBtn = document.getElementById('showHideBtn');
+    const scoreDisplay = document.getElementById('score');
+    const wrongSentencesDisplay = document.getElementById('wrongSentences');
+
+    const buttons = [prevBtn, nextBtn, replayBtn, freeModeBtn, testModeBtn, autoContinueBtn, showHideBtn];
+
+    const sentences = [
+    { start: 0, end: 1.999655, text: "Anh ấy đang ăn cơm trưa với gia đình.", text2: "他正在和家人一起吃午饭。", text3: "Ăn - 吃", audioFile: "1-100.mp3" },
+{ start: 1.999655, end: 4.671761, text: "Cô ấy thích uống trà mỗi buổi sáng.", text2: "她喜欢每天早上喝茶。", text3: "Uống - 喝", audioFile: "1-100.mp3" },
+{ start: 4.671761, end: 7.219994, text: "Bé đã ngủ từ lúc 9 giờ tối.", text2: "孩子从晚上九点就开始睡觉了。", text3: "Ngủ - 睡觉", audioFile: "1-100.mp3" },
+{ start: 7.219994, end: 9.626659, text: "Bọn trẻ đang chơi ngoài sân.", text2: "孩子们正在院子里玩耍。", text3: "Chơi - 玩", audioFile: "1-100.mp3" },
+{ start: 9.626659, end: 12.528814, text: "Anh ấy làm việc ở công ty từ sáng đến tối.", text2: "他从早到晚都在公司工作。", text3: "Làm việc - 工作", audioFile: "1-100.mp3" },
+{ start: 12.528814, end: 15.554841, text: "Em đang học tiếng Anh để chuẩn bị cho kỳ thi.", text2: "她正在学习英语准备考试。", text3: "Học - 学习", audioFile: "1-100.mp3" },
+{ start: 15.554841, end: 18.103074, text: "Chúng ta sẽ đi bộ đến công viên.", text2: "我们会走路去公园。", text3: "Đi - 走", audioFile: "1-100.mp3" },
+{ start: 18.103074, end: 20.739787, text: "Anh ấy sẽ đến nhà tôi vào lúc 7 giờ.", text2: "他会在七点钟到我家。", text3: "Đến - 到", audioFile: "1-100.mp3" },
+{ start: 20.739787, end: 23.907383, text: "Sau khi làm việc xong, cô ấy sẽ về nhà.", text2: "她下班后会回家。", text3: "Về - 回", audioFile: "1-100.mp3" },
+{ start: 23.907383, end: 26.491008, text: "Anh ấy nói chuyện rất hay và thuyết phục.", text2: "他说话很有说服力。", text3: "Nói - 说", audioFile: "1-100.mp3" },
+{ start: 26.491008, end: 28.862281, text: "Tôi thích nghe nhạc khi làm việc.", text2: "我喜欢工作时听音乐。", text3: "Nghe - 听", audioFile: "1-100.mp3" },
+{ start: 28.933065, end: 31.286642, text: "Cô ấy đang nhìn ra ngoài cửa sổ.", text2: "她正在看着窗外。", text3: "Nhìn - 看", audioFile: "1-100.mp3" },
+{ start: 31.286642, end: 33.711003, text: "Tôi vừa mua một cuốn sách mới.", text2: "我刚买了一本新书。", text3: "Mua - 买", audioFile: "1-100.mp3" },
+{ start: 33.711003, end: 35.923011, text: "Cô ấy bán hoa quả ở chợ.", text2: "她在市场上卖水果。", text3: "Bán - 卖", audioFile: "1-100.mp3" },
+{ start: 35.923011, end: 38.506636, text: "Tôi rất thích ăn kem vào mùa hè.", text2: "我非常喜欢夏天吃冰淇淋。", text3: "Thích - 喜欢", audioFile: "1-100.mp3" },
+{ start: 38.506636, end: 40.754036, text: "Cô ấy ghét việc phải chờ đợi.", text2: "她讨厌等待。", text3: "Ghét - 讨厌", audioFile: "1-100.mp3" },
+{ start: 40.754036, end: 42.98374, text: "Tôi yêu gia đình mình rất nhiều.", text2: "我非常爱我的家人。", text3: "Yêu - 爱", audioFile: "1-100.mp3" },
+{ start: 42.98374, end: 45.708934, text: "Bà luôn thương yêu các cháu hết mực.", text2: "奶奶总是非常疼爱孙子孙女。", text3: "Thương - 疼爱", audioFile: "1-100.mp3" },
+{ start: 45.708934, end: 48.699569, text: "Anh ấy đã giúp tôi giải quyết vấn đề khó khăn.", text2: "他帮助我解决了难题。", text3: "Giúp - 帮助", audioFile: "1-100.mp3" },
+{ start: 48.699569, end: 51.336283, text: "Tôi rất nhớ những ngày tháng bên gia đình.", text2: "我非常想念和家人在一起的日子。", text3: "Nhớ - 想念", audioFile: "1-100.mp3" },
+{ start: 51.336283, end: 53.77834, text: "Tôi sẽ chờ bạn ở cửa hàng.", text2: "我会在商店等你。", text3: "Chờ - 等", audioFile: "1-100.mp3" },
+{ start: 53.77834, end: 56.078828, text: "Anh ấy gọi điện cho tôi mỗi tối.", text2: "他每晚都会给我打电话。", text3: "Gọi - 打电话", audioFile: "1-100.mp3" },
+{ start: 56.078828, end: 58.485493, text: "Tôi thích đọc sách trước khi đi ngủ.", text2: "我喜欢在睡觉前读书。", text3: "Đọc - 读", audioFile: "1-100.mp3" },
+{ start: 58.485493, end: 60.92755, text: "Cô ấy đang viết thư cho bạn bè.", text2: "她正在给朋友写信。", text3: "Viết - 写", audioFile: "1-100.mp3" },
+{ start: 60.92755, end: 63.422695, text: "Họ đang chạy đua trên sân vận động.", text2: "他们正在体育场上跑步比赛。", text3: "Chạy - 跑", audioFile: "1-100.mp3" },
+{ start: 63.422695, end: 65.847056, text: "Tôi thường bơi vào buổi sáng sớm.", text2: "我通常在清晨游泳。", text3: "Bơi - 游泳", audioFile: "1-100.mp3" },
+{ start: 65.847056, end: 68.589946, text: "Các em nhỏ nhảy múa rất vui vẻ.", text2: "孩子们跳舞得非常开心。", text3: "Nhảy - 跳", audioFile: "1-100.mp3" },
+{ start: 68.589946, end: 71.421316, text: "Anh ấy cười lớn khi nghe câu chuyện hài hước.", text2: "他听到笑话时大笑。", text3: "Cười - 笑", audioFile: "1-100.mp3" },
+{ start: 71.421316, end: 74.022637, text: "Bé gái khóc khi không tìm thấy mẹ.", text2: "小女孩找不到妈妈时哭了。", text3: "Khóc - 哭", audioFile: "1-100.mp3" },
+{ start: 74.022637, end: 76.252341, text: "Cậu bé đánh quả bóng thật mạnh.", text2: "男孩用力打了那个球。", text3: "Đánh - 打", audioFile: "1-100.mp3" },
+{ start: 76.252341, end: 79.614594, text: "Cô ấy mở cửa sổ để không khí trong lành vào phòng.", text2: "她打开窗户让新鲜空气进入房间。", text3: "Mở - 打开", audioFile: "1-100.mp3" },
+{ start: 79.614594, end: 82.145131, text: "Anh ấy đã đóng cửa trước khi ra ngoài.", text2: "他出门前关了门。", text3: "Đóng - 关闭", audioFile: "1-100.mp3" },
+{ start: 82.145131, end: 85.047285, text: "Cô ấy luôn mang theo một quyển sách bên mình.", text2: "她总是带着一本书。", text3: "Mang - 带", audioFile: "1-100.mp3" },
+{ start: 85.047285, end: 87.914048, text: "Anh ấy đã quyết định bỏ công việc hiện tại.", text2: "他决定放弃现在的工作。", text3: "Bỏ - 放弃", audioFile: "1-100.mp3" },
+{ start: 87.914048, end: 90.214536, text: "Mẹ đưa cho tôi một cái bánh ngọt.", text2: "妈妈给了我一块蛋糕。", text3: "Đưa - 给", audioFile: "1-100.mp3" },
+{ start: 90.214536, end: 92.585809, text: "Anh ấy lấy chìa khóa từ túi áo.", text2: "他从口袋里拿出钥匙。", text3: "Lấy - 拿", audioFile: "1-100.mp3" },
+{ start: 92.585809, end: 95.240218, text: "Cô ấy giữ im lặng trong suốt cuộc họp.", text2: "她在整个会议期间保持沉默。", text3: "Giữ - 保持", audioFile: "1-100.mp3" },
+{ start: 95.240218, end: 97.806148, text: "Anh ấy thả con chim trở lại tự do.", text2: "他放鸟儿回到自由。", text3: "Thả - 放", audioFile: "1-100.mp3" },
+{ start: 97.806148, end: 100.195116, text: "Cô ấy đang rửa chén bát sau bữa ăn.", text2: "她正在饭后洗碗。", text3: "Rửa - 洗", audioFile: "1-100.mp3" },
+{ start: 100.195116, end: 102.814134, text: "Anh ấy sửa chiếc xe đạp bị hỏng.", text2: "他修理了坏掉的自行车。", text3: "Sửa - 修理", audioFile: "1-100.mp3" },
+{ start: 102.814134, end: 105.450848, text: "Mẹ đang nấu bữa tối trong bếp.", text2: "妈妈正在厨房里烹饪晚餐。", text3: "Nấu - 烹饪", audioFile: "1-100.mp3" },
+{ start: 105.450848, end: 107.432807, text: "Anh ấy chiên trứng trong chảo.", text2: "他在锅里煎鸡蛋。", text3: "Chiên - 煎", audioFile: "1-100.mp3" },
+{ start: 107.432807, end: 110.087216, text: "Cô ấy hấp bánh bao để làm bữa sáng.", text2: "她蒸包子做早餐。", text3: "Hấp - 蒸", audioFile: "1-100.mp3" },
+{ start: 110.087216, end: 112.63545, text: "Tôi thích nướng bánh mì vào buổi sáng.", text2: "我喜欢早上烤面包。", text3: "Nướng - 烤", audioFile: "1-100.mp3" },
+{ start: 112.63545, end: 115.059811, text: "Bà tôi thường xào rau với tỏi.", text2: "奶奶经常用大蒜炒蔬菜。", text3: "Xào - 炒", audioFile: "1-100.mp3" },
+{ start: 115.059811, end: 117.731916, text: "Anh ấy đang đun sôi nước để pha trà.", text2: "他正在煮沸水来泡茶。", text3: "Đun sôi - 煮沸", audioFile: "1-100.mp3" },
+{ start: 117.731916, end: 120.085493, text: "Cô ấy phơi quần áo ngoài sân.", text2: "她在院子里晾衣服。", text3: "Phơi - 晾", audioFile: "1-100.mp3" },
+{ start: 120.085493, end: 122.598334, text: "Mẹ đang ủi áo sơ mi cho bố.", text2: "妈妈正在为爸爸熨衬衫。", text3: "Ủi - 熨", audioFile: "1-100.mp3" },
+{ start: 122.598334, end: 125.181959, text: "Anh ấy quét nhà vào mỗi buổi sáng.", text2: "他每天早上打扫房子。", text3: "Quét - 扫", audioFile: "1-100.mp3" },
+{ start: 125.181959, end: 127.447056, text: "Cô ấy lau bàn sau bữa ăn.", text2: "她在饭后擦桌子。", text3: "Lau - 擦", audioFile: "1-100.mp3" },
+{ start: 127.447056, end: 129.800632, text: "Anh ấy đang hút bụi sàn nhà.", text2: "他正在吸尘地板。", text3: "Hút bụi - 吸尘", audioFile: "1-100.mp3" },
+{ start: 129.800632, end: 132.561218, text: "Cô ấy gấp quần áo sau khi phơi khô.", text2: "她晾干后折叠衣服。", text3: "Gấp - 折", audioFile: "1-100.mp3" },
+{ start: 132.561218, end: 135.038667, text: "Bà tôi tưới cây mỗi buổi sáng.", text2: "奶奶每天早上浇水植物。", text3: "Tưới - 浇水", audioFile: "1-100.mp3" },
+{ start: 135.038667, end: 137.693077, text: "Anh ấy cắt rau để chuẩn bị nấu ăn.", text2: "他切蔬菜准备做饭。", text3: "Cắt - 切", audioFile: "1-100.mp3" },
+{ start: 137.693077, end: 140.24131, text: "Cô ấy gọt vỏ táo cho bữa tráng miệng.", text2: "她为甜点削苹果皮。", text3: "Gọt - 削", audioFile: "1-100.mp3" },
+{ start: 140.24131, end: 142.771847, text: "Anh ấy xé tờ giấy thành nhiều mảnh.", text2: "他把纸撕成了很多片。", text3: "Xé - 撕", audioFile: "1-100.mp3" },
+{ start: 142.771847, end: 144.789199, text: "Cô ấy đập trứng vào chảo.", text2: "她把鸡蛋打碎放进锅里。", text3: "Đập - 打碎", audioFile: "1-100.mp3" },
+{ start: 144.789199, end: 147.142775, text: "Cô bé nhặt hoa rơi trên đường.", text2: "小女孩在路上捡落花。", text3: "Nhặt - 捡", audioFile: "1-100.mp3" },
+{ start: 147.142775, end: 149.956449, text: "Anh ấy chọn một món quà cho bạn gái.", text2: "他为女朋友选择了一件礼物。", text3: "Chọn - 选择", audioFile: "1-100.mp3" },
+{ start: 149.956449, end: 152.239242, text: "Cô ấy đếm số tiền trong ví.", text2: "她数了钱包里的钱。", text3: "Đếm - 数", audioFile: "1-100.mp3" },
+{ start: 152.239242, end: 154.274289, text: "Tôi muốn thử chiếc áo này.", text2: "我想试试这件衣服。", text3: "Thử - 试", audioFile: "1-100.mp3" },
+{ start: 154.274289, end: 156.946395, text: "Cô ấy nếm thử món súp để kiểm tra vị.", text2: "她尝了尝汤的味道。", text3: "Nếm - 尝", audioFile: "1-100.mp3" },
+{ start: 156.946395, end: 159.706981, text: "Anh ấy mặc áo khoác trước khi ra ngoài.", text2: "他出门前穿上了外套。", text3: "Mặc - 穿", audioFile: "1-100.mp3" },
+{ start: 159.706981, end: 162.131342, text: "Cô ấy cởi giày trước khi vào nhà.", text2: "她进门前脱了鞋。", text3: "Cởi - 脱", audioFile: "1-100.mp3" },
+{ start: 162.131342, end: 164.874232, text: "Anh ấy đang đi giày để chuẩn bị ra ngoài.", text2: "他正在穿鞋准备出门。", text3: "Đi giày - 穿鞋", audioFile: "1-100.mp3" },
+{ start: 164.874232, end: 167.564034, text: "Cô ấy đội mũ khi đi ra ngoài trời nắng.", text2: "她出门时戴了帽子。", text3: "Đội - 戴", audioFile: "1-100.mp3" },
+{ start: 167.564034, end: 170.059179, text: "Anh ấy luôn mang theo ô bên mình.", text2: "他总是随身带着伞。", text3: "Mang theo - 带着", audioFile: "1-100.mp3" },
+{ start: 170.059179, end: 172.395059, text: "Anh ấy vác bao gạo lên vai.", text2: "他扛起一袋米。", text3: "Vác - 扛", audioFile: "1-100.mp3" },
+{ start: 172.395059, end: 174.784028, text: "Cô ấy kéo cửa sổ để mở ra.", text2: "她拉开窗户。", text3: "Kéo - 拉", audioFile: "1-100.mp3" },
+{ start: 174.784028, end: 177.031428, text: "Anh ấy đẩy cửa để vào phòng.", text2: "他推开门进入房间。", text3: "Đẩy - 推", audioFile: "1-100.mp3" },
+{ start: 177.031428, end: 179.261132, text: "Họ nâng bàn để dọn phòng.", text2: "他们抬桌子来整理房间。", text3: "Nâng - 抬", audioFile: "1-100.mp3" },
+{ start: 179.261132, end: 181.685493, text: "Anh ấy thả cái túi xuống sàn.", text2: "他把袋子放在地上。", text3: "Thả đồ - 放下", audioFile: "1-100.mp3" },
+{ start: 181.685493, end: 183.596668, text: "Cô ấy ném bóng vào rổ.", text2: "她把球扔进篮子里。", text3: "Ném - 扔", audioFile: "1-100.mp3" },
+{ start: 183.596668, end: 186.516518, text: "Anh ấy bắt lấy quả bóng mà bạn ném tới.", text2: "他接住了你扔过来的球。", text3: "Bắt - 接", audioFile: "1-100.mp3" },
+{ start: 186.516518, end: 188.71083, text: "Cô ấy chụp ảnh khi đi du lịch.", text2: "她旅行时拍照。", text3: "Chụp - 拍照", audioFile: "1-100.mp3" },
+{ start: 188.71083, end: 191.312152, text: "Anh ấy quay video buổi hòa nhạc.", text2: "他录了音乐会的视频。", text3: "Quay - 录影", audioFile: "1-100.mp3" },
+{ start: 191.312152, end: 193.948866, text: "Cô ấy đang tìm chìa khóa trong túi.", text2: "她正在包里找钥匙。", text3: "Tìm - 找", audioFile: "1-100.mp3" },
+{ start: 193.948866, end: 196.497099, text: "Họ sẽ gặp nhau tại quán cà phê.", text2: "他们会在咖啡馆见面。", text3: "Gặp - 见面", audioFile: "1-100.mp3" },
+{ start: 196.497099, end: 199.346165, text: "Buổi họp sẽ bắt đầu vào lúc 10 giờ.", text2: "会议将在十点开始。", text3: "Bắt đầu - 开始", audioFile: "1-100.mp3" },
+{ start: 199.346165, end: 202.159839, text: "Bộ phim kết thúc với một cái kết có hậu.", text2: "电影以一个圆满的结局结束。", text3: "Kết thúc - 结束", audioFile: "1-100.mp3" },
+{ start: 202.159839, end: 204.902729, text: "Cô ấy nhảy lên vì quá vui mừng.", text2: "她高兴得跳了起来。", text3: "Nhảy lên – 跳起来.", audioFile: "1-100.mp3" },
+{ start: 204.902729, end: 206.866992, text: "Chiếc lá rơi xuống đất.", text2: "叶子掉在地上。", text3: "Rơi - 掉落", audioFile: "1-100.mp3" },
+{ start: 206.866992, end: 209.061304, text: "Cô bé trượt chân ngã trên băng.", text2: "小女孩在冰上滑倒了。", text3: "Trượt - 滑", audioFile: "1-100.mp3" },
+{ start: 209.061304, end: 211.273313, text: "Anh ấy bước qua cánh cửa.", text2: "他迈步穿过了门。", text3: "Bước - 迈步", audioFile: "1-100.mp3" },
+{ start: 211.273313, end: 213.343752, text: "Họ leo lên đỉnh núi.", text2: "他们爬上了山顶。", text3: "Leo - 爬", audioFile: "1-100.mp3" },
+{ start: 213.343752, end: 215.679633, text: "Con mèo chui vào dưới gầm giường.", text2: "猫钻到了床底下。", text3: "Chui - 钻", audioFile: "1-100.mp3" },
+{ start: 215.679633, end: 217.590808, text: "Anh ấy chèo thuyền trên hồ.", text2: "他在湖上划船。", text3: "Chèo - 划", audioFile: "1-100.mp3" },
+{ start: 217.590808, end: 219.838208, text: "Cô ấy lướt sóng rất điệu nghệ.", text2: "她冲浪技术高超。", text3: "Lướt - 滑行", audioFile: "1-100.mp3" },
+{ start: 219.838208, end: 221.820167, text: "Bé ngã khi đang chạy.", text2: "孩子跑步时摔倒了。", text3: "Ngã - 摔倒", audioFile: "1-100.mp3" },
+{ start: 221.820167, end: 224.333008, text: "Anh ấy cúi xuống để nhặt đồ.", text2: "他弯腰捡东西。", text3: "Cúi - 弯腰", audioFile: "1-100.mp3" },
+{ start: 224.333008, end: 226.704281, text: "Cô ấy quỳ xuống trước bàn thờ.", text2: "她在祭坛前跪下。", text3: "Quỳ - 跪下", audioFile: "1-100.mp3" },
+{ start: 226.704281, end: 229.164034, text: "Cô ấy ngồi xuống ghế để nghỉ ngơi.", text2: "她坐在椅子上休息。", text3: "Ngồi - 坐", audioFile: "1-100.mp3" },
+{ start: 229.164034, end: 231.039816, text: "Anh ấy đứng chờ xe buýt.", text2: "他站着等公交车。", text3: "Đứng - 站", audioFile: "1-100.mp3" },
+{ start: 231.039816, end: 233.216432, text: "Bé nằm trên giường đọc sách.", text2: "孩子躺在床上读书。", text3: "Nằm - 躺", audioFile: "1-100.mp3" },
+{ start: 233.216432, end: 235.446136, text: "Chim bay qua bầu trời xanh.", text2: "鸟儿飞过蓝天。", text3: "Bay - 飞", audioFile: "1-100.mp3" },
+{ start: 235.446136, end: 238.454467, text: "Anh ấy thích lặn dưới biển để ngắm san hô.", text2: "他喜欢在海底潜水看珊瑚。", text3: "Lặn - 潜水", audioFile: "1-100.mp3" },
+{ start: 238.454467, end: 241.020397, text: "Cô ấy thở sâu để giữ bình tĩnh.", text2: "她深呼吸以保持镇定。", text3: "Thở - 呼吸", audioFile: "1-100.mp3" },
+{ start: 241.020397, end: 243.56863, text: "Anh ấy ho suốt cả đêm vì cảm lạnh.", text2: "他因感冒整晚都在咳嗽。", text3: "Ho - 咳嗽", audioFile: "1-100.mp3" },
+{ start: 243.56863, end: 245.992991, text: "Cô ấy hắt hơi khi ra ngoài trời lạnh.", text2: "她在外面冷空气中打了喷嚏。", text3: "Hắt hơi - 打喷嚏", audioFile: "1-100.mp3" },
+{ start: 245.992991, end: 248.452744, text: "Anh ấy khạc nhổ vì bị đau họng.", text2: "他因喉咙痛而吐痰。", text3: "Khạc nhổ - 吐痰", audioFile: "1-100.mp3" },
+{ start: 0, end: 2.057064, text: "Họ đang nói chuyện với nhau về công việc.", text2: "他们正在谈论工作。", text3: "Nói chuyện - 交谈", audioFile: "101-200.mp3" },
+{ start: 2.057064, end: 4.43771, text: "Cô ấy hỏi thầy giáo về bài tập.", text2: "她向老师问作业的问题。", text3: "Hỏi - 问", audioFile: "101-200.mp3" },
+{ start: 4.43771, end: 6.864583, text: "Anh ấy trả lời câu hỏi rất chính xác.", text2: "他回答得很准确。", text3: "Trả lời - 回答", audioFile: "101-200.mp3" },
+{ start: 6.864583, end: 9.638152, text: "Bà tôi kể cho tôi nghe câu chuyện cổ tích.", text2: "奶奶给我讲了一个童话故事。", text3: "Kể - 讲述", audioFile: "101-200.mp3" },
+{ start: 9.638152, end: 12.365494, text: "Anh ấy giải thích rõ ràng lý do trễ hẹn.", text2: "他清楚地解释了迟到的原因。", text3: "Giải thích - 解释", audioFile: "101-200.mp3" },
+{ start: 12.365494, end: 15.046611, text: "Bố khuyên tôi nên học chăm chỉ hơn.", text2: "爸爸建议我更努力学习。", text3: "Khuyên - 建议", audioFile: "101-200.mp3" },
+{ start: 15.046611, end: 17.496596, text: "Cô ấy xin lỗi vì đã đến muộn.", text2: "她为迟到而道歉。", text3: "Xin lỗi - 道歉", audioFile: "101-200.mp3" },
+{ start: 17.496596, end: 20.131487, text: "Tôi cảm ơn anh ấy vì đã giúp đỡ.", text2: "我感谢他提供帮助。", text3: "Cảm ơn - 感谢", audioFile: "101-200.mp3" },
+{ start: 20.131487, end: 22.327229, text: "Họ mời chúng tôi đến dự tiệc.", text2: "他们邀请我们参加聚会。", text3: "Mời - 邀请", audioFile: "101-200.mp3" },
+{ start: 22.327229, end: 24.546084, text: "Anh ấy tặng hoa cho bạn gái.", text2: "他送花给女朋友。", text3: "Tặng - 赠送", audioFile: "101-200.mp3" },
+{ start: 24.546084, end: 27.296539, text: "Chúng tôi chúc mừng anh ấy nhân dịp sinh nhật.", text2: "我们祝贺他生日快乐。", text3: "Chúc - 祝贺", audioFile: "101-200.mp3" },
+{ start: 27.296539, end: 29.838977, text: "Cô ấy cười lớn khi nghe chuyện hài.", text2: "她听到笑话时大笑。", text3: "Cười - 笑", audioFile: "101-200.mp3" },
+{ start: 29.838977, end: 32.335189, text: "Cô bé khóc khi bị mất đồ chơi.", text2: "小女孩丢了玩具时哭了。", text3: "Khóc - 哭", audioFile: "101-200.mp3" },
+{ start: 32.335189, end: 34.923854, text: "Anh ấy nổi giận khi biết tin xấu.", text2: "他得知坏消息时发怒了。", text3: "Nổi giận - 发怒", audioFile: "101-200.mp3" },
+{ start: 34.923854, end: 37.974779, text: "Cô ấy giữ bình tĩnh trong tình huống khó khăn.", text2: "她在困难的情况下保持冷静。", text3: "Bình tĩnh - 冷静", audioFile: "101-200.mp3" },
+{ start: 37.974779, end: 40.447878, text: "Tôi lo lắng cho sức khỏe của mẹ.", text2: "我担心妈妈的健康。", text3: "Lo lắng - 担心", audioFile: "101-200.mp3" },
+{ start: 40.447878, end: 42.990316, text: "Cô ấy rất hồi hộp trước buổi thi.", text2: "考试前她非常紧张。", text3: "Hồi hộp - 紧张", audioFile: "101-200.mp3" },
+{ start: 42.990316, end: 45.555867, text: "Anh ấy thích thú khi học về lịch sử.", text2: "他对学习历史感兴趣。", text3: "Thích thú - 感兴趣", audioFile: "101-200.mp3" },
+{ start: 45.555867, end: 48.907263, text: "Cô ấy cảm thấy chán nản vì không đạt được mục tiêu.", text2: "她因未能达到目标而感到沮丧。", text3: "Chán nản - 沮丧", audioFile: "101-200.mp3" },
+{ start: 48.907263, end: 51.588379, text: "Tôi rất ngạc nhiên khi nghe tin này.", text2: "听到这个消息时我非常惊讶。", text3: "Ngạc nhiên - 惊讶", audioFile: "101-200.mp3" },
+{ start: 51.588379, end: 55.263358, text: "Cô giáo khen ngợi học sinh vì đã làm tốt bài kiểm tra.", text2: "老师赞扬了学生考试做得很好。", text3: "Khen ngợi - 赞扬", audioFile: "101-200.mp3" },
+{ start: 55.263358, end: 58.337397, text: "Anh ấy bị chỉ trích vì không hoàn thành công việc.", text2: "他因未完成工作而受到批评。", text3: "Chỉ trích - 批评", audioFile: "101-200.mp3" },
+{ start: 58.337397, end: 61.087852, text: "Cô ấy tha thứ cho bạn vì sự hiểu lầm.", text2: "她因为误会而原谅了朋友。", text3: "Tha thứ - 原谅", audioFile: "101-200.mp3" },
+{ start: 61.087852, end: 63.745856, text: "Mẹ trách móc tôi vì quên làm bài tập.", text2: "妈妈责备我忘记做作业。", text3: "Trách móc - 责备", audioFile: "101-200.mp3" },
+{ start: 63.745856, end: 66.473199, text: "Cô ấy thường mua sắm vào cuối tuần.", text2: "她通常在周末购物。", text3: "Mua sắm - 购物", audioFile: "101-200.mp3" },
+{ start: 66.473199, end: 68.923184, text: "Họ bán trái cây tươi ở chợ.", text2: "他们在市场上卖新鲜水果。", text3: "Bán - 卖", audioFile: "101-200.mp3" },
+{ start: 68.923184, end: 71.188265, text: "Anh ấy cho thuê căn hộ của mình.", text2: "他把自己的公寓出租。", text3: "Cho thuê - 出租", audioFile: "101-200.mp3" },
+{ start: 71.188265, end: 74.00806, text: "Tôi cần vay tiền từ ngân hàng để mua nhà.", text2: "我需要从银行借款买房。", text3: "Vay - 借款", audioFile: "101-200.mp3" },
+{ start: 74.00806, end: 76.874081, text: "Tôi sẽ trả lại tiền cho bạn vào tuần sau.", text2: "我下周会还你钱。", text3: "Trả - 还", audioFile: "101-200.mp3" },
+{ start: 76.874081, end: 79.809442, text: "Cô ấy gửi một bưu kiện cho bạn ở nước ngoài.", text2: "她寄了一个包裹给国外的朋友。", text3: "Gửi - 寄", audioFile: "101-200.mp3" },
+{ start: 79.809442, end: 82.028297, text: "Tôi đã nhận được thư của bạn.", text2: "我收到了你的信。", text3: "Nhận - 收到", audioFile: "101-200.mp3" },
+{ start: 82.028297, end: 85.217901, text: "Chúng tôi cố gắng tiết kiệm tiền cho tương lai.", text2: "我们努力为未来节省钱。", text3: "Tiết kiệm - 节省", audioFile: "101-200.mp3" },
+{ start: 85.217901, end: 87.899017, text: "Cô ấy rất cẩn thận trong việc chi tiêu.", text2: "她在支出方面非常谨慎。", text3: "Chi tiêu - 支出", audioFile: "101-200.mp3" },
+{ start: 87.899017, end: 90.62636, text: "Anh ấy tặng quà cho mẹ nhân dịp sinh nhật.", text2: "他在妈妈生日时送了礼物。", text3: "Tặng - 送", audioFile: "101-200.mp3" },
+{ start: 90.62636, end: 93.03012, text: "Tôi xin nghỉ phép để về thăm gia đình.", text2: "我请假回家探亲。", text3: "Xin nghỉ phép - 请假", audioFile: "101-200.mp3" },
+{ start: 93.03012, end: 96.127271, text: "Tôi đã trả lại sản phẩm bị lỗi cho cửa hàng.", text2: "我已将有缺陷的产品退还给商店。", text3: "Trả lại - 退还", audioFile: "101-200.mp3" },
+{ start: 96.127271, end: 98.785275, text: "Hàng hóa đang được vận chuyển đến kho.", text2: "货物正在运输到仓库。", text3: "Vận chuyển - 运输", audioFile: "101-200.mp3" },
+{ start: 98.785275, end: 101.189034, text: "Tôi đã nhận hàng từ nhà cung cấp.", text2: "我已从供应商处收货。", text3: "Nhận hàng - 收货", audioFile: "101-200.mp3" },
+{ start: 101.189034, end: 103.361663, text: "Tôi mượn sách từ thư viện.", text2: "我从图书馆借了书。", text3: "Mượn - 借", audioFile: "101-200.mp3" },
+{ start: 103.361663, end: 105.927214, text: "Họ thuê một chiếc xe để đi du lịch.", text2: "他们租了一辆车去旅游。", text3: "Thuê xe - 租车", audioFile: "101-200.mp3" },
+{ start: 105.927214, end: 107.914939, text: "Anh ấy ký vào hợp đồng.", text2: "他在合同上签了名。", text3: "Ký - 签名", audioFile: "101-200.mp3" },
+{ start: 107.914939, end: 110.341811, text: "Tôi cần in tài liệu cho buổi họp.", text2: "我需要打印会议资料。", text3: "In - 打印", audioFile: "101-200.mp3" },
+{ start: 110.341811, end: 112.907363, text: "Cô ấy quét tài liệu để lưu trữ.", text2: "她扫描文件以备存。", text3: "Quét tài liệu - 扫描文件.", audioFile: "101-200.mp3" },
+{ start: 112.907363, end: 115.912062, text: "Tôi đã sao chép file vào USB.", text2: "我把文件复制到U盘里了。", text3: "Sao chép - 复制", audioFile: "101-200.mp3" },
+{ start: 115.912062, end: 118.708744, text: "Đừng quên lưu lại công việc trước khi tắt máy.", text2: "关机前别忘了保存工作。", text3: "Lưu - 保存", audioFile: "101-200.mp3" },
+{ start: 118.708744, end: 121.38986, text: "Cô ấy đã xóa bức ảnh không cần thiết.", text2: "她删除了不需要的照片。", text3: "Xóa - 删除", audioFile: "101-200.mp3" },
+{ start: 121.38986, end: 124.533238, text: "Anh ấy đang cài đặt phần mềm mới trên máy tính.", text2: "他正在电脑上安装新软件。", text3: "Cài đặt - 安装", audioFile: "101-200.mp3" },
+{ start: 124.533238, end: 127.306807, text: "Tôi cần cập nhật hệ điều hành của điện thoại.", text2: "我需要更新手机的操作系统。", text3: "Cập nhật - 更新", audioFile: "101-200.mp3" },
+{ start: 127.306807, end: 130.288394, text: "Cô ấy khởi động lại máy tính sau khi cài đặt.", text2: "她安装完后重启了电脑。", text3: "Khởi động - 启动", audioFile: "101-200.mp3" },
+{ start: 130.288394, end: 132.830832, text: "Anh ấy tắt đèn trước khi đi ngủ.", text2: "他在睡觉前关了灯。", text3: "Tắt - 关", audioFile: "101-200.mp3" },
+{ start: 132.830832, end: 135.997323, text: "Tôi phải đăng nhập vào hệ thống để kiểm tra email.", text2: "我必须登录系统检查电子邮件。", text3: "Đăng nhập - 登录", audioFile: "101-200.mp3" },
+{ start: 135.997323, end: 139.117588, text: "Đừng quên đăng xuất sau khi sử dụng tài khoản.", text2: "使用完账户后别忘了注销。", text3: "Đăng xuất - 注销", audioFile: "101-200.mp3" },
+{ start: 139.117588, end: 141.636913, text: "Cô ấy lướt web để tìm thông tin.", text2: "她浏览网页以查找信息。", text3: "Lướt web - 浏览网页", audioFile: "101-200.mp3" },
+{ start: 141.729365, end: 144.063785, text: "Tôi đang tải xuống một ứng dụng mới.", text2: "我正在下载一个新应用。", text3: "Tải xuống - 下载", audioFile: "101-200.mp3" },
+{ start: 144.063785, end: 146.906693, text: "Anh ấy tải lên hình ảnh lên mạng xã hội.", text2: "他把图片上传到社交网络。", text3: "Tải lên - 上传", audioFile: "101-200.mp3" },
+{ start: 146.906693, end: 149.495357, text: "Cô ấy chia sẻ bài viết với bạn bè.", text2: "她和朋友分享了这篇文章。", text3: "Chia sẻ - 分享", audioFile: "101-200.mp3" },
+{ start: 149.495357, end: 152.292039, text: "Tôi thích bài viết của bạn trên Facebook.", text2: "我在Facebook上点赞了你的帖子。", text3: "Thích (like) -点赞", audioFile: "101-200.mp3" },
+{ start: 152.292039, end: 155.342965, text: "Họ bình luận về bức ảnh trên Instagram.", text2: "他们在Instagram上评论了照片。", text3: "Bình luận - 评论", audioFile: "101-200.mp3" },
+{ start: 155.342965, end: 158.255212, text: "Cô ấy nhắn tin cho bạn bè qua điện thoại.", text2: "她通过手机给朋友发信息。", text3: "Nhắn tin - 发信息", audioFile: "101-200.mp3" },
+{ start: 158.255212, end: 161.028781, text: "Họ gọi video để nói chuyện với nhau.", text2: "他们进行视频通话。", text3: "Gọi video - 视频通话", audioFile: "101-200.mp3" },
+{ start: 161.028781, end: 163.663671, text: "Cô ấy lưu trữ tài liệu trên máy tính.", text2: "她在电脑上存档文件。", text3: "Lưu trữ - 存档", audioFile: "101-200.mp3" },
+{ start: 163.663671, end: 166.275449, text: "Anh ấy đã khôi phục dữ liệu bị mất.", text2: "他恢复了丢失的数据。", text3: "Khôi phục - 恢复", audioFile: "101-200.mp3" },
+{ start: 166.275449, end: 169.349487, text: "Tôi cần chỉnh sửa bài viết trước khi đăng lên mạng.", text2: "我需要在发布前编辑文章。", text3: "Chỉnh sửa - 编辑", audioFile: "101-200.mp3" },
+{ start: 169.349487, end: 172.099943, text: "Cô ấy thiết kế một bộ trang phục mới.", text2: "她设计了一套新服装。", text3: "Thiết kế - 设计", audioFile: "101-200.mp3" },
+{ start: 172.099943, end: 174.919738, text: "Tôi sẽ tạo một tài khoản mới trên trang web.", text2: "我将在网站上创建一个新账户。", text3: "Tạo - 创建", audioFile: "101-200.mp3" },
+{ start: 174.919738, end: 177.739533, text: "Công ty đang phát triển sản phẩm mới.", text2: "公司正在开发新产品。", text3: "Phát triển - 发展", audioFile: "101-200.mp3" },
+{ start: 177.739533, end: 180.073953, text: "Anh ấy kiểm tra lỗi trong báo cáo.", text2: "他检查了报告中的错误。", text3: "Kiểm tra - 检查", audioFile: "101-200.mp3" },
+{ start: 180.073953, end: 183.078653, text: "Cô ấy phân tích dữ liệu từ cuộc khảo sát.", text2: "她分析了调查数据。", text3: "Phân tích - 分析", audioFile: "101-200.mp3" },
+{ start: 183.078653, end: 185.551752, text: "Họ đánh giá hiệu suất của nhân viên.", text2: "他们评估了员工的表现。", text3: "Đánh giá - 评估", audioFile: "101-200.mp3" },
+{ start: 185.551752, end: 188.510225, text: "Ban giám đốc đang xem xét kế hoạch mới.", text2: "董事会正在审查新计划。", text3: "Xem xét - 审查", audioFile: "101-200.mp3" },
+{ start: 188.510225, end: 190.913985, text: "Tôi đề xuất thay đổi một số quy định.", text2: "我建议修改一些规定。", text3: "Đề xuất - 建议", audioFile: "101-200.mp3" },
+{ start: 190.913985, end: 194.080476, text: "Chúng tôi đã thảo luận về dự án trong cuộc họp.", text2: "我们在会议中讨论了这个项目。", text3: "Thảo luận - 讨论", audioFile: "101-200.mp3" },
+{ start: 194.080476, end: 196.96961, text: "Giám đốc đã phê duyệt kế hoạch kinh doanh mới.", text2: "经理批准了新的商业计划。", text3: "Phê duyệt - 批准", audioFile: "101-200.mp3" },
+{ start: 196.96961, end: 199.6045, text: "Anh ấy từ chối lời mời làm việc.", text2: "他拒绝了工作邀请。", text3: "Từ chối - 拒绝", audioFile: "101-200.mp3" },
+{ start: 199.6045, end: 201.915807, text: "Cô ấy đã chấp nhận lời đề nghị.", text2: "她接受了这个提议。", text3: "Chấp nhận - 接受", audioFile: "101-200.mp3" },
+{ start: 201.915807, end: 204.781829, text: "Họ giao tiếp hiệu quả qua email.", text2: "他们通过电子邮件有效沟通。", text3: "Giao tiếp - 沟通", audioFile: "101-200.mp3" },
+{ start: 204.781829, end: 207.27804, text: "Tôi sẽ liên lạc với bạn qua điện thoại.", text2: "我会通过电话联系你。", text3: "Liên lạc - 联系", audioFile: "101-200.mp3" },
+{ start: 207.27804, end: 209.797365, text: "Chúng tôi đã thực hiện kế hoạch mới.", text2: "我们实施了新计划。", text3: "Thực hiện - 实施", audioFile: "101-200.mp3" },
+{ start: 209.797365, end: 212.6865, text: "Anh ấy đã hoàn thành công việc trước thời hạn.", text2: "他提前完成了工作。", text3: "Hoàn thành - 完成", audioFile: "101-200.mp3" },
+{ start: 212.6865, end: 214.997807, text: "Cô ấy đưa ra ý kiến trong cuộc họp.", text2: "她在会议中提出了意见。", text3: "Đưa ra - 提出", audioFile: "101-200.mp3" },
+{ start: 214.997807, end: 217.748263, text: "Tôi luôn học hỏi từ những người xung quanh.", text2: "我总是向周围的人学习。", text3: "Học hỏi - 学习", audioFile: "101-200.mp3" },
+{ start: 217.748263, end: 220.845414, text: "Họ đã giải quyết vấn đề một cách nhanh chóng.", text2: "他们迅速解决了问题。", text3: "Giải quyết - 解决", audioFile: "101-200.mp3" },
+{ start: 220.845414, end: 223.665209, text: "Cô ấy phát biểu tại hội nghị quốc tế.", text2: "她在国际会议上发言。", text3: "Phát biểu - 发言", audioFile: "101-200.mp3" },
+{ start: 223.665209, end: 227.016605, text: "Anh ấy trình bày dự án mới trước ban lãnh đạo.", text2: "他在领导面前演示了新项目。", text3: "Trình bày - 演示", audioFile: "101-200.mp3" },
+{ start: 227.016605, end: 229.928852, text: "Cô ấy đã thuyết phục khách hàng ký hợp đồng.", text2: "她说服了客户签署合同。", text3: "Thuyết phục - 说服", audioFile: "101-200.mp3" },
+{ start: 229.928852, end: 232.679308, text: "Họ đang đàm phán về giá cả hợp đồng.", text2: "他们正在谈判合同价格。", text3: "Đàm phán - 谈判", audioFile: "101-200.mp3" },
+{ start: 232.679308, end: 235.915138, text: "Chúng tôi tổ chức một sự kiện lớn vào cuối tuần.", text2: "我们在周末组织了一场大型活动。", text3: "Tổ chức - 组织", audioFile: "101-200.mp3" },
+{ start: 235.915138, end: 238.550028, text: "Anh ấy điều hành công ty một cách hiệu quả.", text2: "他有效地运营公司。", text3: "Điều hành - 运营", audioFile: "101-200.mp3" },
+{ start: 238.550028, end: 241.392936, text: "Cô ấy quản lý một nhóm gồm 10 người.", text2: "她管理着一个10人的团队。", text3: "Quản lý - 管理", audioFile: "101-200.mp3" },
+{ start: 241.392936, end: 244.189618, text: "Họ phân phối sản phẩm ra thị trường.", text2: "他们将产品分配到市场上。", text3: "Phân phối - 分配", audioFile: "101-200.mp3" },
+{ start: 244.189618, end: 247.148092, text: "Anh ấy điều chỉnh lịch trình để phù hợp hơn.", text2: "他调整了时间表以更适应需求。", text3: "Điều chỉnh - 调整", audioFile: "101-200.mp3" },
+{ start: 247.148092, end: 249.967887, text: "Cô ấy nhanh chóng thích nghi với môi trường mới.", text2: "她很快适应了新环境。", text3: "Thích nghi - 适应", audioFile: "101-200.mp3" },
+{ start: 249.967887, end: 252.764568, text: "Họ thúc đẩy sự phát triển của dự án.", text2: "他们推动了项目的发展。", text3: "Thúc đẩy - 推动", audioFile: "101-200.mp3" },
+{ start: 252.764568, end: 255.191441, text: "Công ty đang đào tạo nhân viên mới.", text2: "公司正在培训新员工。", text3: "Đào tạo - 培训", audioFile: "101-200.mp3" },
+{ start: 255.191441, end: 257.618314, text: "Anh ấy giám sát tiến độ công việc.", text2: "他监督了工作的进展。", text3: "Giám sát - 监督", audioFile: "101-200.mp3" },
+{ start: 257.618314, end: 260.831031, text: "Cô ấy báo cáo kết quả lên ban quản lý.", text2: "她向管理层报告了结果。", text3: "Báo cáo - 报告", audioFile: "101-200.mp3" },
+{ start: 260.831031, end: 263.974409, text: "Họ đảm bảo chất lượng sản phẩm trước khi xuất xưởng.", text2: "他们在出厂前确保产品质量。", text3: "Đảm bảo - 确保", audioFile: "101-200.mp3" },
+{ start: 263.974409, end: 266.932882, text: "Cuộc họp đã bị hoãn lại do thời tiết xấu.", text2: "由于天气恶劣，会议被推迟了。", text3: "Hoãn lại - 推迟", audioFile: "101-200.mp3" },
+{ start: 266.932882, end: 269.84513, text: "Anh ấy đang tìm kiếm cơ hội việc làm mới.", text2: "他正在寻找新的工作机会。", text3: "Tìm kiếm - 寻找", audioFile: "101-200.mp3" },
+{ start: 269.84513, end: 272.757377, text: "Cô ấy đánh dấu những điểm quan trọng trong văn bản.", text2: "她在文本中标记了重要点。", text3: "Đánh dấu - 标记", audioFile: "101-200.mp3" },
+{ start: 0, end: 2.145684, text: "Cô ấy đọc hiểu rất nhanh bài báo này.", text2: "她很快理解了这篇文章的内容。", text3: "Đọc hiểu - 阅读理解", audioFile: "201-300.mp3" },
+{ start: 2.145684, end: 5.252122, text: "Tôi thường ghi chú lại những điểm quan trọng khi học.", text2: "我在学习时经常做笔记记录重要点。", text3: "Ghi chú - 做笔记", audioFile: "201-300.mp3" },
+{ start: 5.252122, end: 8.42261, text: "Anh ấy sắp xếp công việc theo thứ tự ưu tiên.", text2: "他按照优先顺序安排工作。", text3: "Sắp xếp - 安排", audioFile: "201-300.mp3" },
+{ start: 8.42261, end: 11.8493, text: "Máy tính của tôi không thể kết nối được với internet.", text2: "我的电脑无法连接到互联网。", text3: "Kết nối - 连接", audioFile: "201-300.mp3" },
+{ start: 11.8493, end: 14.28321, text: "Tôi đã đăng ký khóa học trực tuyến.", text2: "我已经注册了一个在线课程。", text3: "Đăng ký - 注册", audioFile: "201-300.mp3" },
+{ start: 14.28321, end: 17.293572, text: "Cô ấy nhập dữ liệu vào hệ thống hàng ngày.", text2: "她每天都将数据输入系统。", text3: "Nhập dữ liệu -输入 数据.", audioFile: "201-300.mp3" },
+{ start: 17.293572, end: 20.303935, text: "Anh ấy xuất báo cáo từ phần mềm kế toán.", text2: "他从会计软件中导出了报告。", text3: "Xuất báo cáo -导出 报告.", audioFile: "201-300.mp3" },
+{ start: 20.303935, end: 23.538473, text: "Tôi muốn tìm hiểu thêm về văn hóa Nhật Bản.", text2: "我想了解更多关于日本文化的信息。", text3: "Tìm hiểu - 了解", audioFile: "201-300.mp3" },
+{ start: 23.538473, end: 25.588082, text: "Cô ấy đã đổi công việc mới.", text2: "她换了一个新工作。", text3: "Đổi - 更换", audioFile: "201-300.mp3" },
+{ start: 25.588082, end: 29.110847, text: "Anh ấy chỉnh sửa kế hoạch để phù hợp với tình hình mới.", text2: "他修改了计划以适应新情况。", text3: "Chỉnh sửa kế hoạch -修改 计划.", audioFile: "201-300.mp3" },
+{ start: 29.110847, end: 32.569561, text: "Chúng tôi đang hoàn thiện bản thiết kế cuối cùng.", text2: "我们正在完善最终设计。", text3: "Hoàn thiện - 完善", audioFile: "201-300.mp3" },
+{ start: 32.569561, end: 35.419798, text: "Cô ấy xác nhận thông tin đặt phòng qua điện thoại.", text2: "她通过电话确认了预订信息。", text3: "Xác nhận - 确认", audioFile: "201-300.mp3" },
+{ start: 35.419798, end: 38.23801, text: "Họ phân loại tài liệu theo chủ đề.", text2: "他们按主题分类文件。", text3: "Phân loại - 分类", audioFile: "201-300.mp3" },
+{ start: 38.23801, end: 41.760775, text: "Anh ấy đánh số các tài liệu để dễ dàng tra cứu.", text2: "他对文件进行了编号，以便查找。", text3: "Đánh số - 编号", audioFile: "201-300.mp3" },
+{ start: 41.760775, end: 45.091388, text: "Cô ấy định dạng văn bản để trình bày chuyên nghiệp hơn.", text2: "她将文本格式化，以便呈现得更专业。", text3: "Định dạng - 格式化", audioFile: "201-300.mp3" },
+{ start: 45.091388, end: 48.550103, text: "Anh ấy gỡ bỏ phần mềm không cần thiết khỏi máy tính.", text2: "他从电脑上移除了不需要的软件。", text3: "Gỡ bỏ - 移除", audioFile: "201-300.mp3" },
+{ start: 48.550103, end: 51.46439, text: "Bài viết cần được kiểm duyệt trước khi xuất bản.", text2: "文章在发布前需要经过审查。", text3: "Kiểm duyệt - 审查", audioFile: "201-300.mp3" },
+{ start: 51.46439, end: 54.474753, text: "Cô ấy kiểm soát chất lượng sản phẩm rất nghiêm ngặt.", text2: "她对产品质量的控制非常严格。", text3: "Kiểm soát - 控制", audioFile: "201-300.mp3" },
+{ start: 54.474753, end: 57.709291, text: "Chúng tôi đã tạo lập một kế hoạch kinh doanh mới.", text2: "我们建立了一个新的商业计划。", text3: "Tạo lập - 建立", audioFile: "201-300.mp3" },
+{ start: 57.709291, end: 61.103955, text: "Cuốn sách mới của anh ấy sẽ được xuất bản vào tháng tới.", text2: "他的新书将在下个月出版。", text3: "Xuất bản - 出版", audioFile: "201-300.mp3" },
+{ start: 61.103955, end: 64.370519, text: "Cô ấy chỉnh lý tài liệu trước khi nộp cho giáo viên.", text2: "她在交给老师之前整理了文件。", text3: "Chỉnh lý - 整理", audioFile: "201-300.mp3" },
+{ start: 64.370519, end: 67.412907, text: "Công ty đã phát hành phiên bản mới của sản phẩm.", text2: "公司发布了产品的新版本。", text3: "Phát hành - 发行", audioFile: "201-300.mp3" },
+{ start: 67.412907, end: 70.647445, text: "Tiền xu vẫn còn lưu hành trong thị trường.", text2: "硬币仍在市场上流通。", text3: "Lưu hành - 流通", audioFile: "201-300.mp3" },
+{ start: 70.647445, end: 73.689833, text: "Chúng tôi đánh giá hiệu suất nhân viên hàng tháng.", text2: "我们每月评估员工的绩效。", text3: "Đánh giá hiệu suất -评估 绩效.", audioFile: "201-300.mp3" },
+{ start: 73.689833, end: 76.443995, text: "Anh ấy đảm nhiệm vai trò trưởng nhóm dự án.", text2: "他担任了项目组长的角色。", text3: "Đảm nhiệm - 担任", audioFile: "201-300.mp3" },
+{ start: 76.443995, end: 80.639287, text: "Họ đang tối ưu hóa quy trình sản xuất để tăng hiệu quả.", text2: "他们正在优化生产流程以提高效率。", text3: "Tối ưu hóa - 优化", audioFile: "201-300.mp3" },
+{ start: 80.639287, end: 83.041172, text: "Cô ấy đã tạo ra một bức tranh đẹp.", text2: "她创作了一幅漂亮的画。", text3: "Tạo ra - 创造", audioFile: "201-300.mp3" },
+{ start: 83.041172, end: 85.667233, text: "Anh ấy đang cân nhắc việc chuyển đổi công việc.", text2: "他正在考虑换工作。", text3: "Cân nhắc - 考虑", audioFile: "201-300.mp3" },
+{ start: 85.667233, end: 88.51747, text: "Tôi cần lập báo cáo cho dự án này.", text2: "我需要为这个项目编写报告。", text3: "Lập báo cáo - 编写报告", audioFile: "201-300.mp3" },
+{ start: 88.51747, end: 91.944159, text: "Cô ấy đã đưa ra quyết định quan trọng về tương lai của mình.", text2: "她对自己的未来做出了重要决定。", text3: "Đưa ra quyết định - 作出决定", audioFile: "201-300.mp3" },
+{ start: 91.944159, end: 95.915276, text: "Họ xử lý các yêu cầu của khách hàng một cách nhanh chóng.", text2: "他们快速处理了客户的请求。", text3: "Xử lý - 处理", audioFile: "201-300.mp3" },
+{ start: 95.915276, end: 98.349186, text: "Cô ấy trồng hoa hồng trong vườn.", text2: "她在花园里种植了玫瑰花。", text3: "Trồng - 种植", audioFile: "201-300.mp3" },
+{ start: 98.349186, end: 101.455624, text: "Anh ấy chăm sóc mẹ già của mình rất chu đáo.", text2: "他细心照顾年迈的母亲。", text3: "Chăm sóc - 照顾", audioFile: "201-300.mp3" },
+{ start: 101.455624, end: 104.209786, text: "Họ đã khám phá ra một hòn đảo mới.", text2: "他们发现了一个新岛屿。", text3: "Khám phá - 发现", audioFile: "201-300.mp3" },
+{ start: 104.209786, end: 107.444324, text: "Cô ấy sáng tạo một tác phẩm nghệ thuật độc đáo.", text2: "她创作了一件独特的艺术作品。", text3: "Sáng tạo - 创作", audioFile: "201-300.mp3" },
+{ start: 107.444324, end: 110.454687, text: "Họ đã chinh phục đỉnh núi cao nhất thế giới.", text2: "他们征服了世界最高峰。", text3: "Chinh phục - 征服", audioFile: "201-300.mp3" },
+{ start: 110.454687, end: 113.945426, text: "Anh ấy đang thử nghiệm công nghệ mới trong phòng thí nghiệm.", text2: "他在实验室试验新技术。", text3: "Thử nghiệm - 试验", audioFile: "201-300.mp3" },
+{ start: 113.945426, end: 116.667563, text: "Cô ấy phát hiện ra lỗi trong hệ thống.", text2: "她发现了系统中的错误。", text3: "Phát hiện - 发现", audioFile: "201-300.mp3" },
+{ start: 116.667563, end: 119.902101, text: "Họ mô phỏng quy trình sản xuất trên máy tính.", text2: "他们在电脑上模拟了生产流程。", text3: "Mô phỏng - 模拟", audioFile: "201-300.mp3" },
+{ start: 119.902101, end: 122.207911, text: "Cảnh sát đang điều tra vụ án.", text2: "警察正在调查案件。", text3: "Điều tra - 调查", audioFile: "201-300.mp3" },
+{ start: 122.207911, end: 125.666625, text: "Anh ấy đang nghiên cứu về tác động của biến đổi khí hậu.", text2: "他正在研究气候变化的影响。", text3: "Nghiên cứu - 研究", audioFile: "201-300.mp3" },
+{ start: 125.666625, end: 128.741038, text: "Cô ấy sưu tầm tem từ khắp nơi trên thế giới.", text2: "她从世界各地收集邮票。", text3: "Sưu tầm - 收集", audioFile: "201-300.mp3" },
+{ start: 128.741038, end: 132.391903, text: "Ngân hàng thẩm định giá trị tài sản trước khi cho vay.", text2: "银行在放贷前审核资产价值。", text3: "Thẩm định - 审核", audioFile: "201-300.mp3" },
+{ start: 132.391903, end: 135.466316, text: "Họ dự đoán thời tiết sẽ có mưa vào ngày mai.", text2: "他们预测明天会下雨。", text3: "Dự đoán - 预测", audioFile: "201-300.mp3" },
+{ start: 135.466316, end: 138.188453, text: "Anh ấy lập trình phần mềm mới cho công ty.", text2: "他为公司编写新软件。", text3: "Lập trình - 编程", audioFile: "201-300.mp3" },
+{ start: 138.188453, end: 141.711217, text: "Cô ấy truyền đạt thông tin từ quản lý đến nhân viên.", text2: "她将信息从管理层传达给员工。", text3: "Truyền đạt - 传达", audioFile: "201-300.mp3" },
+{ start: 141.711217, end: 145.137907, text: "Họ thiết lập một hệ thống mới để quản lý dữ liệu.", text2: "他们建立了一个新的数据管理系统。", text3: "Thiết lập - 建立", audioFile: "201-300.mp3" },
+{ start: 145.137907, end: 149.429275, text: "Sau khi phân tích, họ kết luận rằng dự án này khả thi.", text2: "分析后，他们得出结论，该项目是可行的。", text3: "Kết luận - 得出结论", audioFile: "201-300.mp3" },
+{ start: 149.429275, end: 152.920014, text: "Anh ấy đã có kế hoạch dự phòng trong trường hợp khẩn cấp.", text2: "他制定了应急预案以备不时之需。", text3: "Dự phòng - 预防", audioFile: "201-300.mp3" },
+{ start: 152.920014, end: 156.378729, text: "Cô ấy điều khiển robot từ xa để thực hiện nhiệm vụ.", text2: "她远程控制机器人执行任务。", text3: "Điều khiển - 控制", audioFile: "201-300.mp3" },
+{ start: 156.378729, end: 159.805418, text: "Họ đang lắp đặt hệ thống điều hòa không khí mới.", text2: "他们正在安装新的空调系统。", text3: "Lắp đặt - 安装", audioFile: "201-300.mp3" },
+{ start: 159.805418, end: 164.032736, text: "Công ty cung cấp dịch vụ hỗ trợ khách hàng 24/7.", text2: "公司提供24/7客户支持服务。", text3: "Cung cấp - 提供", audioFile: "201-300.mp3" },
+{ start: 164.032736, end: 166.979048, text: "Anh ấy kích hoạt tài khoản ngân hàng trực tuyến.", text2: "他激活了网上银行账户。", text3: "Kích hoạt - 激活", audioFile: "201-300.mp3" },
+{ start: 166.979048, end: 169.733209, text: "Bệnh viện tiếp nhận bệnh nhân bị tai nạn.", text2: "医院接收了事故伤员。", text3: "Tiếp nhận - 接收", audioFile: "201-300.mp3" },
+{ start: 169.733209, end: 172.455346, text: "Dự án đã được chính phủ phê chuẩn.", text2: "该项目已获政府批准。", text3: "Phê chuẩn - 批准", audioFile: "201-300.mp3" },
+{ start: 172.455346, end: 175.113432, text: "Anh ấy đối chiếu thông tin giữa hai tài liệu.", text2: "他对比了两份文件中的信息。", text3: "Đối chiếu - 对比", audioFile: "201-300.mp3" },
+{ start: 175.113432, end: 178.187845, text: "Họ đã hòa giải thành công trong cuộc tranh chấp.", text2: "他们成功地调解了争端。", text3: "Hòa giải - 调解", audioFile: "201-300.mp3" },
+{ start: 178.187845, end: 181.486434, text: "Cô ấy đã đặt hàng một chiếc áo khoác mới trực tuyến.", text2: "她在网上下单买了一件新外套。", text3: "Đặt hàng - 下单", audioFile: "201-300.mp3" },
+{ start: 181.486434, end: 185.201349, text: "Công ty tiến hành khảo sát sự hài lòng của khách hàng.", text2: "公司进行了客户满意度调查。", text3: "Khảo sát - 调查", audioFile: "201-300.mp3" },
+{ start: 185.201349, end: 188.051586, text: "Họ phối hợp với nhau để hoàn thành dự án.", text2: "他们相互协调完成了项目。", text3: "Phối hợp - 协调", audioFile: "201-300.mp3" },
+{ start: 188.051586, end: 191.158024, text: "Anh ấy đã đạt được mục tiêu tài chính của mình.", text2: "他达到了自己的财务目标。", text3: "Đạt được - 达成, 达到，夺得", audioFile: "201-300.mp3" },
+{ start: 191.158024, end: 194.552688, text: "Công ty đang quảng bá sản phẩm mới trên thị trường.", text2: "公司正在市场上宣传新产品。", text3: "Quảng bá - 宣传", audioFile: "201-300.mp3" },
+{ start: 194.552688, end: 197.563051, text: "Họ đang thương thảo về điều khoản hợp đồng.", text2: "他们正在协商合同条款。", text3: "Thương thảo - 协商", audioFile: "201-300.mp3" },
+{ start: 197.563051, end: 200.477338, text: "Họ đang tìm cách cải thiện chất lượng sản phẩm.", text2: "他们正在寻找改善产品质量的方法。", text3: "Cải thiện - 改善", audioFile: "201-300.mp3" },
+{ start: 200.477338, end: 204.48048, text: "Công ty đã cải tiến quy trình sản xuất để tiết kiệm chi phí.", text2: "公司改进了生产流程以节省成本。", text3: "Cải tiến - 改进", audioFile: "201-300.mp3" },
+{ start: 204.48048, end: 208.16337, text: "Sản phẩm phải qua kiểm định chất lượng trước khi xuất xưởng.", text2: "产品在出厂前必须经过质量检测。", text3: "Kiểm định - 检测", audioFile: "201-300.mp3" },
+{ start: 208.16337, end: 211.814235, text: "Anh ấy đối phó với tình huống khó khăn một cách bình tĩnh.", text2: "他冷静地应对困难局面。", text3: "Đối phó - 应对", audioFile: "201-300.mp3" },
+{ start: 211.814235, end: 215.016749, text: "Họ hợp tác với nhau trong một dự án quốc tế.", text2: "他们在一个国际项目中合作。", text3: "Hợp tác - 合作", audioFile: "201-300.mp3" },
+{ start: 215.016749, end: 218.123187, text: "Chúng ta cần bảo tồn nguồn tài nguyên thiên nhiên.", text2: "我们需要保护自然资源。", text3: "Bảo tồn - 保护", audioFile: "201-300.mp3" },
+{ start: 218.123187, end: 220.845323, text: "Họ đang tiến hành thử nghiệm sản phẩm mới.", text2: "他们正在进行新产品测试。", text3: "Tiến hành - 进行", audioFile: "201-300.mp3" },
+{ start: 220.845323, end: 224.272012, text: "Cô ấy đóng gói hành lý để chuẩn bị đi du lịch.", text2: "她打包行李准备旅行。", text3: "Đóng gói - 打包", audioFile: "201-300.mp3" },
+{ start: 224.272012, end: 227.506551, text: "Họ đã hoàn tất mọi thủ tục trước khi khởi hành.", text2: "他们在出发前完成了所有手续。", text3: "Hoàn tất - 完成", audioFile: "201-300.mp3" },
+{ start: 227.506551, end: 229.972486, text: "Cô ấy tiếp tục làm việc sau khi nghỉ trưa.", text2: "她午休后继续工作。", text3: "Tiếp tục - 继续", audioFile: "201-300.mp3" },
+{ start: 229.972486, end: 232.726648, text: "Công ty đang chuyển đổi sang hệ thống mới.", text2: "公司正在转换到新系统。", text3: "Chuyển đổi - 转换", audioFile: "201-300.mp3" },
+{ start: 232.726648, end: 235.73701, text: "Anh ấy đầu tư vào lĩnh vực công nghệ sinh học.", text2: "他投资于生物技术领域。", text3: "Đầu tư - 投资", audioFile: "201-300.mp3" },
+{ start: 235.73701, end: 238.747373, text: "Công ty đang mở rộng thị trường sang châu Á.", text2: "公司正在扩展亚洲市场。", text3: "Mở rộng - 扩展", audioFile: "201-300.mp3" },
+{ start: 238.747373, end: 242.84659, text: "Họ đã thu nhỏ quy mô sản xuất để giảm chi phí.", text2: "他们缩小了生产规模以降低成本。", text3: "Thu nhỏ - 缩小", audioFile: "201-300.mp3" },
+{ start: 242.84659, end: 245.953028, text: "Quân đội đã triển khai lực lượng đến biên giới.", text2: "军队已部署部队到边境。", text3: "Triển khai - 部署", audioFile: "201-300.mp3" },
+{ start: 245.953028, end: 248.867315, text: "Sản phẩm này có bảo hành trong vòng hai năm.", text2: "该产品有两年的保修期。", text3: "Bảo hành - 保修", audioFile: "201-300.mp3" },
+{ start: 248.867315, end: 251.813628, text: "Anh ấy làm việc như một kế toán viên tại công ty.", text2: "他在公司担任会计。", text3: "Kế toán - 会计", audioFile: "201-300.mp3" },
+{ start: 251.813628, end: 255.080191, text: "Công ty đang định giá sản phẩm mới trước khi ra mắt.", text2: "公司在产品上市前定价。", text3: "Định giá - 定价", audioFile: "201-300.mp3" },
+{ start: 255.080191, end: 258.154604, text: "Họ đã ký kết hợp đồng hợp tác dài hạn.", text2: "他们签订了长期合作合同。", text3: "Ký kết - 签订", audioFile: "201-300.mp3" },
+{ start: 258.154604, end: 261.164967, text: "Công ty đã thanh lý tài sản để trả nợ.", text2: "公司清算资产以偿还债务。", text3: "Thanh lý - 清算", audioFile: "201-300.mp3" },
+{ start: 261.164967, end: 264.207354, text: "Chiến dịch quân sự đã giải phóng thành phố.", text2: "军事行动解放了这座城市。", text3: "Giải phóng - 解放", audioFile: "201-300.mp3" },
+{ start: 264.207354, end: 267.85822, text: "Nhà máy bắt đầu hoạt động trở lại sau thời gian bảo trì.", text2: "工厂在维修后重新运作。", text3: "Hoạt động - 运作", audioFile: "201-300.mp3" },
+{ start: 267.85822, end: 271.124783, text: "Họ tạm dừng dự án để xem xét lại kế hoạch.", text2: "他们暂停了项目以重新审视计划。", text3: "Tạm dừng - 暂停", audioFile: "201-300.mp3" },
+{ start: 271.124783, end: 274.711598, text: "Công ty đã đóng băng tài khoản do tranh chấp pháp lý.", text2: "公司因法律纠纷冻结了账户。", text3: "Đóng băng - 冻结", audioFile: "201-300.mp3" },
+{ start: 274.711598, end: 277.497785, text: "Cô ấy lên kế hoạch cho kỳ nghỉ gia đình.", text2: "她为家庭假期做了计划。", text3: "Lên kế hoạch - 计划", audioFile: "201-300.mp3" },
+{ start: 277.497785, end: 280.764349, text: "Công ty thuê kiểm toán viên để rà soát sổ sách.", text2: "公司聘请审计员检查账目。", text3: "Kiểm toán - 审计", audioFile: "201-300.mp3" },
+{ start: 280.764349, end: 284.191038, text: "Họ kết hợp các nguồn lực để đạt được mục tiêu chung.", text2: "他们结合资源实现共同目标。", text3: "Kết hợp - 结合", audioFile: "201-300.mp3" },
+{ start: 284.191038, end: 287.105325, text: "Công ty đang khai thác mỏ vàng mới.", text2: "公司正在开发一个新金矿。", text3: "Khai thác - 开发", audioFile: "201-300.mp3" },
+{ start: 287.105325, end: 290.724165, text: "Công nghệ mới đang được thương mại hóa để đưa ra thị trường.", text2: "新技术正在商业化以推向市场。", text3: "Thương mại hóa - 商业化", audioFile: "201-300.mp3" },
+{ start: 290.724165, end: 293.798578, text: "Họ bảo mật thông tin khách hàng rất nghiêm ngặt.", text2: "他们严格保密客户信息。", text3: "Bảo mật - 保密", audioFile: "201-300.mp3" },
+{ start: 293.798578, end: 296.712865, text: "Cô ấy bảo vệ quyền lợi của mình trong tranh chấp.", text2: "她在争议中保护了自己的权益。", text3: "Bảo vệ - 保护", audioFile: "201-300.mp3" },
+{ start: 296.712865, end: 300.331705, text: "Họ đang nâng cấp hệ thống máy tính để cải thiện hiệu suất.", text2: "他们正在升级电脑系统以提高性能。", text3: "Nâng cấp - 升级", audioFile: "201-300.mp3" },
+{ start: 300.331705, end: 303.598269, text: "Cô ấy bổ sung thông tin còn thiếu vào báo cáo.", text2: "她在报告中补充了缺失的信息。", text3: "Bổ sung - 补充", audioFile: "201-300.mp3" },
+{ start: 303.72637, end: 306.928883, text: "Anh ấy sửa chữa các thiết bị hỏng hóc trong nhà máy.", text2: "他修复了工厂中的故障设备。", text3: "Sửa chữa - 修复", audioFile: "201-300.mp3" },
+{ start: 306.928883, end: 310.227472, text: "Công ty thực hiện bảo trì định kỳ cho các máy móc.", text2: "公司定期维护机器设备。", text3: "Bảo trì - 维护", audioFile: "201-300.mp3" },
+{ start: 310.227472, end: 313.878337, text: "Anh ấy điều phối các nguồn lực để đảm bảo tiến độ dự án.", text2: "他调配资源以确保项目进度。", text3: "Điều phối - 调配", audioFile: "201-300.mp3" },
+{ start: 313.878337, end: 317.938458, text: "Công ty tổ chức các khóa học để nâng cao kỹ năng nhân viên.", text2: "公司组织课程以提升员工技能。", text3: "Nâng cao - 提升", audioFile: "201-300.mp3" },
+{ start: 0, end: 3.341157, text: "Cô ấy sáng tác một bài hát mới cho album sắp ra mắt.", text2: "她为即将发行的专辑创作了一首新歌。", text3: "Sáng tác - 创作", audioFile: "301-400.mp3" },
+{ start: 3.341157, end: 6.930514, text: "Anh ấy cung cấp dịch vụ tư vấn pháp lý cho khách hàng.", text2: "他为客户提供法律咨询服务。", text3: "Tư vấn - 咨询", audioFile: "301-400.mp3" },
+{ start: 6.930514, end: 9.947101, text: "Cô ấy chăm lo cho gia đình rất chu đáo.", text2: "她非常细心地照顾家庭。", text3: "Chăm lo - 照顾", audioFile: "301-400.mp3" },
+{ start: 9.947101, end: 12.766912, text: "Anh ấy gánh vác trách nhiệm lớn trong công ty.", text2: "他在公司承担了很大的责任。", text3: "Gánh vác - 承担", audioFile: "301-400.mp3" },
+{ start: 12.766912, end: 16.357995, text: "Sản phẩm này đáp ứng nhu cầu của khách hàng rất tốt.", text2: "这款产品很好地满足了客户的需求。", text3: "Đáp ứng - 满足", audioFile: "301-400.mp3" },
+{ start: 16.357995, end: 19.409065, text: "Cô ấy đã đóng góp rất nhiều cho dự án này.", text2: "她为这个项目做出了很大的贡献。", text3: "Đóng góp - 贡献", audioFile: "301-400.mp3" },
+{ start: 19.409065, end: 22.568138, text: "Anh ấy tham gia vào nhóm nghiên cứu của công ty.", text2: "他参与了公司的研究小组。", text3: "Tham gia - 参与", audioFile: "301-400.mp3" },
+{ start: 22.568138, end: 25.457205, text: "Anh ấy chịu trách nhiệm quản lý dự án lớn này.", text2: "他负责管理这个大项目。", text3: "Chịu trách nhiệm - 负责", audioFile: "301-400.mp3" },
+{ start: 25.457205, end: 28.29227, text: "Cô ấy đảm nhận vai trò giám đốc tài chính.", text2: "她担任了财务总监的角色。", text3: "Đảm nhận - 担任", audioFile: "301-400.mp3" },
+{ start: 28.29227, end: 31.343341, text: "Anh ấy giải bày cảm xúc của mình với bạn bè.", text2: "他向朋友陈述了自己的感受。", text3: "Giải bày - 陈述", audioFile: "301-400.mp3" },
+{ start: 31.343341, end: 34.34041, text: "Họ đã kiến nghị thay đổi chính sách công ty.", text2: "他们建议改变公司政策。", text3: "Kiến nghị - 建议", audioFile: "301-400.mp3" },
+{ start: 34.34041, end: 37.148475, text: "Công ty đang xây dựng một nhà máy mới.", text2: "公司正在建设一个新工厂。", text3: "Xây dựng - 建设", audioFile: "301-400.mp3" },
+{ start: 37.148475, end: 40.554937, text: "Học sinh thực hành kỹ năng nói tiếng Anh trong lớp.", text2: "学生在课堂上实践英语口语技能。", text3: "Thực hành - 实践", audioFile: "301-400.mp3" },
+{ start: 40.554937, end: 43.903014, text: "Cô ấy hỗ trợ các đồng nghiệp mới làm quen với công việc.", text2: "她帮助新同事熟悉工作。", text3: "Hỗ trợ - 支持", audioFile: "301-400.mp3" },
+{ start: 43.903014, end: 47.062087, text: "Anh ấy đã gửi đi email thông báo cho mọi người.", text2: "他发送了一封邮件通知大家。", text3: "Gửi đi - 发送", audioFile: "301-400.mp3" },
+{ start: 47.062087, end: 51.166182, text: "Họ tiếp cận khách hàng tiềm năng qua các kênh truyền thông xã hội.", text2: "他们通过社交媒体接近潜在客户。", text3: "Tiếp cận - 接近", audioFile: "301-400.mp3" },
+{ start: 51.166182, end: 54.028248, text: "Cô ấy đang lập kế hoạch cho dự án sắp tới.", text2: "她正在为即将到来的项目制定计划。", text3: "Lập kế hoạch - 制定计划", audioFile: "301-400.mp3" },
+{ start: 54.028248, end: 56.971316, text: "Anh ấy kế thừa công việc kinh doanh của gia đình.", text2: "他继承了家族生意。", text3: "Kế thừa - 继承", audioFile: "301-400.mp3" },
+{ start: 56.971316, end: 60.022386, text: "Quản lý phân bổ nguồn lực cho các phòng ban.", text2: "经理为各部门分配资源。", text3: "Phân bổ - 分配", audioFile: "301-400.mp3" },
+{ start: 60.022386, end: 63.694471, text: "Họ đã sửa đổi hợp đồng để phù hợp với luật mới.", text2: "他们修改了合同以符合新法律。", text3: "Sửa đổi - 修改", audioFile: "301-400.mp3" },
+{ start: 63.694471, end: 66.772542, text: "Anh ấy bị phê bình vì không tuân thủ quy tắc.", text2: "他因未遵守规定而受到批评。", text3: "Phê bình - 批评", audioFile: "301-400.mp3" },
+{ start: 66.772542, end: 70.390626, text: "Cô ấy khuyến khích học sinh tham gia các hoạt động ngoại khóa.", text2: "她鼓励学生参加课外活动。", text3: "Khuyến khích - 鼓励", audioFile: "301-400.mp3" },
+{ start: 70.390626, end: 73.819705, text: "Công ty tạo điều kiện cho nhân viên phát triển kỹ năng.", text2: "公司为员工技能发展创造了条件。", text3: "Tạo điều kiện - 创造条件", audioFile: "301-400.mp3" },
+{ start: 73.819705, end: 77.032779, text: "Anh ấy thúc giục nhóm hoàn thành dự án đúng hạn.", text2: "他催促团队按时完成项目。", text3: "Thúc giục - 催促", audioFile: "301-400.mp3" },
+{ start: 77.032779, end: 80.326855, text: "Đồng tiền mới sẽ bắt đầu lưu thông vào tuần sau.", text2: "新货币将在下周开始流通。", text3: "Lưu thông - 流通", audioFile: "301-400.mp3" },
+{ start: 80.326855, end: 84.187945, text: "Bạn nên tham khảo tài liệu này trước khi đưa ra quyết định.", text2: "在做决定之前，你应该参考这份文件。", text3: "Tham khảo - 参考", audioFile: "301-400.mp3" },
+{ start: 84.187945, end: 87.104012, text: "Cô ấy đề nghị một phương án mới cho dự án.", text2: "她为项目建议了一个新方案。", text3: "Đề nghị - 建议", audioFile: "301-400.mp3" },
+{ start: 87.104012, end: 90.128082, text: "Họ xác định mục tiêu dài hạn cho công ty.", text2: "他们为公司确定了长期目标。", text3: "Xác định - 确定", audioFile: "301-400.mp3" },
+{ start: 90.128082, end: 93.125151, text: "Nhân viên ghi nhận kết quả của cuộc họp.", text2: "员工记录了会议的结果。", text3: "Ghi nhận - 记录", audioFile: "301-400.mp3" },
+{ start: 93.125151, end: 95.879215, text: "Bạn nên lưu lại các tài liệu quan trọng.", text2: "你应该保存重要文件。", text3: "Lưu lại - 保存", audioFile: "301-400.mp3" },
+{ start: 95.879215, end: 99.659302, text: "Họ cảnh báo về sự nguy hiểm của việc không đội mũ bảo hiểm.", text2: "他们警告不戴头盔的危险。", text3: "Cảnh báo - 警告", audioFile: "301-400.mp3" },
+{ start: 99.659302, end: 102.845376, text: "Bác sĩ khuyến cáo bệnh nhân nên nghỉ ngơi nhiều hơn.", text2: "医生建议病人多休息。", text3: "Khuyến cáo - 建议", audioFile: "301-400.mp3" },
+{ start: 102.845376, end: 106.139452, text: "Giáo viên hướng dẫn sinh viên cách làm bài tập.", text2: "老师指导学生如何做作业。", text3: "Hướng dẫn - 指导", audioFile: "301-400.mp3" },
+{ start: 106.139452, end: 109.163522, text: "Tôi luôn ghi chép lại các cuộc họp quan trọng.", text2: "我总是记录重要的会议。", text3: "Ghi chép - 记录", audioFile: "301-400.mp3" },
+{ start: 109.163522, end: 113.024611, text: "Bạn nên lưu giữ các tài liệu cần thiết một cách an toàn.", text2: "你应该安全地保存必要的文件。", text3: "Lưu giữ - 保存", audioFile: "301-400.mp3" },
+{ start: 113.024611, end: 116.102682, text: "Họ truyền tải dữ liệu qua mạng internet.", text2: "他们通过互联网传输数据。", text3: "Truyền tải - 传输", audioFile: "301-400.mp3" },
+{ start: 116.102682, end: 120.233777, text: "Tôi đã chuyển tiếp email này cho tất cả các thành viên trong nhóm.", text2: "我已经将这封邮件转发给了团队的所有成员。", text3: "Chuyển tiếp - 转发", audioFile: "301-400.mp3" },
+{ start: 120.233777, end: 122.744835, text: "Công ty bảo lưu quyền thay đổi chính sách.", text2: "公司保留更改政策的权利。", text3: "Bảo lưu - 保留", audioFile: "301-400.mp3" },
+{ start: 122.879838, end: 125.822906, text: "Họ tái sử dụng vật liệu để giảm lãng phí.", text2: "他们再利用材料以减少浪费。", text3: "Tái sử dụng - 再利用", audioFile: "301-400.mp3" },
+{ start: 125.822906, end: 128.333964, text: "Cô ấy đang phục hồi sau phẫu thuật.", text2: "她正在手术后恢复。", text3: "Phục hồi - 恢复", audioFile: "301-400.mp3" },
+{ start: 128.333964, end: 131.493037, text: "Họ đã thay thế thiết bị cũ bằng thiết bị mới.", text2: "他们用新设备替代了旧设备。", text3: "Thay thế - 替代", audioFile: "301-400.mp3" },
+{ start: 131.493037, end: 134.733112, text: "Sản phẩm phải được kiểm nghiệm trước khi bán ra thị trường.", text2: "产品在投放市场前必须经过检验。", text3: "Kiểm nghiệm - 检验", audioFile: "301-400.mp3" },
+{ start: 134.733112, end: 138.567201, text: "Họ đã chứng nhận sản phẩm đạt tiêu chuẩn quốc tế.", text2: "他们认证了产品符合国际标准。", text3: "Chứng nhận - 认证", audioFile: "301-400.mp3" },
+{ start: 138.567201, end: 141.618271, text: "Anh ấy đã chứng minh rằng lý thuyết của mình là đúng.", text2: "他证明了自己的理论是正确的。", text3: "Chứng minh - 证明", audioFile: "301-400.mp3" },
+{ start: 141.618271, end: 145.587363, text: "Họ đo lường kích thước của sản phẩm bằng thiết bị chuyên dụng.", text2: "他们用专业设备测量了产品的尺寸。", text3: "Đo lường - 测量", audioFile: "301-400.mp3" },
+{ start: 145.587363, end: 148.719435, text: "Cô ấy thu thập dữ liệu từ nhiều nguồn khác nhau.", text2: "她从不同的来源收集数据。", text3: "Thu thập - 收集", audioFile: "301-400.mp3" },
+{ start: 148.719435, end: 151.473499, text: "Anh ấy tính toán chi phí cho dự án.", text2: "他计算了项目的费用。", text3: "Tính toán - 计算", audioFile: "301-400.mp3" },
+{ start: 151.473499, end: 154.929579, text: "Cô ấy so sánh hai phương án trước khi đưa ra quyết định.", text2: "她在做决定前比较了两个方案。", text3: "So sánh - 比较", audioFile: "301-400.mp3" },
+{ start: 154.929579, end: 157.251632, text: "Họ lọc nước để loại bỏ tạp chất.", text2: "他们过滤水以去除杂质。", text3: "Lọc - 过滤", audioFile: "301-400.mp3" },
+{ start: 157.251632, end: 160.437706, text: "Nhà khoa học đã phát minh ra thiết bị mới.", text2: "科学家发明了新设备。", text3: "Phát minh - 发明", audioFile: "301-400.mp3" },
+{ start: 160.437706, end: 164.919809, text: "Công ty chế tạo linh kiện điện tử cho các sản phẩm công nghệ cao.", text2: "公司制造高科技产品的电子组件。", text3: "Chế tạo - 制造", audioFile: "301-400.mp3" },
+{ start: 164.919809, end: 168.078882, text: "Nhà máy sản xuất hàng nghìn chiếc ô tô mỗi năm.", text2: "工厂每年生产数千辆汽车。", text3: "Sản xuất - 生产", audioFile: "301-400.mp3" },
+{ start: 168.078882, end: 171.372959, text: "Họ gia công sản phẩm theo yêu cầu của khách hàng.", text2: "他们根据客户要求加工产品。", text3: "Gia công - 加工", audioFile: "301-400.mp3" },
+{ start: 171.372959, end: 173.830015, text: "Công ty chế biến thực phẩm đóng hộp.", text2: "公司加工罐装食品。", text3: "Chế biến - 加工", audioFile: "301-400.mp3" },
+{ start: 173.830015, end: 177.313096, text: "Anh ấy tinh chỉnh các thiết lập để đạt hiệu quả cao nhất.", text2: "他微调设置以达到最佳效果。", text3: "Tinh chỉnh - 微调", audioFile: "301-400.mp3" },
+{ start: 177.313096, end: 181.282187, text: "Các công nhân lắp ráp các bộ phận thành sản phẩm hoàn chỉnh.", text2: "工人们将零件组装成完整的产品。", text3: "Lắp ráp - 组装", audioFile: "301-400.mp3" },
+{ start: 181.282187, end: 183.55024, text: "Họ giao nhận hàng hóa tại kho.", text2: "他们在仓库交付货物。", text3: "Giao nhận - 交付", audioFile: "301-400.mp3" },
+{ start: 183.55024, end: 186.547309, text: "Sản phẩm phải được bảo quản ở nhiệt độ thấp.", text2: "产品必须在低温下保存。", text3: "Bảo quản - 保存", audioFile: "301-400.mp3" },
+{ start: 186.547309, end: 190.327396, text: "Xe cần được bảo dưỡng định kỳ để đảm bảo hoạt động tốt.", text2: "汽车需要定期保养以确保良好运行。", text3: "Bảo dưỡng - 保养", audioFile: "301-400.mp3" },
+{ start: 190.327396, end: 193.432468, text: "Họ đang cố gắng khắc phục các vấn đề kỹ thuật.", text2: "他们正在努力解决技术问题。", text3: "Khắc phục - 解决", audioFile: "301-400.mp3" },
+{ start: 193.432468, end: 196.942549, text: "Họ thực hiện các biện pháp phòng ngừa để tránh tai nạn.", text2: "他们采取了预防措施以避免事故。", text3: "Phòng ngừa - 预防", audioFile: "301-400.mp3" },
+{ start: 196.942549, end: 201.127646, text: "Công ty tiến hành thẩm tra các tài liệu trước khi ký kết hợp đồng.", text2: "公司在签署合同前审查了文件。", text3: "Thẩm tra - 审查", audioFile: "301-400.mp3" },
+{ start: 201.127646, end: 204.475723, text: "Giám đốc chỉ đạo các nhân viên thực hiện dự án.", text2: "经理指导员工执行项目。", text3: "Chỉ đạo - 指导", audioFile: "301-400.mp3" },
+{ start: 204.475723, end: 207.553794, text: "Cô giáo giảng dạy môn toán tại trường trung học.", text2: "她在中学教授数学。", text3: "Giảng dạy - 教学", audioFile: "301-400.mp3" },
+{ start: 207.553794, end: 210.280857, text: "Anh ấy dẫn dắt đội nhóm đến thành công.", text2: "他引领团队取得了成功。", text3: "Dẫn dắt - 引领", audioFile: "301-400.mp3" },
+{ start: 210.280857, end: 213.925941, text: "Họ đang thương lượng để đạt được thỏa thuận cuối cùng.", text2: "他们正在谈判以达成最终协议。", text3: "Thương lượng - 谈判", audioFile: "301-400.mp3" },
+{ start: 213.925941, end: 217.382021, text: "Hai bên đã đạt được thỏa thuận về điều khoản hợp đồng.", text2: "双方达成了合同条款的协议。", text3: "Thỏa thuận - 协议", audioFile: "301-400.mp3" },
+{ start: 217.382021, end: 221.351113, text: "Công ty cam kết bảo vệ môi trường trong mọi hoạt động sản xuất.", text2: "公司承诺在所有生产活动中保护环境。", text3: "Cam kết - 承诺", audioFile: "301-400.mp3" },
+{ start: 221.351113, end: 224.159178, text: "Họ giữ gìn vệ sinh môi trường rất tốt.", text2: "他们很好地保持了环境卫生。", text3: "Giữ gìn - 保持", audioFile: "301-400.mp3" },
+{ start: 224.159178, end: 227.210248, text: "Thư viện tàng trữ hàng nghìn cuốn sách quý.", text2: "图书馆储存了成千上万本珍贵的书籍。", text3: "Tàng trữ - 储存", audioFile: "301-400.mp3" },
+{ start: 227.210248, end: 230.045314, text: "Công ty tái chế giấy để giảm lãng phí.", text2: "公司回收纸张以减少浪费。", text3: "Tái chế - 回收", audioFile: "301-400.mp3" },
+{ start: 230.045314, end: 233.717399, text: "Rác thải nhựa khó phân hủy trong môi trường tự nhiên.", text2: "塑料垃圾在自然环境中难以分解。", text3: "Phân hủy - 分解", audioFile: "301-400.mp3" },
+{ start: 233.717399, end: 236.903472, text: "Họ tiêu hủy các tài liệu cũ không còn sử dụng.", text2: "他们销毁了不再使用的旧文件。", text3: "Tiêu hủy - 销毁", audioFile: "301-400.mp3" },
+{ start: 236.903472, end: 239.684536, text: "Công ty đào thải các thiết bị lỗi thời.", text2: "公司淘汰了过时的设备。", text3: "Đào thải - 淘汰", audioFile: "301-400.mp3" },
+{ start: 239.684536, end: 242.546603, text: "Họ thải bỏ chất thải theo đúng quy định.", text2: "他们按照规定处置了废物。", text3: "Thải bỏ - 处置", audioFile: "301-400.mp3" },
+{ start: 242.546603, end: 245.300666, text: "Các chuyên gia đang phục chế bức tranh cổ.", text2: "专家们正在修复一幅古画。", text3: "Phục chế - 修复", audioFile: "301-400.mp3" },
+{ start: 245.300666, end: 248.567742, text: "Di tích lịch sử này đang được tôn tạo lại.", text2: "这座历史遗址正在修缮。", text3: "Tôn tạo - 修缮", audioFile: "301-400.mp3" },
+{ start: 248.567742, end: 251.618812, text: "Công ty duy trì mức chất lượng sản phẩm cao.", text2: "公司维持了高水平的产品质量。", text3: "Duy trì - 维护", audioFile: "301-400.mp3" },
+{ start: 251.618812, end: 255.047891, text: "Họ đang đổi mới quy trình sản xuất để tăng hiệu suất.", text2: "他们正在创新生产流程以提高效率。", text3: "Đổi mới - 创新", audioFile: "301-400.mp3" },
+{ start: 255.047891, end: 258.233965, text: "Chính phủ thực hiện cải cách giáo dục toàn diện.", text2: "政府正在进行全面的教育改革。", text3: "Cải cách - 改革", audioFile: "301-400.mp3" },
+{ start: 258.233965, end: 261.825048, text: "Công ty thu hẹp quy mô hoạt động để giảm chi phí.", text2: "公司缩小了运营规模以降低成本。", text3: "Thu hẹp - 缩小", audioFile: "301-400.mp3" },
+{ start: 261.825048, end: 264.795116, text: "Họ đang tái cấu trúc bộ phận quản lý.", text2: "他们正在重组管理部门。", text3: "Tái cấu trúc - 重组", audioFile: "301-400.mp3" },
+{ start: 264.795116, end: 267.954189, text: "Công ty quyết định tổ chức lại cơ cấu nhân sự.", text2: "公司决定重新组织人事结构。", text3: "Tổ chức lại - 重新组织", audioFile: "301-400.mp3" },
+{ start: 267.954189, end: 271.086262, text: "Ngân hàng đang tái cơ cấu các khoản nợ xấu.", text2: "银行正在重建不良债务。", text3: "Tái cơ cấu - 重建", audioFile: "301-400.mp3" },
+{ start: 271.086262, end: 275.298359, text: "Chính phủ đang củng cố mối quan hệ ngoại giao với các nước láng giềng.", text2: "政府正在巩固与邻国的外交关系。", text3: "Củng cố - 巩固", audioFile: "301-400.mp3" },
+{ start: 275.298359, end: 279.483456, text: "Công ty tăng cường bảo mật dữ liệu để bảo vệ thông tin khách hàng.", text2: "公司加强了数据安全以保护客户信息。", text3: "Tăng cường - 加强", audioFile: "301-400.mp3" },
+{ start: 279.483456, end: 283.074539, text: "Họ đào sâu vào nghiên cứu để tìm ra giải pháp.", text2: "他们深入研究以找到解决方案。", text3: "Đào sâu - 深入", audioFile: "301-400.mp3" },
+{ start: 283.074539, end: 285.909604, text: "Công trình đã được nghiệm thu sau khi hoàn thành.", text2: "工程完工后已通过验收。", text3: "Nghiệm thu - 验收", audioFile: "301-400.mp3" },
+{ start: 285.909604, end: 288.906673, text: "Anh ấy đốt lửa để sưởi ấm trong mùa đông.", text2: "他在冬天点火取暖。", text3: "Đốt - 烧", audioFile: "301-400.mp3" },
+{ start: 288.906673, end: 291.849741, text: "Đất sét được nung trong lò để làm gốm.", text2: "黏土在窑里煅烧成陶器。", text3: "Nung - 煅烧", audioFile: "301-400.mp3" },
+{ start: 291.849741, end: 294.414801, text: "Anh ấy uốn kim loại để tạo hình.", text2: "他弯曲金属以成型。", text3: "Uốn - 弯曲", audioFile: "301-400.mp3" },
+{ start: 294.414801, end: 297.87088, text: "Họ hàn các mối nối để tăng độ bền cho công trình.", text2: "他们焊接接头以增加结构的强度。", text3: "Hàn - 焊接", audioFile: "301-400.mp3" },
+{ start: 297.87088, end: 300.057931, text: "Cô ấy mài dao cho sắc hơn.", text2: "她打磨刀具使其更锋利。", text3: "Mài - 打磨", audioFile: "301-400.mp3" },
+{ start: 300.057931, end: 302.784994, text: "Thợ mộc dũa các góc gỗ cho mịn.", text2: "木匠锉平了木头的边角。", text3: "Dũa - 锉", audioFile: "301-400.mp3" },
+{ start: 302.784994, end: 305.593059, text: "Nghệ nhân khắc hoa văn lên bề mặt đá.", text2: "艺术家在石头表面雕刻了图案。", text3: "Khắc - 雕刻", audioFile: "301-400.mp3" },
+{ start: 305.593059, end: 308.455125, text: "Anh ấy đục lỗ trên tường để lắp đặt kệ.", text2: "他在墙上凿洞安装架子。", text3: "Đục - 凿", audioFile: "301-400.mp3" },
+{ start: 308.455125, end: 311.128187, text: "Họ khoan giếng để tìm nước ngầm.", text2: "他们钻井寻找地下水。", text3: "Khoan - 钻", audioFile: "301-400.mp3" },
+{ start: 311.128187, end: 313.747247, text: "Thợ mộc xẻ gỗ để làm bàn ghế.", text2: "木匠锯木头制作家具。", text3: "Xẻ - 锯", audioFile: "301-400.mp3" },
+{ start: 313.747247, end: 316.393308, text: "Anh ấy bào gỗ để làm mịn bề mặt.", text2: "他刨木头使表面光滑。", text3: "Bào - 刨", audioFile: "301-400.mp3" },
+{ start: 316.393308, end: 318.742363, text: "Cô ấy chà sàn nhà cho sạch sẽ.", text2: "她擦了地板使其干净。", text3: "Chà - 擦", audioFile: "301-400.mp3" },
+{ start: 0, end: 2.852051, text: "Anh ấy đánh bóng chiếc xe hơi để làm cho nó sáng bóng.", text2: "他抛光了汽车，使其光亮。", text3: "Đánh bóng - 抛光", audioFile: "401-500.mp3" },
+{ start: 2.852051, end: 5.956496, text: "Cô ấy tỉa cây để giữ cho nó phát triển đúng hình dạng.", text2: "她修剪树木以保持其形状。", text3: "Tỉa - 修剪", audioFile: "401-500.mp3" },
+{ start: 5.956496, end: 9.08618, text: "Họ tách các thành phần khác nhau ra khỏi hỗn hợp.", text2: "他们从混合物中分离出不同的成分。", text3: "Tách - 分离", audioFile: "401-500.mp3" },
+{ start: 9.08618, end: 12.417779, text: "Anh ấy trộn các nguyên liệu lại với nhau để làm bánh.", text2: "他把材料混合在一起做蛋糕。", text3: "Trộn - 混合", audioFile: "401-500.mp3" },
+{ start: 12.417779, end: 14.84076, text: "Cô ấy nhào bột để làm bánh mì.", text2: "她揉面团做面包。", text3: "Nhào - 揉", audioFile: "401-500.mp3" },
+{ start: 14.84076, end: 17.238502, text: "Họ giã gạo để làm bánh dày.", text2: "他们捣米做成年糕。", text3: "Giã - 捣", audioFile: "401-500.mp3" },
+{ start: 17.238502, end: 19.686723, text: "Anh ấy xay cà phê thành bột mịn.", text2: "他把咖啡磨成了细粉。", text3: "Xay - 磨", audioFile: "401-500.mp3" },
+{ start: 19.686723, end: 21.933029, text: "Cô ấy vắt cam để lấy nước.", text2: "她榨橙子取汁。", text3: "Vắt - 榨", audioFile: "401-500.mp3" },
+{ start: 21.933029, end: 24.608404, text: "Anh ấy ép dầu từ hạt hướng dương.", text2: "他从向日葵籽中压榨油。", text3: "Ép - 压", audioFile: "401-500.mp3" },
+{ start: 24.709361, end: 27.031385, text: "Cô ấy nghiền hạt tiêu thành bột.", text2: "她把胡椒捣碎成粉。", text3: "Nghiền - 捣碎", audioFile: "401-500.mp3" },
+{ start: 27.031385, end: 29.70676, text: "Anh ấy rang hạt điều để làm món ăn vặt.", text2: "他炒了腰果作为零食。", text3: "Rang - 炒", audioFile: "401-500.mp3" },
+{ start: 29.70676, end: 32.987881, text: "Cô ấy sấy khô trái cây để bảo quản lâu hơn.", text2: "她将水果烘干以便保存更久。", text3: "Sấy - 烘干", audioFile: "401-500.mp3" },
+{ start: 32.987881, end: 35.91565, text: "Họ để bột bánh mì lên men trước khi nướng.", text2: "他们在烘烤之前让面团发酵。", text3: "Lên men - 发酵", audioFile: "401-500.mp3" },
+{ start: 35.91565, end: 38.212434, text: "Cô ấy ngâm đậu trước khi nấu.", text2: "她在烹煮前浸泡豆子。", text3: "Ngâm - 浸泡", audioFile: "401-500.mp3" },
+{ start: 38.212434, end: 40.408261, text: "Anh ấy muối dưa để dùng dần.", text2: "他腌制了泡菜以供长期使用。", text3: "Muối - 腌制", audioFile: "401-500.mp3" },
+{ start: 40.408261, end: 42.780764, text: "Họ ủ nho để làm rượu vang.", text2: "他们存放葡萄酿制葡萄酒。", text3: "Ủ - “存起来以发酵”", audioFile: "401-500.mp3" },
+{ start: 42.780764, end: 45.784251, text: "Cô ấy đóng kín lọ để tránh không khí vào.", text2: "她密封了罐子以防止空气进入。", text3: "Đóng kín - 密封", audioFile: "401-500.mp3" },
+{ start: 45.784251, end: 49.040132, text: "Họ hút chân không thực phẩm để bảo quản lâu hơn.", text2: "他们对食品进行真空包装以延长保质期。", text3: "Hút chân không - 真空包装", audioFile: "401-500.mp3" },
+{ start: 49.040132, end: 52.01838, text: "Công ty cấp đông hải sản để vận chuyển.", text2: "公司冷冻海鲜以便运输。", text3: "Cấp đông - 冷冻", audioFile: "401-500.mp3" },
+{ start: 52.01838, end: 54.920909, text: "Cô ấy ướp thịt với gia vị trước khi nướng.", text2: "她在烤之前用香料腌制了肉。", text3: "Ướp - 腌", audioFile: "401-500.mp3" },
+{ start: 54.920909, end: 57.697242, text: "Anh ấy ướp lạnh rau củ để giữ tươi.", text2: "他冷藏蔬菜以保持新鲜。", text3: "Ướp lạnh - 冷藏", audioFile: "401-500.mp3" },
+{ start: 57.697242, end: 60.448335, text: "Họ chất hàng lên xe tải để vận chuyển.", text2: "他们把货物装上卡车进行运输。", text3: "Chất hàng - 装货", audioFile: "401-500.mp3" },
+{ start: 60.448335, end: 63.174189, text: "Công nhân dỡ hàng từ xe tải.", text2: "工人们从卡车上卸货。", text3: "Dỡ hàng - 卸货", audioFile: "401-500.mp3" },
+{ start: 63.174189, end: 65.773846, text: "Họ bốc xếp hàng hóa lên tàu.", text2: "他们将货物装上船。", text3: "Bốc xếp - 装卸", audioFile: "401-500.mp3" },
+{ start: 65.773846, end: 69.029728, text: "Công ty đã chuyển giao quyền sở hữu cho đối tác mới.", text2: "公司将所有权转交给了新合作伙伴。", text3: "Chuyển giao - 转交", audioFile: "401-500.mp3" },
+{ start: 69.029728, end: 71.528427, text: "Họ bàn giao công việc cho đội mới.", text2: "他们将工作移交给了新团队。", text3: "Bàn giao - 移交", audioFile: "401-500.mp3" },
+{ start: 71.528427, end: 74.531914, text: "Cô ấy phân phát tài liệu cho các học sinh.", text2: "她把资料分发给了学生们。", text3: "Phân phát - 分发", audioFile: "401-500.mp3" },
+{ start: 74.531914, end: 77.813035, text: "Họ phân chia công việc giữa các thành viên trong nhóm.", text2: "他们在团队成员之间分配了工作。", text3: "Phân chia - 分配", audioFile: "401-500.mp3" },
+{ start: 77.813035, end: 80.867001, text: "Công ty đang gom hàng từ các nhà cung cấp.", text2: "公司正在从供应商处收货。", text3: "Gom hàng - 收货", audioFile: "401-500.mp3" },
+{ start: 80.867001, end: 84.122882, text: "Công nhân đang bốc vác hàng hóa tại bến cảng.", text2: "工人们在码头搬运货物。", text3: "Bốc vác - 搬运", audioFile: "401-500.mp3" },
+{ start: 84.122882, end: 87.303045, text: "Anh ấy lái xe đưa cả gia đình đi du lịch.", text2: "他开车带全家去旅行。", text3: "Lái - 驾驶", audioFile: "401-500.mp3" },
+{ start: 87.303045, end: 90.155096, text: "Họ chở hàng hóa bằng xe tải đến kho.", text2: "他们用卡车把货物运送到仓库。", text3: "Chở - 运送", audioFile: "401-500.mp3" },
+{ start: 90.155096, end: 92.88095, text: "Anh ấy vận hành máy móc trong nhà máy.", text2: "他在工厂里操作机器。", text3: "Vận hành - 操作", audioFile: "401-500.mp3" },
+{ start: 92.88095, end: 95.934916, text: "Họ tăng tốc sản xuất để đáp ứng nhu cầu.", text2: "他们加速生产以满足需求。", text3: "Tăng tốc - 加速", audioFile: "401-500.mp3" },
+{ start: 95.934916, end: 99.367473, text: "Cô ấy giảm tốc độ xe khi đến gần ngã tư.", text2: "她在接近路口时减速。", text3: "Giảm tốc - 减速", audioFile: "401-500.mp3" },
+{ start: 99.367473, end: 102.093327, text: "Anh ấy hãm phanh gấp để tránh tai nạn.", text2: "他紧急刹车以避免事故。", text3: "Hãm phanh - 刹车", audioFile: "401-500.mp3" },
+{ start: 102.093327, end: 104.819181, text: "Họ dừng sản xuất để bảo trì thiết bị.", text2: "他们停止生产以进行设备维护。", text3: "Dừng - 停止", audioFile: "401-500.mp3" },
+{ start: 104.819181, end: 108.100301, text: "Anh ấy tắt máy tính sau khi hoàn thành công việc.", text2: "他完成工作后关闭了电脑。", text3: "Tắt máy - 关闭机器", audioFile: "401-500.mp3" },
+{ start: 108.100301, end: 110.548522, text: "Cô ấy bật máy in để in tài liệu.", text2: "她启动打印机来打印文件。", text3: "Bật máy - 启动机器", audioFile: "401-500.mp3" },
+{ start: 110.649479, end: 114.283951, text: "Anh ấy căn chỉnh máy móc để đạt độ chính xác cao hơn.", text2: "他调整了机器以提高精度。", text3: "Căn chỉnh - 调整", audioFile: "401-500.mp3" },
+{ start: 114.283951, end: 117.968902, text: "Anh ấy sử dụng GPS để định vị vị trí của mình.", text2: "他使用GPS来定位自己的位置。", text3: "Định vị - 定位", audioFile: "401-500.mp3" },
+{ start: 117.968902, end: 120.265686, text: "Cô ấy cân rau trước khi mua.", text2: "她在购买前称了蔬菜的重量。", text3: "Cân - 称重", audioFile: "401-500.mp3" },
+{ start: 120.265686, end: 123.142977, text: "Họ đong nguyên liệu để chuẩn bị nấu ăn.", text2: "他们量取了原料准备做饭。", text3: "Đong - 量取", audioFile: "401-500.mp3" },
+{ start: 123.142977, end: 125.591197, text: "Anh ấy đo chiều dài của căn phòng.", text2: "他测量了房间的长度。", text3: "Đo - 测量", audioFile: "401-500.mp3" },
+{ start: 125.591197, end: 128.645163, text: "Họ ước lượng chi phí xây dựng dự án.", text2: "他们估算了项目的建设成本。", text3: "Ước lượng - 估算", audioFile: "401-500.mp3" },
+{ start: 128.645163, end: 131.976763, text: "Cô ấy định lượng lượng đường cần thiết cho món ăn.", text2: "她定量了做菜所需的糖量。", text3: "Định lượng - 定量", audioFile: "401-500.mp3" },
+{ start: 131.976763, end: 134.98025, text: "Họ kiểm chứng thông tin trước khi công bố.", text2: "他们在公布前验证了信息。", text3: "Kiểm chứng - 验证", audioFile: "401-500.mp3" },
+{ start: 134.98025, end: 137.983737, text: "Bệnh nhân đã làm xét nghiệm máu tại bệnh viện.", text2: "病人在医院进行了血液化验。", text3: "Xét nghiệm - 化验", audioFile: "401-500.mp3" },
+{ start: 137.983737, end: 140.835788, text: "Công ty áp dụng công nghệ mới vào sản xuất.", text2: "公司在生产中应用了新技术。", text3: "Áp dụng - 应用", audioFile: "401-500.mp3" },
+{ start: 140.835788, end: 143.662599, text: "Họ tổng hợp dữ liệu từ nhiều nguồn khác nhau.", text2: "他们综合了来自不同来源的数据。", text3: "Tổng hợp - 综合", audioFile: "401-500.mp3" },
+{ start: 143.662599, end: 146.363214, text: "Anh ấy góp ý về dự thảo báo cáo.", text2: "他对报告草案提出了意见。", text3: "Góp ý - 提意见", audioFile: "401-500.mp3" },
+{ start: 146.363214, end: 149.290983, text: "Cô ấy nhận xét về bài thuyết trình của đồng nghiệp.", text2: "她评论了同事的演讲。", text3: "Nhận xét - 评论", audioFile: "401-500.mp3" },
+{ start: 149.290983, end: 152.673061, text: "Họ dự báo thời tiết sẽ có mưa vào ngày mai.", text2: "他们预测明天会下雨。", text3: "Dự báo - 预测", audioFile: "401-500.mp3" },
+{ start: 152.673061, end: 155.550351, text: "Anh ấy yêu cầu tăng lương cho nhân viên.", text2: "他要求给员工加薪。", text3: "Yêu cầu - 要求", audioFile: "401-500.mp3" },
+{ start: 155.550351, end: 158.47812, text: "Cô ấy xin phép nghỉ làm vì lý do sức khỏe.", text2: "她因健康原因请求请假。", text3: "Xin phép - 请求许可", audioFile: "401-500.mp3" },
+{ start: 158.47812, end: 161.607805, text: "Họ đồng ý với kế hoạch mới của dự án.", text2: "他们同意了项目的新计划。", text3: "Đồng ý - 同意", audioFile: "401-500.mp3" },
+{ start: 161.607805, end: 163.87935, text: "Anh ấy phản đối việc tăng thuế.", text2: "他反对提高税收。", text3: "Phản đối - 反对", audioFile: "401-500.mp3" },
+{ start: 163.87935, end: 166.781879, text: "Cô ấy phủ nhận tin đồn về việc mình nghỉ việc.", text2: "她否认了关于自己辞职的谣言。", text3: "Phủ nhận - 否认", audioFile: "401-500.mp3" },
+{ start: 166.781879, end: 169.810606, text: "Họ hứa hẹn sẽ hoàn thành dự án đúng hạn.", text2: "他们承诺按时完成项目。", text3: "Hứa hẹn - 承诺", audioFile: "401-500.mp3" },
+{ start: 169.810606, end: 173.747951, text: "Công ty mã hóa dữ liệu để bảo vệ thông tin khách hàng.", text2: "公司对数据进行加密以保护客户信息。", text3: "Mã hóa - 加密", audioFile: "401-500.mp3" },
+{ start: 173.747951, end: 176.751438, text: "Họ giải mã thông tin được truyền qua mạng.", text2: "他们解密了通过网络传输的信息。", text3: "Giải mã - 解密", audioFile: "401-500.mp3" },
+{ start: 176.751438, end: 179.830643, text: "Cô ấy xác minh danh tính của người nộp đơn.", text2: "她核实了申请人的身份。", text3: "Xác minh - 核实", audioFile: "401-500.mp3" },
+{ start: 179.830643, end: 183.364158, text: "Tài liệu đã được chứng thực bởi cơ quan có thẩm quyền.", text2: "文件已由主管机关认证。", text3: "Chứng thực - 认证", audioFile: "401-500.mp3" },
+{ start: 183.364158, end: 186.039533, text: "Anh ấy sẵn sàng làm chứng cho vụ việc.", text2: "他愿意为案件作证。", text3: "Làm chứng - 作证", audioFile: "401-500.mp3" },
+{ start: 186.039533, end: 189.017781, text: "Người lính tuyên thệ trung thành với tổ quốc.", text2: "士兵宣誓效忠祖国。", text3: "Tuyên thệ - 宣誓", audioFile: "401-500.mp3" },
+{ start: 189.017781, end: 191.869832, text: "Cô ấy khai báo thu nhập cho cơ quan thuế.", text2: "她向税务机关申报了收入。", text3: "Khai báo - 申报", audioFile: "401-500.mp3" },
+{ start: 191.869832, end: 195.378107, text: "Họ lập biên bản cuộc họp để lưu trữ thông tin.", text2: "他们记录了会议以存档信息。", text3: "Lập biên bản - 制定记录", audioFile: "401-500.mp3" },
+{ start: 195.378107, end: 198.432073, text: "Công ty phân cấp quản lý để tăng hiệu quả.", text2: "公司分级管理以提高效率。", text3: "Phân cấp - 分级", audioFile: "401-500.mp3" },
+{ start: 198.432073, end: 201.788911, text: "Anh ấy giao quyền cho cấp dưới để xử lý công việc.", text2: "他授权下属处理工作。", text3: "Giao quyền - 授权", audioFile: "401-500.mp3" },
+{ start: 201.788911, end: 205.196229, text: "Công ty đã ủy quyền cho luật sư đại diện trong vụ kiện.", text2: "公司委托律师在诉讼中代表他们。", text3: "Ủy quyền - 委托", audioFile: "401-500.mp3" },
+{ start: 205.196229, end: 208.325913, text: "Anh ấy lãnh đạo đội nhóm đạt được thành công.", text2: "他带领团队取得了成功。", text3: "Lãnh đạo - 领导", audioFile: "401-500.mp3" },
+{ start: 208.325913, end: 211.531315, text: "Cô ấy huấn luyện nhân viên mới cách sử dụng phần mềm.", text2: "她训练新员工如何使用软件。", text3: "Huấn luyện - 训练", audioFile: "401-500.mp3" },
+{ start: 211.531315, end: 214.837675, text: "Họ chỉ dẫn khách hàng cách sử dụng sản phẩm.", text2: "他们指示客户如何使用产品。", text3: "Chỉ dẫn - 指示", audioFile: "401-500.mp3" },
+{ start: 214.837675, end: 217.967359, text: "Anh ấy luôn sẵn sàng giúp đỡ đồng nghiệp khi cần.", text2: "他总是在需要时帮助同事。", text3: "Giúp đỡ - 帮助", audioFile: "401-500.mp3" },
+{ start: 217.967359, end: 221.399916, text: "Nhóm cứu hộ giải cứu người dân khỏi trận lũ lụt.", text2: "救援队从洪水中解救了居民。", text3: "Giải cứu - 解救", audioFile: "401-500.mp3" },
+{ start: 221.399916, end: 225.312021, text: "Tổ chức từ thiện đã cung cấp cứu trợ cho vùng bị thiên tai.", text2: "慈善机构向灾区提供了救援。", text3: "Cứu trợ - 救援", audioFile: "401-500.mp3" },
+{ start: 225.312021, end: 228.113593, text: "Họ cứu vớt người bị nạn trên biển.", text2: "他们在海上营救了遇难者。", text3: "Cứu vớt - 营救", audioFile: "401-500.mp3" },
+{ start: 228.113593, end: 231.419953, text: "Cuộc biểu tình đã được giải tán một cách hòa bình.", text2: "游行以和平方式解散了。", text3: "Giải tán - 解散", audioFile: "401-500.mp3" },
+{ start: 231.419953, end: 234.473919, text: "Chính phủ đã ngăn chặn sự lây lan của dịch bệnh.", text2: "政府阻止了疫情的蔓延。", text3: "Ngăn chặn - 阻止", audioFile: "401-500.mp3" },
+{ start: 234.473919, end: 238.234588, text: "Công ty đã thông báo cho nhân viên về thay đổi trong chính sách.", text2: "公司已通知员工政策的变更。", text3: "Thông báo - 通知", audioFile: "401-500.mp3" },
+{ start: 238.234588, end: 241.515709, text: "Cô ấy cung cấp thông tin chi tiết về sản phẩm mới.", text2: "她提供了有关新产品的详细信息。", text3: "Thông tin - 信息", audioFile: "401-500.mp3" },
+{ start: 241.515709, end: 244.721111, text: "Anh ấy liên hệ với khách hàng để giải quyết khiếu nại.", text2: "他联系客户解决投诉问题。", text3: "Liên hệ - 联系", audioFile: "401-500.mp3" },
+{ start: 244.721111, end: 247.951753, text: "Công ty đã hoàn tất giao dịch mua bán bất động sản.", text2: "公司完成了房地产交易。", text3: "Giao dịch - 交易", audioFile: "401-500.mp3" },
+{ start: 247.951753, end: 251.687182, text: "Họ tham gia vào hoạt động mua bán hàng hóa quốc tế.", text2: "他们参与了国际商品买卖活动。", text3: "Mua bán - 买卖", audioFile: "401-500.mp3" },
+{ start: 251.687182, end: 254.892585, text: "Hai bên đã trao đổi ý kiến về dự án hợp tác.", text2: "双方就合作项目交换了意见。", text3: "Trao đổi - 交流", audioFile: "401-500.mp3" },
+{ start: 254.892585, end: 258.224184, text: "Cô ấy chuyển nhượng quyền sở hữu căn nhà cho em gái.", text2: "她将房子的所有权转让给了妹妹。", text3: "Chuyển nhượng - 转让", audioFile: "401-500.mp3" },
+{ start: 258.224184, end: 261.379107, text: "Nhóm họp lại để bàn bạc về kế hoạch kinh doanh.", text2: "团队聚集商讨商业计划。", text3: "Bàn bạc - 商讨", audioFile: "401-500.mp3" },
+{ start: 261.379107, end: 265.139776, text: "Hai lãnh đạo quốc gia hội đàm về các vấn đề quốc tế.", text2: "两国领导人就国际问题举行了会谈。", text3: "Hội đàm - 会谈", audioFile: "401-500.mp3" },
+{ start: 265.139776, end: 268.471376, text: "Cả lớp tổ chức họp mặt sau 10 năm tốt nghiệp.", text2: "毕业10年后，全班聚会。", text3: "Họp mặt - 聚会", audioFile: "401-500.mp3" },
+{ start: 268.471376, end: 272.181566, text: "Công ty tổ chức hội họp hàng tuần để cập nhật tiến độ.", text2: "公司每周召开会议更新进度。", text3: "Hội họp - 开会", audioFile: "401-500.mp3" },
+{ start: 272.181566, end: 275.765559, text: "Anh ấy thuyết trình về dự án mới trước toàn thể nhân viên.", text2: "他向全体员工演讲了新项目。", text3: "Thuyết trình - 演讲", audioFile: "401-500.mp3" },
+{ start: 275.765559, end: 278.264258, text: "Cô ấy dọn nhà trước khi khách đến.", text2: "她在客人到来前清理了房子。", text3: "Dọn - 清理", audioFile: "401-500.mp3" },
+{ start: 278.264258, end: 281.065831, text: "Anh ấy giặt quần áo vào mỗi cuối tuần.", text2: "他每个周末都洗衣服。", text3: "Giặt - 洗衣", audioFile: "401-500.mp3" },
+{ start: 281.065831, end: 283.286897, text: "Cô ấy hong khô tóc sau khi gội.", text2: "她洗完头后把头发晾干。", text3: "Hong - 晾干", audioFile: "401-500.mp3" },
+{ start: 283.286897, end: 285.659399, text: "Anh ấy bọc quà sinh nhật rất đẹp.", text2: "他把生日礼物包装得很漂亮。", text3: "Bọc - 包装", audioFile: "401-500.mp3" },
+{ start: 285.659399, end: 288.360014, text: "Cô ấy khuấy đều bột để làm bánh.", text2: "她搅拌面粉做蛋糕。", text3: "Khuấy - 搅拌", audioFile: "401-500.mp3" },
+{ start: 288.360014, end: 290.757756, text: "Anh ấy nhồi bột làm bánh mì.", text2: "他揉面做面包。", text3: "Nhồi - 揉面", audioFile: "401-500.mp3" },
+{ start: 290.757756, end: 293.130258, text: "Cô ấy luộc trứng cho bữa sáng.", text2: "她煮了鸡蛋做早餐。", text3: "Luộc - 煮", audioFile: "401-500.mp3" },
+{ start: 293.130258, end: 295.704676, text: "Mẹ rim thịt để có vị đậm đà.", text2: "妈妈熬肉以使其味道浓郁。", text3: "Rim - 熬", audioFile: "401-500.mp3" },
+{ start: 295.704676, end: 297.875263, text: "Anh ấy kho cá với nước dừa.", text2: "他用椰子水炖鱼。", text3: "Kho - 炖", audioFile: "401-500.mp3" },
+{ start: 0, end: 1.912806, text: "Họ ủ men để làm rượu vang.", text2: "他们发酵葡萄酿酒。", text3: "Ủ men - 发酵", audioFile: "501-600.mp3" },
+{ start: 1.912806, end: 4.211764, text: "Cô ấy phết bơ lên bánh mì.", text2: "她在面包上涂抹了黄油。", text3: "Phết - 涂抹", audioFile: "501-600.mp3" },
+{ start: 4.211764, end: 7.169696, text: "Cô ấy thoa kem chống nắng trước khi ra ngoài.", text2: "她出门前涂了防晒霜。", text3: "Thoa - 涂", audioFile: "501-600.mp3" },
+{ start: 7.169696, end: 9.962711, text: "Anh ấy bóp kem đánh răng lên bàn chải.", text2: "他把牙膏挤到牙刷上。", text3: "Bóp - 挤压", audioFile: "501-600.mp3" },
+{ start: 9.962711, end: 13.389192, text: "Cô ấy mát xa để thư giãn sau một ngày làm việc.", text2: "她按摩以放松一天的疲劳。", text3: "Mát xa - 按摩", audioFile: "501-600.mp3" },
+{ start: 13.389192, end: 16.095776, text: "Anh ấy tẩm thịt với nước sốt trước khi nướng.", text2: "他在烤之前把肉浸泡在酱汁中。", text3: "Tẩm - 浸泡", audioFile: "501-600.mp3" },
+{ start: 16.095776, end: 18.371774, text: "Cô ấy chấm bánh vào nước mắm.", text2: "她把饼蘸进鱼露。", text3: "Chấm - 蘸", audioFile: "501-600.mp3" },
+{ start: 18.371774, end: 21.010962, text: "Anh ấy nhúng bánh vào sữa trước khi ăn.", text2: "他在吃之前把饼浸在牛奶里。", text3: "Nhúng - 浸", audioFile: "501-600.mp3" },
+{ start: 21.010962, end: 23.5533, text: "Cô ấy chải tóc trước khi đi làm.", text2: "她在上班前梳理头发。", text3: "Chải - 梳理", audioFile: "501-600.mp3" },
+{ start: 23.5533, end: 25.926148, text: "Anh ấy đánh răng hai lần mỗi ngày.", text2: "他每天刷两次牙。", text3: "Đánh răng - 刷牙", audioFile: "501-600.mp3" },
+{ start: 25.926148, end: 28.589549, text: "Cô ấy cạo chân mày để tạo dáng.", text2: "她刮了眉毛以塑形。", text3: "Cạo - 刮", audioFile: "501-600.mp3" },
+{ start: 28.589549, end: 31.325589, text: "Cô ấy xịt nước hoa trước khi đi ra ngoài.", text2: "她出门前喷了香水。", text3: "Xịt - 喷", audioFile: "501-600.mp3" },
+{ start: 31.325589, end: 33.480523, text: "Anh ấy gội đầu mỗi sáng.", text2: "他每天早上洗发。", text3: "Gội - 洗发", audioFile: "501-600.mp3" },
+{ start: 33.480523, end: 36.047073, text: "Cô ấy cắt tóc ngắn cho mùa hè.", text2: "她为夏天剪了短发。", text3: "Cắt tóc - 剪发", audioFile: "501-600.mp3" },
+{ start: 36.047073, end: 38.05673, text: "Anh ấy nhuộm tóc màu nâu.", text2: "他把头发染成了棕色。", text3: "Nhuộm tóc - 染发", audioFile: "501-600.mp3" },
+{ start: 38.05673, end: 40.502217, text: "Cô ấy uốn tóc để tạo kiểu mới.", text2: "她烫发以换个新造型。", text3: "Uốn tóc - 烫发", audioFile: "501-600.mp3" },
+{ start: 40.502217, end: 43.189831, text: "Cô ấy gấp đồ sau khi giặt xong.", text2: "她洗完衣物后折叠起来。", text3: "Gấp đồ - 折叠衣物", audioFile: "501-600.mp3" },
+{ start: 43.189831, end: 45.519949, text: "Anh ấy phơi đồ ngoài sân sau.", text2: "他在后院晾衣服。", text3: "Phơi đồ - 晾衣", audioFile: "501-600.mp3" },
+{ start: 45.519949, end: 48.062287, text: "Cô ấy trải ga giường mới sau khi giặt.", text2: "她洗完后铺了新的床单。", text3: "Trải ga giường - 铺床单", audioFile: "501-600.mp3" },
+{ start: 48.062287, end: 51.040454, text: "Anh ấy đổi ga giường mỗi tuần một lần.", text2: "他每周换一次床单。", text3: "Đổi ga giường - 换床单", audioFile: "501-600.mp3" },
+{ start: 51.040454, end: 53.48594, text: "Cô ấy giặt chăn mỗi tháng một lần.", text2: "她每月洗一次被子。", text3: "Giặt chăn - 洗被子", audioFile: "501-600.mp3" },
+{ start: 53.48594, end: 56.125129, text: "Anh ấy giặt màn để loại bỏ bụi bẩn.", text2: "他洗蚊帐以去除灰尘。", text3: "Giặt màn - 洗蚊帐", audioFile: "501-600.mp3" },
+{ start: 56.125129, end: 58.546403, text: "Cô ấy quét dọn nhà cửa mỗi sáng.", text2: "她每天早上打扫房子。", text3: "Quét dọn - 扫除", audioFile: "501-600.mp3" },
+{ start: 58.546403, end: 61.08874, text: "Anh ấy lau chùi bàn ghế sau bữa ăn.", text2: "他在饭后擦拭桌椅。", text3: "Lau chùi - 擦拭", audioFile: "501-600.mp3" },
+{ start: 61.08874, end: 63.510014, text: "Cô ấy rửa bát sau mỗi bữa ăn.", text2: "她在每餐后洗碗。", text3: "Rửa bát - 洗碗", audioFile: "501-600.mp3" },
+{ start: 63.510014, end: 66.076564, text: "Anh ấy dọn bàn sau khi ăn xong.", text2: "他吃完后收拾桌子。", text3: "Dọn bàn - 收拾桌子", audioFile: "501-600.mp3" },
+{ start: 66.076564, end: 68.861029, text: "Cô ấy chuẩn bị bữa tối cho cả gia đình.", text2: "她为全家准备晚餐。", text3: "Chuẩn bị - 准备", audioFile: "501-600.mp3" },
+{ start: 68.861029, end: 71.451792, text: "Anh ấy bày biện bàn tiệc rất đẹp mắt.", text2: "他将餐桌布置得很漂亮。", text3: "Bày biện - 布置", audioFile: "501-600.mp3" },
+{ start: 71.451792, end: 74.284683, text: "Cô ấy dọn dẹp phòng ngủ trước khi đi ngủ.", text2: "她在睡前整理了卧室。", text3: "Dọn dẹp - 整理", audioFile: "501-600.mp3" },
+{ start: 74.284683, end: 77.287062, text: "Anh ấy xếp đồ vào tủ sau khi giặt xong.", text2: "他洗完衣服后把它们收纳进柜子。", text3: "Xếp đồ - 收纳", audioFile: "501-600.mp3" },
+{ start: 77.287062, end: 79.756762, text: "Cô ấy gói quà sinh nhật cho bạn.", text2: "她为朋友包生日礼物。", text3: "Gói quà - 包礼物", audioFile: "501-600.mp3" },
+{ start: 79.756762, end: 82.105398, text: "Anh ấy xé giấy để gói đồ.", text2: "他撕纸来包装物品。", text3: "Xé giấy - 撕纸", audioFile: "501-600.mp3" },
+{ start: 82.105398, end: 84.526671, text: "Cô ấy dán giấy trang trí lên tường.", text2: "她在墙上贴了装饰纸。", text3: "Dán giấy - 贴纸", audioFile: "501-600.mp3" },
+{ start: 84.526671, end: 87.16586, text: "Anh ấy đóng đinh vào tường để treo tranh.", text2: "他在墙上钉钉子挂画。", text3: "Đóng đinh - 钉钉子", audioFile: "501-600.mp3" },
+{ start: 87.16586, end: 89.538708, text: "Cô ấy bắt vít để cố định kệ.", text2: "她拧螺丝固定了架子。", text3: "Bắt vít - 拧螺丝", audioFile: "501-600.mp3" },
+{ start: 89.538708, end: 92.129471, text: "Anh ấy treo tranh lên tường phòng khách.", text2: "他把画挂在客厅的墙上。", text3: "Treo tranh - 挂画", audioFile: "501-600.mp3" },
+{ start: 92.129471, end: 94.405469, text: "Cô ấy gắn kệ sách trong phòng học.", text2: "她在书房安装了书架。", text3: "Gắn kệ - 安装架子", audioFile: "501-600.mp3" },
+{ start: 94.405469, end: 97.020445, text: "Anh ấy sửa đồ gia dụng bị hỏng.", text2: "他修理了损坏的家电。", text3: "Sửa đồ - 修理物品", audioFile: "501-600.mp3" },
+{ start: 97.020445, end: 99.175378, text: "Cô ấy vá quần áo bị rách.", text2: "她补了破衣服。", text3: "Vá đồ - 补衣服", audioFile: "501-600.mp3" },
+{ start: 99.175378, end: 101.499801, text: "Anh ấy hàn đồ sắt trong xưởng.", text2: "他在工厂焊接铁制品。", text3: "Hàn đồ - 焊接物品", audioFile: "501-600.mp3" },
+{ start: 101.499801, end: 104.042139, text: "Họ đắp nền xi măng cho ngôi nhà.", text2: "他们为房子铺了水泥底。", text3: "Đắp nền - 铺底", audioFile: "501-600.mp3" },
+{ start: 104.042139, end: 106.681327, text: "Anh ấy lợp mái tôn cho nhà kho.", text2: "他为仓库盖了铁皮屋顶。", text3: "Lợp mái - 覆盖屋顶", audioFile: "501-600.mp3" },
+{ start: 106.681327, end: 109.054176, text: "Cô ấy đóng cửa trước khi ra ngoài.", text2: "她出门前关了门。", text3: "Đóng cửa - 关门", audioFile: "501-600.mp3" },
+{ start: 109.054176, end: 111.766003, text: "Anh ấy mở cửa sổ để thông gió.", text2: "他打开窗户通风。", text3: "Mở cửa - 开门", audioFile: "501-600.mp3" },
+{ start: 111.766003, end: 114.477829, text: "Cô ấy khóa cửa cẩn thận trước khi đi ngủ.", text2: "她在睡前仔细锁了门。", text3: "Khóa cửa - 锁门", audioFile: "501-600.mp3" },
+{ start: 114.477829, end: 117.189656, text: "Anh ấy sửa lỗi trong báo cáo tài chính.", text2: "他修正了财务报告中的错误。", text3: "Sửa lỗi - 修正错误", audioFile: "501-600.mp3" },
+{ start: 117.189656, end: 120.869992, text: "Công ty đã khắc phục lỗi sản phẩm trước khi xuất xưởng.", text2: "公司在发货前纠正了产品错误。", text3: "Khắc phục lỗi - 纠正错误", audioFile: "501-600.mp3" },
+{ start: 120.869992, end: 124.162925, text: "Cô ấy làm mới không gian sống bằng cách sơn lại tường.", text2: "她通过重新粉刷墙壁更新了生活空间。", text3: "Làm mới - 更新", audioFile: "501-600.mp3" },
+{ start: 124.162925, end: 127.020028, text: "Anh ấy làm sạch sàn nhà trước khi bày biện tiệc.", text2: "他在布置宴会前清洁了地板。", text3: "Làm sạch - 清洁", audioFile: "501-600.mp3" },
+{ start: 127.020028, end: 129.610791, text: "Họ dọn đường sau trận mưa lớn.", text2: "他们在大雨后清理了道路。", text3: "Dọn đường - 清路", audioFile: "501-600.mp3" },
+{ start: 129.610791, end: 132.771083, text: "Công ty bị chỉ trích vì phá rừng trái phép.", text2: "公司因非法砍伐森林而受到批评。", text3: "Phá rừng - 砍伐森林", audioFile: "501-600.mp3" },
+{ start: 132.771083, end: 135.270748, text: "Họ đốn gỗ để sản xuất nội thất.", text2: "他们伐木生产家具。", text3: "Đốn gỗ - 伐木", audioFile: "501-600.mp3" },
+{ start: 135.270748, end: 137.975864, text: "Nhà máy sản xuất giấy từ gỗ.", text2: "工厂用木材造纸。", text3: "Sản xuất giấy - 造纸", audioFile: "501-600.mp3" },
+{ start: 137.975864, end: 140.578255, text: "Công ty in ấn sách và tạp chí.", text2: "公司印刷书籍和杂志。", text3: "In ấn - 印刷", audioFile: "501-600.mp3" },
+{ start: 140.578255, end: 143.93397, text: "Họ truyền bá kiến thức về bảo vệ môi trường.", text2: "他们传播了环保知识。", text3: "Truyền bá - 传播", audioFile: "501-600.mp3" },
+{ start: 143.93397, end: 146.639086, text: "Người dân tiêu thụ nhiều điện vào mùa hè.", text2: "夏季人们消耗大量电力。", text3: "Tiêu thụ - 消费", audioFile: "501-600.mp3" },
+{ start: 146.639086, end: 149.070267, text: "Cô ấy đi mua hàng vào cuối tuần.", text2: "她在周末购物。", text3: "Mua hàng - 购物", audioFile: "501-600.mp3" },
+{ start: 149.070267, end: 151.946594, text: "Anh ấy làm công việc bán hàng cho công ty.", text2: "他为公司销售产品。", text3: "Bán hàng - 销售", audioFile: "501-600.mp3" },
+{ start: 151.946594, end: 155.302308, text: "Họ tham gia vào các hoạt động thương mại quốc tế.", text2: "他们参与了国际商业活动。", text3: "Thương mại - 商业", audioFile: "501-600.mp3" },
+{ start: 155.302308, end: 158.555297, text: "Công ty đầu tư nhiều vào tiếp thị sản phẩm mới.", text2: "公司在新产品市场营销方面投入了很多。", text3: "Tiếp thị - 市场营销", audioFile: "501-600.mp3" },
+{ start: 158.555297, end: 161.431623, text: "Họ nhập kho hàng hóa mới vào buổi sáng.", text2: "他们早上将新货物入库。", text3: "Nhập kho - 入库", audioFile: "501-600.mp3" },
+{ start: 161.431623, end: 164.239466, text: "Sản phẩm được xuất kho để giao cho khách hàng.", text2: "产品已出库交付客户。", text3: "Xuất kho - 出库", audioFile: "501-600.mp3" },
+{ start: 164.239466, end: 168.177294, text: "Công ty đang tuyển dụng nhân viên mới cho bộ phận kinh doanh.", text2: "公司正在为销售部门招聘新员工。", text3: "Tuyển dụng - 招聘", audioFile: "501-600.mp3" },
+{ start: 168.348504, end: 171.704218, text: "Cô ấy được khen thưởng vì thành tích xuất sắc trong công việc.", text2: "她因工作表现出色而受到奖励。", text3: "Khen thưởng - 奖励", audioFile: "501-600.mp3" },
+{ start: 171.704218, end: 174.924513, text: "Họ bị phạt vì vi phạm quy định an toàn.", text2: "他们因违反安全规定而受到处罚。", text3: "Phạt - 处罚", audioFile: "501-600.mp3" },
+{ start: 174.924513, end: 177.660552, text: "Công ty lập kế hoạch cho dự án mới.", text2: "公司为新项目建立了计划。", text3: "Lập - 建立", audioFile: "501-600.mp3" },
+{ start: 177.660552, end: 180.783995, text: "Ngân hàng đã giải ngân khoản vay cho doanh nghiệp.", text2: "银行为企业放款了贷款。", text3: "Giải ngân - 放款", audioFile: "501-600.mp3" },
+{ start: 180.783995, end: 183.762162, text: "Anh ấy thanh toán hóa đơn điện nước hàng tháng.", text2: "他每月支付水电费。", text3: "Thanh toán - 支付", audioFile: "501-600.mp3" },
+{ start: 183.762162, end: 187.10352, text: "Công ty đang thu hồi sản phẩm lỗi từ thị trường.", text2: "公司正在从市场上回收有缺陷的产品。", text3: "Thu hồi - 回收", audioFile: "501-600.mp3" },
+{ start: 187.10352, end: 190.614367, text: "Doanh nghiệp vay vốn để mở rộng hoạt động sản xuất.", text2: "企业借贷以扩大生产。", text3: "Vay vốn - 借贷", audioFile: "501-600.mp3" },
+{ start: 190.614367, end: 193.059854, text: "Cô ấy mua bảo hiểm y tế cho gia đình.", text2: "她为家人购买了医疗保险。", text3: "Bảo hiểm - 保险", audioFile: "501-600.mp3" },
+{ start: 193.059854, end: 196.534801, text: "Công ty tiến hành đánh giá rủi ro trước khi đầu tư.", text2: "公司在投资前进行风险评估。", text3: "Đánh giá rủi ro - 风险评估", audioFile: "501-600.mp3" },
+{ start: 196.534801, end: 200.094074, text: "Họ thực hiện quản lý rủi ro để bảo vệ tài sản.", text2: "他们实施风险管理以保护资产。", text3: "Quản lý rủi ro - 风险管理", audioFile: "501-600.mp3" },
+{ start: 200.094074, end: 203.338581, text: "Ngân hàng có hệ thống bảo vệ tài sản an toàn.", text2: "银行有一个安全的资产保护系统。", text3: "Bảo vệ tài sản - 资产保护", audioFile: "501-600.mp3" },
+{ start: 203.338581, end: 206.897854, text: "Khách hàng gửi đơn khiếu nại về chất lượng sản phẩm.", text2: "客户投诉了产品质量问题。", text3: "Khiếu nại - 投诉", audioFile: "501-600.mp3" },
+{ start: 206.897854, end: 209.633893, text: "Hai bên đang giải quyết tranh chấp hợp đồng.", text2: "双方正在解决合同纠纷。", text3: "Tranh chấp - 纠纷", audioFile: "501-600.mp3" },
+{ start: 209.633893, end: 212.636273, text: "Công ty đề ra kế hoạch kinh doanh cho năm tới.", text2: "公司制定了明年的商业计划。", text3: "Kế hoạch - 计划", audioFile: "501-600.mp3" },
+{ start: 212.636273, end: 216.558736, text: "Họ tối ưu hóa quy trình sản xuất để tiết kiệm chi phí.", text2: "他们优化生产流程以节省成本。", text3: "Tối ưu - 优化", audioFile: "501-600.mp3" },
+{ start: 216.558736, end: 220.287498, text: "Công ty chi tiền cho chiến dịch quảng cáo sản phẩm mới.", text2: "公司为新产品广告活动投入了资金。", text3: "Quảng cáo - 广告", audioFile: "501-600.mp3" },
+{ start: 220.287498, end: 223.096176, text: "Anh ấy lập bảng kế hoạch công việc hàng tuần.", text2: "他制定了每周的工作计划表。", text3: "Lập bảng - 制定表格", audioFile: "501-600.mp3" },
+{ start: 223.096176, end: 226.243832, text: "Cô ấy tính thuế thu nhập cho năm tài chính này.", text2: "她计算了本财政年度的所得税。", text3: "Tính thuế - 计算税款", audioFile: "501-600.mp3" },
+{ start: 226.243832, end: 230.190508, text: "Doanh nghiệp khai thuế trực tuyến qua cổng thông tin điện tử.", text2: "企业通过电子门户在线报税。", text3: "Khai thuế - 报税", audioFile: "501-600.mp3" },
+{ start: 230.190508, end: 232.999186, text: "Họ nộp thuế hàng năm cho cơ quan thuế.", text2: "他们每年向税务机关缴税。", text3: "Nộp thuế - 缴税", audioFile: "501-600.mp3" },
+{ start: 232.999186, end: 236.485821, text: "Công ty cung cấp dịch vụ tư vấn thuế cho khách hàng.", text2: "公司为客户提供税务咨询服务。", text3: "Tư vấn thuế - 税务咨询", audioFile: "501-600.mp3" },
+{ start: 236.485821, end: 239.246073, text: "Anh ấy rút tiền từ tài khoản ngân hàng.", text2: "他从银行账户取款。", text3: "Rút tiền - 取款", audioFile: "501-600.mp3" },
+{ start: 239.246073, end: 241.982112, text: "Cô ấy gửi tiền tiết kiệm vào ngân hàng.", text2: "她把存款存入银行。", text3: "Gửi tiền - 存款", audioFile: "501-600.mp3" },
+{ start: 241.982112, end: 244.766577, text: "Anh ấy chuyển khoản để thanh toán hóa đơn.", text2: "他通过转账支付账单。", text3: "Chuyển khoản - 转账", audioFile: "501-600.mp3" },
+{ start: 244.766577, end: 248.05951, text: "Công ty nhận tiền từ khách hàng sau khi giao hàng.", text2: "公司在交货后从客户处收款。", text3: "Nhận tiền - 收款", audioFile: "501-600.mp3" },
+{ start: 248.05951, end: 250.8924, text: "Họ quyên góp tiền cho tổ chức từ thiện.", text2: "他们为慈善机构捐款。", text3: "Quyên góp - 捐款", audioFile: "501-600.mp3" },
+{ start: 250.8924, end: 253.507376, text: "Cô ấy tham gia đấu giá tranh nghệ thuật.", text2: "她参加了艺术品拍卖。", text3: "Đấu giá - 拍卖", audioFile: "501-600.mp3" },
+{ start: 253.507376, end: 256.558181, text: "Anh ấy mua xe ô tô bằng hình thức trả góp.", text2: "他通过分期付款购买了汽车。", text3: "Trả góp - 分期付款", audioFile: "501-600.mp3" },
+{ start: 256.558181, end: 259.391072, text: "Họ đã trả hết nợ ngân hàng.", text2: "他们已经还清了银行贷款。", text3: "Trả nợ - 还债", audioFile: "501-600.mp3" },
+{ start: 259.391072, end: 262.732429, text: "Công ty sử dụng phần mềm để quản lý vốn hiệu quả.", text2: "公司使用软件来有效管理资金。", text3: "Quản lý vốn - 资金管理", audioFile: "501-600.mp3" },
+{ start: 262.732429, end: 266.80017, text: "Doanh nghiệp tập trung vào bảo toàn vốn trong thời kỳ khủng hoảng.", text2: "企业在危机时期专注于资本保全。", text3: "Bảo toàn vốn - 资本保全", audioFile: "501-600.mp3" },
+{ start: 266.80017, end: 269.754124, text: "Anh ấy vay nợ từ ngân hàng để mua nhà.", text2: "他从银行借债买房。", text3: "Vay nợ - 借债", audioFile: "501-600.mp3" },
+{ start: 269.754124, end: 272.853354, text: "Người tiêu dùng đang thay đổi thói quen mua sắm.", text2: "消费者正在改变购物习惯。", text3: "Tiêu dùng - 消费", audioFile: "501-600.mp3" },
+{ start: 272.853354, end: 275.855734, text: "Công ty bán ra hàng ngàn sản phẩm mỗi tháng.", text2: "公司每月销售成千上万的产品。", text3: "Bán ra - 销售", audioFile: "501-600.mp3" },
+{ start: 275.855734, end: 278.954965, text: "Họ giao hàng nhanh chóng trong vòng 24 giờ.", text2: "他们在24小时内快速交货。", text3: "Giao hàng - 交货", audioFile: "501-600.mp3" },
+{ start: 278.954965, end: 282.393173, text: "Công ty thu mua nguyên liệu từ nhiều nhà cung cấp.", text2: "公司从多个供应商处收购原材料。", text3: "Thu mua - 收购", audioFile: "501-600.mp3" },
+{ start: 282.393173, end: 285.758744, text: "Anh ấy đặt cọc tiền ký quỹ để đảm bảo hợp đồng.", text2: "他支付了保证金以确保合同。", text3: "Đảm bảo - 确保", audioFile: "501-600.mp3" }
+];
+
+    let currentIndex = 0;
+    let isFreeMode = true;
+    let correctCount = 0;
+    let isPlaying = false;
+    let correctSentences = new Set();
+    let wrongSentences = new Set();
+    let autoContinue = false;
+    let showAnswer = false;
+
+    // Khởi tạo ngay từ đầu, không cần mật khẩu
+    init();
+
+    function init() {
+        updateSentenceDisplay();
+        answerInput.focus();
+    }
+
+    function updateSentenceDisplay() {
+        sentenceNumber.value = currentIndex + 1;
+        answerInput.value = '';
+        indicator.style.background = '#ffffff';
+        if (isFreeMode && showAnswer) {
+            indicator.innerHTML = `
+                <div style="font-size: 24px; font-weight: bold; color: #54683e;">${sentences[currentIndex].text}</div>
+                <div style="font-size: 22px; color: #1d1c1c;">${sentences[currentIndex].text2}</div>
+                <div style="font-size: 22px; font-weight: bold; color: #734A2E;"><strong>${sentences[currentIndex].text3}</strong></div>
+            `;
+        } else {
+            indicator.innerHTML = '';
+            indicator.style.color = '';
+            indicator.style.fontSize = '';
+            indicator.style.fontWeight = '';
+            indicator.style.textAlign = '';
+            indicator.style.lineHeight = '';
+        }
+        if (!isFreeMode) updateWrongSentences();
+    }
+
+			function playCurrentSentence() {
+			if (isPlaying) audio.pause();
+			buttons.forEach(btn => btn.classList.add('disabled'));
+			sentenceNumber.disabled = true;
+			isPlaying = true;
+
+			// Cập nhật nguồn audio dựa trên audioFile của câu hiện tại
+			const currentAudioFile = sentences[currentIndex].audioFile;
+			if (audio.src !== currentAudioFile) {
+				audio.src = currentAudioFile;
+			}
+
+			audio.currentTime = sentences[currentIndex].start;
+			audio.play();
+
+			audio.ontimeupdate = () => {
+				if (audio.currentTime >= sentences[currentIndex].end) {
+					audio.pause();
+					audio.ontimeupdate = null;
+					buttons.forEach(btn => btn.classList.remove('disabled'));
+					sentenceNumber.disabled = false;
+					isPlaying = false;
+				}
+			};
+		}
+
+    function moveSentence(direction) {
+        currentIndex = (currentIndex + direction + sentences.length) % sentences.length;
+        updateSentenceDisplay();
+        playCurrentSentence();
+    }
+
+    function removePunctuation(text) {
+        return text.replace(/[,.!?]/g, '');
+    }
+
+    function checkAnswer() {
+        const userAnswer = removePunctuation(answerInput.value.toLowerCase()).trim();
+        const correctAnswer = removePunctuation(sentences[currentIndex].text.toLowerCase()).trim();
+        
+        if (userAnswer === correctAnswer) {
+            indicator.style.background = '#B7D7AA';
+            correctAudio.play();
+            if (!isFreeMode && !correctSentences.has(currentIndex)) {
+                correctCount++;
+                correctSentences.add(currentIndex);
+                wrongSentences.delete(currentIndex);
+                correctAudio.onended = () => setTimeout(() => moveSentence(1), 200);
+            } else if (isFreeMode && autoContinue) {
+                correctAudio.onended = () => setTimeout(() => moveSentence(1), 200);
+            } else {
+                correctAudio.onended = null;
+            }
+        } else {
+            indicator.style.background = '#CE6D5E';
+            wrongAudio.play();
+            if (!isFreeMode && !correctSentences.has(currentIndex)) {
+                wrongSentences.add(currentIndex);
+            }
+        }
+        if (!isFreeMode) updateScore();
+    }
+
+    async function updateScore() {
+		scoreDisplay.textContent = `${correctCount}/${sentences.length}`;
+		updateWrongSentences();
+		if (correctCount === sentences.length) {
+			try {
+				const completedCount = await incrementCompletedCount();
+				setTimeout(() => {
+					alert(`你是第 ${completedCount} 个完成作业的人！`);
+				}, 100);
+			} catch (error) {
+				console.error('Lỗi khi tăng số đếm:', error);
+				// Không hiển thị thông báo nếu lỗi xảy ra
+			}
+		}
+	}
+
+    function updateWrongSentences() {
+        if (isFreeMode || wrongSentences.size === 0) {
+            wrongSentencesDisplay.style.display = 'none';
+        } else {
+            const wrongList = Array.from(wrongSentences).map(index => index + 1).join('/ ');
+            wrongSentencesDisplay.textContent = `解决问题：${wrongList}`;
+            wrongSentencesDisplay.style.display = 'block';
+        }
+    }
+
+    prevBtn.onclick = () => {
+        moveSentence(-1);
+    };
+
+    nextBtn.onclick = () => {
+        moveSentence(1);
+    };
+
+    replayBtn.onclick = () => {
+        playCurrentSentence();
+    };
+
+    freeModeBtn.onclick = () => {
+        isFreeMode = true;
+        freeModeBtn.classList.add('active-mode');
+        testModeBtn.classList.remove('active-mode');
+        scoreDisplay.style.display = 'none';
+        wrongSentencesDisplay.style.display = 'none';
+        autoContinueBtn.style.display = 'inline';
+        showHideBtn.style.display = 'inline';
+        updateSentenceDisplay();
+    };
+
+    testModeBtn.onclick = () => {
+        isFreeMode = false;
+        testModeBtn.classList.add('active-mode');
+        freeModeBtn.classList.remove('active-mode');
+        scoreDisplay.style.display = 'inline';
+        autoContinueBtn.style.display = 'none';
+        showHideBtn.style.display = 'none';
+        currentIndex = 0;
+        correctCount = 0;
+        correctSentences.clear();
+        wrongSentences.clear();
+        for (let i = 0; i < sentences.length; i++) {
+            wrongSentences.add(i);
+        }
+        updateSentenceDisplay();
+        playCurrentSentence();
+        updateScore();
+    };
+
+    autoContinueBtn.onclick = () => {
+        autoContinue = !autoContinue;
+        autoContinueBtn.classList.toggle('active-mode');
+        if (!autoContinue) {
+            correctAudio.onended = null;
+        }
+    };
+
+    showHideBtn.onclick = () => {
+        showAnswer = !showAnswer;
+        showHideBtn.classList.toggle('active-mode');
+        updateSentenceDisplay();
+    };
+
+    document.addEventListener('keydown', (e) => {
+        if (e.ctrlKey && !isPlaying) {
+            if (e.key === 'f') {
+                e.preventDefault();
+                playCurrentSentence();
+            } else if (e.key === '8') {
+                e.preventDefault();
+                moveSentence(-1);
+            } else if (e.key === '9') {
+                e.preventDefault();
+                moveSentence(1);
+            }
+        }
+    });
+
+    sentenceNumber.onchange = () => {
+        if (!isPlaying) {
+            const num = parseInt(sentenceNumber.value) - 1;
+            if (!isNaN(num) && num >= 0 && num < sentences.length) {
+                currentIndex = num;
+                updateSentenceDisplay();
+                playCurrentSentence();
+            } else {
+                alert(`输入范围： 1 到 ${sentences.length}`);
+                updateSentenceDisplay();
+            }
+        }
+    };
+
+    sentenceNumber.onkeydown = (e) => {
+        if (!isPlaying) {
+            if (e.key === 'ArrowLeft') moveSentence(-1);
+            if (e.key === 'ArrowRight') moveSentence(1);
+        }
+    };
+
+    answerInput.onkeypress = (e) => {
+        if (e.key === 'Enter') checkAnswer();
+    };
+    </script>
+</body>
+</html>
