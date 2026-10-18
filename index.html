@@ -1,255 +1,139 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <body style="background-color: #f7fbf3;">
-    <title>越南语听力练习</title>
-    <style>
-    body { 
-        font-family: Arial, sans-serif; 
-        text-align: center; 
-        margin: 0;
-        padding: 10px;
-    }
-    #gameContainer {
-        display: block; /* Hiển thị ngay từ đầu */
-    }
-    #infoBox { 
-        width: 90%;
-        max-width: 800px;
-        height: auto;
-        min-height: 60px;
-        margin: 1px auto; 
-        border: 1px solid #ccc; 
-        background: #68838B; 
-        color: #D2B48C; 
-        display: flex; 
-        align-items: center; 
-        justify-content: center; 
-        font-size: clamp(20px, 6vw, 80px);
-        font-weight: bold;
-        padding: 10px;
-    }
-    #contactBox, #socialBox { 
-		width: 90%;
-		max-width: 750px;
-		height: auto;
-		min-height: 20px;
-		margin: 1px auto;
-		border: 1px solid #ccc; 
-		background: #68838B; 
-		color: #D2B48C; 
-		display: flex; 
-		flex-direction: column; /* Xếp dọc để <br> xuống dòng */
-		justify-content: flex-start; /* Bắt đầu từ trên */
-		align-items: flex-start; /* Căn trái toàn bộ khối */
-		padding: 3px;
-		font-size: clamp(14px, 3vw, 14px);
-		font-weight: bold;
-		text-align: left; /* Ép từng dòng văn bản căn trái */
-	}
-    #shortcutBox { 
-        width: 90%;
-        max-width: 750px;
-        height: auto;
-        min-height: 30px;
-        margin: 1px auto;
-        border: 1px solid #ccc; 
-        background: #68838B; 
-        color: #D2B48C; 
-        display: flex; 
-        align-items: center; 
-        justify-content: left; 
-        padding-left: 10px;
-        font-size: clamp(10px, 2.5vw, 13px);
-        font-weight: bold;
-    }
-    #controls { 
-        margin: 15px 0; 
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 5px;
-    }
-    button { 
-        padding: 8px 16px;
-        margin: 5px; 
-        cursor: pointer; 
-        border: 3px solid #89ACB7; 
-        background: #68838B; 
-        color: #E6E6FA; 
-        font-size: clamp(14px, 3.5vw, 20px);
-        border-radius: 5px; 
-        font-weight: bold;
-    }
-    #sentenceNumber { 
-        width: 60px; 
-        padding: 8px; 
-        text-align: center; 
-        border: 3px solid #68838B; 
-        background: #FFAD5B; 
-        color: #000; 
-        border-radius: 10px; 
-        font-size: clamp(14px, 4vw, 20px);
-        -moz-appearance: textfield; 
-    }
-    #sentenceNumber::-webkit-inner-spin-button, 
-    #sentenceNumber::-webkit-outer-spin-button { 
-        -webkit-appearance: none; 
-        margin: 0; 
-    }
-    #sentenceNumber:disabled { 
-        background: #eee; 
-    }
-    .disabled { 
-        cursor: not-allowed; 
-        pointer-events: none; 
-    }
-    .active-mode { 
-        border: 4px solid orange; 
-    }
-    #indicator { 
-        width: 90%;
-        max-width: 800px;
-        height: auto;
-        min-height: 60px;
-        margin: 10px auto; 
-        border: 3px solid #734A2E; 
-        background: #ffffff; 
-        border-radius: 20px; 
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        padding: 15px;
-    }
-    #answerInput { 
-    width: 90%;
-    max-width: 700px;
-    padding: 15px; 
-    margin: 10px 0; 
-    border: 3px solid #734A2E; 
-    background: #E6EDD9; 
-    color: #000; 
-    font-size: clamp(16px, 4vw, 30px);
-    outline: none; /* Loại bỏ viền đen mặc định khi focus */
-	}
-
-	#answerInput:focus {
-		border: 3px solid #734A2E; /* Giữ nguyên màu viền khi focus */
-		outline: none; /* Đảm bảo không có viền mặc định nào xuất hiện */
-	}
-    #score { 
-        display: none; 
-        margin-left: 10px; 
-        color: #FF6820;
-        font-size: clamp(16px, 4vw, 30px);
-    }
-    #wrongSentences { 
-        display: none; 
-        width: 90%;
-        max-width: 700px;
-        margin: 10px auto; 
-        padding: 10px; 
-        border: 2px solid #CE6D5E; 
-        background: #FFF0F0; 
-        color: #CE6D5E; 
-        font-size: clamp(14px, 3.5vw, 20px);
-        text-align: left; 
-        border-radius: 5px; 
-    }
-    @media (max-width: 600px) {
-        #infoBox {
-            font-size: clamp(18px, 5vw, 40px);
-        }
-        #contactBox, #shortcutBox, #socialBox {
-            font-size: clamp(12px, 2.5vw, 16px);
-        }
-        button {
-            padding: 6px 12px;
-        }
-        #sentenceNumber {
-            width: 35px;
-        }
-        #indicator {
-            border-width: 3px;
-            border-radius: 15px;
-        }
-        #answerInput {
-            padding: 10px;
-        }
-    }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#178a49">
+<title>越南语听力练习</title>
+<style>
+:root{--s:1;--bg:#eef8f1;--card:#fff;--ink:#12281b;--mut:#5d7a69;--g1:#e3f5ea;--g2:#bfe8cd;--g5:#22a55b;--g6:#178a49;--g7:#0f6e3a;--bad:#d9534f;--badbg:#fdecea;--ok:#e2f7e9;--ln:#cfe6d8;--sh:0 6px 24px rgba(18,110,60,.12)}
+@media(prefers-color-scheme:dark){:root{--bg:#0b1810;--card:#13271b;--ink:#e6f4ea;--mut:#8fb09d;--g1:#183a28;--g2:#245339;--ln:#245339;--ok:#1b4a2e;--badbg:#3b1e1e;--sh:none}}
+*{box-sizing:border-box}[hidden]{display:none!important}
+html{font-size:calc(16px*var(--s));-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:1rem/1.5 system-ui,-apple-system,"Segoe UI","PingFang SC","Microsoft YaHei",Roboto,Arial,sans-serif}
+.wrap{max-width:52rem;margin:0 auto;padding:max(.75rem,env(safe-area-inset-top)) .75rem 6rem;display:grid;gap:.75rem}
+.hero{position:relative;background:linear-gradient(135deg,var(--g7),var(--g5));color:#fff;border-radius:1.25rem;padding:1.1rem 1.2rem;box-shadow:var(--sh)}
+.avatar{position:absolute;top:.8rem;right:.8rem;width:clamp(3rem,12vw,4.5rem);aspect-ratio:1;border-radius:50%;border:3px solid #fff;background:rgba(255,255,255,.25);display:grid;place-items:center;font-size:1.6rem;overflow:hidden;box-shadow:0 3px 10px rgba(0,0,0,.25)}
+.avatar img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.hero h1{margin:0 0 .7rem;padding-right:clamp(3.6rem,14vw,5.2rem);font-size:clamp(1.2rem,5vw,1.9rem);line-height:1.25}
+.bar{height:.5rem;border-radius:9px;background:rgba(255,255,255,.28);overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:#fff;border-radius:9px;transition:width .3s}
+.hero small{display:block;margin-top:.4rem;opacity:.92}
+.card{background:var(--card);border:2px solid var(--ln);border-radius:1.1rem;padding:.9rem;box-shadow:var(--sh);display:grid;gap:.7rem;transition:background .2s,border-color .2s}
+.card.ok{border-color:var(--g5);background:var(--ok)}
+.card.bad{border-color:var(--bad);background:var(--badbg);animation:sh .3s}
+@keyframes sh{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.row{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;justify-content:center}
+.mut{color:var(--mut)}
+.btn{font:inherit;font-weight:600;min-height:2.75rem;padding:.4rem 1rem;border-radius:.8rem;border:1px solid var(--ln);background:var(--g1);color:var(--g7);cursor:pointer;transition:filter .15s,transform .1s}
+@media(prefers-color-scheme:dark){.btn{color:var(--ink)}}
+.btn:hover{filter:brightness(.96)}.btn:active{transform:scale(.97)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.btn.on,.btn.pri{background:var(--g6);border-color:var(--g7);color:#fff}
+.seg{display:inline-flex;border:1px solid var(--ln);border-radius:.9rem;overflow:hidden}
+.seg .btn{border:0;border-radius:0;background:transparent}
+.seg .btn.on{background:var(--g6);color:#fff}
+#sentenceNumber{width:4.2rem;min-height:2.75rem;text-align:center;font:inherit;font-weight:700;border:2px solid var(--g5);border-radius:.8rem;background:var(--card);color:var(--ink)}
+#sentenceNumber:disabled{opacity:.5}
+#indicator{display:grid;gap:.25rem;text-align:center;padding:.5rem}
+.t1{font-size:clamp(1.15rem,4.5vw,1.6rem);font-weight:700;color:var(--g6)}
+.t2{font-size:clamp(1rem,3.8vw,1.35rem)}
+.t3{font-size:clamp(1rem,3.8vw,1.3rem);font-weight:700;color:var(--mut)}
+.inp{display:flex;gap:.5rem;flex-wrap:wrap}
+#answerInput{flex:1 1 14rem;min-width:0;font:inherit;font-size:max(16px,1.2rem);padding:.8rem 1rem;border-radius:.9rem;border:2px solid var(--g2);background:var(--g1);color:var(--ink);outline:none}
+#answerInput:focus{border-color:var(--g5);box-shadow:0 0 0 3px rgba(34,165,91,.25)}
+.zone,.bank{display:flex;flex-wrap:wrap;gap:.5rem;padding:.7rem;border-radius:1rem;min-height:4rem;align-content:flex-start}
+.zone{border:2px dashed var(--g2);background:var(--g1)}
+.zone:empty::before{content:"点击下方词语，拼成句子";color:var(--mut);align-self:center;margin:auto}
+.chip{font:inherit;font-size:clamp(1rem,3.8vw,1.3rem);font-weight:600;padding:.45rem .85rem;border-radius:.75rem;border:1px solid var(--g2);background:var(--card);color:var(--ink);box-shadow:0 2px 0 var(--g2);cursor:pointer;touch-action:manipulation}
+.chip:active{transform:translateY(1px);box-shadow:none}
+.zone .chip{background:var(--g6);color:#fff;border-color:var(--g7);box-shadow:0 2px 0 var(--g7)}
+.chip:disabled{cursor:default}
+#wrongSentences{padding:.6rem .8rem;border-radius:.8rem;background:var(--badbg);color:var(--bad);font-weight:600;word-break:break-word}
+footer{text-align:center;color:var(--mut);font-size:.85rem;display:grid;gap:.2rem}
+.kbd{display:none}
+@media(hover:hover) and (pointer:fine){.kbd{display:block}}
+.fab{position:fixed;right:max(14px,env(safe-area-inset-right));bottom:max(14px,env(safe-area-inset-bottom));z-index:9;display:flex;flex-direction:column;align-items:flex-end;gap:8px;font-size:16px}
+.fab>button.main{width:54px;height:54px;border-radius:50%;border:0;background:var(--g6);color:#fff;font:700 20px system-ui;box-shadow:0 6px 18px rgba(0,0,0,.3);cursor:pointer}
+.panel{display:flex;align-items:center;gap:6px;padding:8px;border-radius:16px;background:var(--card);border:2px solid var(--ln);box-shadow:0 6px 18px rgba(0,0,0,.25)}
+.panel button{width:42px;height:42px;border-radius:12px;border:1px solid var(--ln);background:var(--g1);color:var(--g7);font:700 17px system-ui;cursor:pointer}
+@media(prefers-color-scheme:dark){.panel button{color:var(--ink)}}
+.panel output{min-width:48px;text-align:center;font-weight:700;color:var(--ink)}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
 </head>
 <body>
-    <div id="gameContainer">
-        <div id="infoBox">习得越南语 - 动词-600</div>
-        <div id="socialBox">关注我们 - 天天练习: <br>YouTube: <br>TikTok: <br>Facebook: <br></div>
-		<div id="contactBox">阮玉煌 | Weixin：XiDeYueNanYu</div>
-        <div id="shortcutBox">快键: Ctrl+F (再听一遍) | Ctrl+8 (上一题) | Ctrl+9 (下一题)</div>
-        <div id="controls">
-            <button id="autoContinueBtn">自动继续</button>
-            <button id="showHideBtn">显示-隐藏</button>
-            <button id="prevBtn">◀</button>
-            <input type="text" id="sentenceNumber" inputmode="numeric" pattern="[0-9]*">
-            <button id="nextBtn">▶</button>
-            <button id="replayBtn">再听一遍</button>
-            <button id="freeModeBtn" class="active-mode">自由模式</button>
-            <button id="testModeBtn">作业模式</button>
-            <span id="score">0/0</span>
-        </div>
-        <div id="indicator"></div>
-        <input type="text" id="answerInput" placeholder="输入所听到的内容">
-        <div id="wrongSentences"></div>
+<div class="wrap">
+  <header class="hero">
+    <div class="avatar" title="头像">👤<img src="avatar.jpg" alt="头像" onerror="this.remove()"></div>
+    <h1>习得越南语 - 动词-600</h1>
+    <div class="bar"><i id="barFill"></i></div>
+    <small id="barTxt"></small>
+  </header>
+
+  <section class="card">
+    <div class="row">
+      <button id="prevBtn" class="btn" aria-label="上一题">◀</button>
+      <input type="text" id="sentenceNumber" inputmode="numeric" pattern="[0-9]*" aria-label="题号">
+      <span class="mut">/ <span id="total"></span></span>
+      <button id="nextBtn" class="btn" aria-label="下一题">▶</button>
+      <button id="replayBtn" class="btn pri">🔊 再听一遍</button>
     </div>
-    <audio id="mainAudio" src="1-100.mp3"></audio>
-    <audio id="correctAudio" src="Dung.mp3"></audio>
-    <audio id="wrongAudio" src="Sai.mp3"></audio>
+    <div class="row">
+      <div class="seg"><button id="freeModeBtn" class="btn">自由模式</button><button id="testModeBtn" class="btn">作业模式</button></div>
+      <div class="seg"><button id="typeModeBtn" class="btn">⌨ 打字</button><button id="tapModeBtn" class="btn">👆 点选</button></div>
+    </div>
+    <div class="row" id="freeOnly">
+      <button id="autoContinueBtn" class="btn">自动继续</button>
+      <button id="showHideBtn" class="btn">显示-隐藏</button>
+    </div>
+    <div class="row" id="testOnly">
+      <b id="score"></b>
+      <button id="restartBtn" class="btn">重新开始</button>
+    </div>
+  </section>
 
-    <script>
-    async function fetchCompletedCount() {
-        try {
-            const response = await fetch('https://script.google.com/macros/s/AKfycbyN73yXupfJf7kFNJS4ToB2LdbA3CdXy318EpEQik3EMP_uPypRRZgY9jH1wgT-lHjO/exec');
-            const data = await response.json();
-            return data.completedCount;
-        } catch (error) {
-            console.error('Lỗi khi tải số đếm:', error);
-            return 0;
-        }
-    }
+  <section class="card" id="answerCard">
+    <div id="indicator" aria-live="polite"></div>
+    <div class="inp" id="typeBox">
+      <input type="text" id="answerInput" placeholder="输入所听到的内容" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+      <button id="checkBtn" class="btn pri">检查</button>
+    </div>
+    <div id="tapBox" hidden>
+      <div id="zone" class="zone"></div>
+      <div id="bank" class="bank"></div>
+      <div class="row">
+        <button id="shuffleBtn" class="btn">🔀 重排</button>
+        <button id="clearBtn" class="btn">清空</button>
+        <button id="checkTapBtn" class="btn pri">检查</button>
+      </div>
+    </div>
+    <div id="wrongSentences" hidden></div>
+  </section>
 
-    async function incrementCompletedCount() {
-        try {
-            const response = await fetch('https://script.google.com/macros/s/AKfycbyN73yXupfJf7kFNJS4ToB2LdbA3CdXy318EpEQik3EMP_uPypRRZgY9jH1wgT-lHjO/exec', {
-                method: 'POST'
-            });
-            const data = await response.json();
-            return data.completedCount;
-        } catch (error) {
-            console.error('Lỗi khi tăng số đếm:', error);
-            return 0;
-        }
-    }
+  <footer>
+    <div>关注我们 - 天天练习: YouTube: · TikTok: · Facebook:</div>
+    <div>阮玉煌 | Weixin：XiDeYueNanYu</div>
+    <div class="kbd">快键: Ctrl+F (再听一遍) | Ctrl+8 (上一题) | Ctrl+9 (下一题)</div>
+  </footer>
+</div>
 
-    const audio = document.getElementById('mainAudio');
-    const correctAudio = document.getElementById('correctAudio');
-    const wrongAudio = document.getElementById('wrongAudio');
-    const answerInput = document.getElementById('answerInput');
-    const indicator = document.getElementById('indicator');
-    const sentenceNumber = document.getElementById('sentenceNumber');
-    const prevBtn = document.getElementById('prevBtn');
-    const nextBtn = document.getElementById('nextBtn');
-    const replayBtn = document.getElementById('replayBtn');
-    const freeModeBtn = document.getElementById('freeModeBtn');
-    const testModeBtn = document.getElementById('testModeBtn');
-    const autoContinueBtn = document.getElementById('autoContinueBtn');
-    const showHideBtn = document.getElementById('showHideBtn');
-    const scoreDisplay = document.getElementById('score');
-    const wrongSentencesDisplay = document.getElementById('wrongSentences');
+<div class="fab" id="fab">
+  <div class="panel" id="panel" hidden>
+    <button id="smaller" aria-label="缩小">A−</button>
+    <output id="pct">100%</output>
+    <button id="bigger" aria-label="放大">A+</button>
+    <button id="resetSize" aria-label="还原">↺</button>
+  </div>
+  <button class="main" id="fabBtn" aria-label="调整大小" aria-expanded="false">Aa</button>
+</div>
 
-    const buttons = [prevBtn, nextBtn, replayBtn, freeModeBtn, testModeBtn, autoContinueBtn, showHideBtn];
+<audio id="mainAudio" preload="none"></audio>
+<audio id="correctAudio" src="Dung.mp3"></audio>
+<audio id="wrongAudio" src="Sai.mp3"></audio>
 
-    const sentences = [
+<script>
+const sentences = [
     { start: 0, end: 1.999655, text: "Anh ấy đang ăn cơm trưa với gia đình.", text2: "他正在和家人一起吃午饭。", text3: "Ăn - 吃", audioFile: "1-100.mp3" },
 { start: 1.999655, end: 4.671761, text: "Cô ấy thích uống trà mỗi buổi sáng.", text2: "她喜欢每天早上喝茶。", text3: "Uống - 喝", audioFile: "1-100.mp3" },
 { start: 4.671761, end: 7.219994, text: "Bé đã ngủ từ lúc 9 giờ tối.", text2: "孩子从晚上九点就开始睡觉了。", text3: "Ngủ - 睡觉", audioFile: "1-100.mp3" },
@@ -852,228 +736,178 @@
 { start: 282.393173, end: 285.758744, text: "Anh ấy đặt cọc tiền ký quỹ để đảm bảo hợp đồng.", text2: "他支付了保证金以确保合同。", text3: "Đảm bảo - 确保", audioFile: "501-600.mp3" }
 ];
 
-    let currentIndex = 0;
-    let isFreeMode = true;
-    let correctCount = 0;
-    let isPlaying = false;
-    let correctSentences = new Set();
-    let wrongSentences = new Set();
-    let autoContinue = false;
-    let showAnswer = false;
+const COUNT_URL = 'https://script.google.com/macros/s/AKfycbyN73yXupfJf7kFNJS4ToB2LdbA3CdXy318EpEQik3EMP_uPypRRZgY9jH1wgT-lHjO/exec';
+async function incrementCompletedCount() {
+  try { const r = await fetch(COUNT_URL, { method: 'POST' }); return (await r.json()).completedCount; }
+  catch (e) { console.error('Lỗi khi tăng số đếm:', e); return 0; }
+}
 
-    // Khởi tạo ngay từ đầu, không cần mật khẩu
-    init();
+const $ = id => document.getElementById(id);
+const el = (t, c, x) => { const e = document.createElement(t); if (c) e.className = c; if (x != null) e.textContent = x; return e; };
+const N = sentences.length;
+const audio = $('mainAudio'), correctAudio = $('correctAudio'), wrongAudio = $('wrongAudio');
+const input = $('answerInput'), num = $('sentenceNumber'), card = $('answerCard'), ind = $('indicator');
+const navEls = [$('prevBtn'), $('nextBtn'), $('replayBtn'), num];
 
-    function init() {
-        updateSentenceDisplay();
-        answerInput.focus();
-    }
+// ===== Lưu tiến trình (localStorage) =====
+const KEY = 'vnListen.v1';
+let st = { i: 0, free: true, tap: false, auto: false, show: false, scale: 1, correct: [], wrong: [], done: false };
+try { Object.assign(st, JSON.parse(localStorage.getItem(KEY) || '{}')); } catch (e) {}
+if (!(st.i >= 0 && st.i < N)) st.i = 0;
+const correct = new Set(st.correct), wrong = new Set(st.wrong);
+function save() {
+  st.correct = [...correct]; st.wrong = [...wrong];
+  try { localStorage.setItem(KEY, JSON.stringify(st)); } catch (e) {}
+}
 
-    function updateSentenceDisplay() {
-        sentenceNumber.value = currentIndex + 1;
-        answerInput.value = '';
-        indicator.style.background = '#ffffff';
-        if (isFreeMode && showAnswer) {
-            indicator.innerHTML = `
-                <div style="font-size: 24px; font-weight: bold; color: #54683e;">${sentences[currentIndex].text}</div>
-                <div style="font-size: 22px; color: #1d1c1c;">${sentences[currentIndex].text2}</div>
-                <div style="font-size: 22px; font-weight: bold; color: #734A2E;"><strong>${sentences[currentIndex].text3}</strong></div>
-            `;
-        } else {
-            indicator.innerHTML = '';
-            indicator.style.color = '';
-            indicator.style.fontSize = '';
-            indicator.style.fontWeight = '';
-            indicator.style.textAlign = '';
-            indicator.style.lineHeight = '';
-        }
-        if (!isFreeMode) updateWrongSentences();
-    }
+// ===== Âm thanh =====
+let playing = false;
+function lock(v) { playing = v; navEls.forEach(b => b.disabled = v); }
+function play() {
+  const s = sentences[st.i];
+  lock(true);
+  const go = () => { audio.currentTime = s.start; audio.play().catch(() => lock(false)); };
+  if (audio.dataset.f !== s.audioFile) {
+    audio.dataset.f = s.audioFile; audio.src = s.audioFile;
+    audio.addEventListener('loadedmetadata', go, { once: true });
+    audio.load();
+  } else go();
+  audio.ontimeupdate = () => { if (audio.currentTime >= s.end) { audio.pause(); lock(false); } };
+}
+audio.onended = audio.onerror = () => lock(false);
+function sfx(a, adv) {
+  a.onended = adv ? () => setTimeout(() => move(1), 200) : null;
+  a.currentTime = 0;
+  a.play().catch(() => adv && move(1));
+}
 
-			function playCurrentSentence() {
-			if (isPlaying) audio.pause();
-			buttons.forEach(btn => btn.classList.add('disabled'));
-			sentenceNumber.disabled = true;
-			isPlaying = true;
+// ===== Chế độ bấm nút: tách câu thành từ, xáo ngẫu nhiên =====
+const norm = t => t.normalize('NFC').toLowerCase().replace(/[,.!?;:"“”‘’()…]/g, ' ').replace(/\s+/g, ' ').trim();
+let bank = [], placed = [], solved = false;
+function shuffle(a) {
+  const o = a.map(x => x.id).join(); let n = 0;
+  do { for (let i = a.length - 1; i > 0; i--) { const j = Math.random() * (i + 1) | 0; [a[i], a[j]] = [a[j], a[i]]; } }
+  while (a.length > 1 && a.map(x => x.id).join() === o && ++n < 10);
+}
+function buildTap() {
+  bank = norm(sentences[st.i].text).split(' ').map((w, id) => ({ id, w }));
+  shuffle(bank); placed = []; solved = false; drawTap();
+}
+function chip(c, fn) {
+  const b = el('button', 'chip', c.w); b.type = 'button'; b.disabled = solved; b.onclick = fn; return b;
+}
+function drawTap() {
+  $('zone').replaceChildren(...placed.map(c => chip(c, () => { if (solved) return; placed = placed.filter(x => x !== c); bank.push(c); card.className = 'card'; drawTap(); })));
+  $('bank').replaceChildren(...bank.map(c => chip(c, () => { if (solved) return; bank = bank.filter(x => x !== c); placed.push(c); card.className = 'card'; drawTap(); if (!bank.length) checkAnswer(); })));
+}
 
-			// Cập nhật nguồn audio dựa trên audioFile của câu hiện tại
-			const currentAudioFile = sentences[currentIndex].audioFile;
-			if (audio.src !== currentAudioFile) {
-				audio.src = currentAudioFile;
-			}
+// ===== Hiển thị =====
+function head() {
+  const v = st.free ? st.i + 1 : correct.size;
+  $('barFill').style.width = (v / N * 100) + '%';
+  $('barTxt').textContent = st.free ? `第 ${st.i + 1} / ${N} 题` : `作业进度 ${correct.size} / ${N}`;
+  $('score').textContent = `✔ ${correct.size}/${N}`;
+}
+function renderWrong() {
+  const w = $('wrongSentences');
+  if (st.free || !wrong.size) { w.hidden = true; return; }
+  w.textContent = '解决问题：' + [...wrong].sort((a, b) => a - b).map(i => i + 1).join('/ ');
+  w.hidden = false;
+}
+function renderMode() {
+  $('freeModeBtn').classList.toggle('on', st.free); $('testModeBtn').classList.toggle('on', !st.free);
+  $('typeModeBtn').classList.toggle('on', !st.tap); $('tapModeBtn').classList.toggle('on', st.tap);
+  $('autoContinueBtn').classList.toggle('on', st.auto); $('showHideBtn').classList.toggle('on', st.show);
+  $('freeOnly').hidden = !st.free; $('testOnly').hidden = st.free;
+  $('typeBox').hidden = st.tap; $('tapBox').hidden = !st.tap;
+}
+function render() {
+  const s = sentences[st.i];
+  num.value = st.i + 1; input.value = ''; card.className = 'card';
+  if (st.free && st.show) {
+    ind.replaceChildren(el('div', 't1', s.text), el('div', 't2', s.text2), el('div', 't3', s.text3)); ind.hidden = false;
+  } else { ind.replaceChildren(); ind.hidden = true; }
+  buildTap(); renderMode(); renderWrong(); head(); save();
+}
+function move(d) { st.i = (st.i + d + N) % N; render(); play(); }
 
-			audio.currentTime = sentences[currentIndex].start;
-			audio.play();
+// ===== Kiểm tra đáp án =====
+function checkAnswer() {
+  if (st.tap && (bank.length || solved)) return;
+  const right = norm(sentences[st.i].text);
+  const ans = st.tap ? placed.map(c => c.w).join(' ') : norm(input.value);
+  const ok = ans === right;
+  card.className = 'card ' + (ok ? 'ok' : 'bad');
+  if (ok) {
+    let adv = false;
+    if (!st.free && !correct.has(st.i)) { correct.add(st.i); wrong.delete(st.i); adv = true; }
+    else if (st.free && st.auto) adv = true;
+    solved = true; if (st.tap) drawTap();
+    sfx(correctAudio, adv);
+  } else {
+    sfx(wrongAudio, false);
+    if (!st.free && !correct.has(st.i)) wrong.add(st.i);
+  }
+  save(); renderWrong(); head();
+  if (!st.free && correct.size === N && !st.done) finish();
+}
+async function finish() {
+  st.done = true; save();
+  const c = await incrementCompletedCount();
+  if (c) setTimeout(() => alert(`你是第 ${c} 个完成作业的人！`), 100);
+}
 
-			audio.ontimeupdate = () => {
-				if (audio.currentTime >= sentences[currentIndex].end) {
-					audio.pause();
-					audio.ontimeupdate = null;
-					buttons.forEach(btn => btn.classList.remove('disabled'));
-					sentenceNumber.disabled = false;
-					isPlaying = false;
-				}
-			};
-		}
+// ===== Sự kiện =====
+$('prevBtn').onclick = () => move(-1);
+$('nextBtn').onclick = () => move(1);
+$('replayBtn').onclick = play;
+$('checkBtn').onclick = checkAnswer;
+$('checkTapBtn').onclick = () => { if (bank.length) card.className = 'card bad'; else checkAnswer(); };
+$('shuffleBtn').onclick = () => { if (solved) return; bank = bank.concat(placed); placed = []; shuffle(bank); card.className = 'card'; drawTap(); };
+$('clearBtn').onclick = () => { if (solved) return; bank = bank.concat(placed); placed = []; card.className = 'card'; drawTap(); };
+$('freeModeBtn').onclick = () => { st.free = true; render(); };
+$('testModeBtn').onclick = () => { st.free = false; render(); };
+$('typeModeBtn').onclick = () => { st.tap = false; render(); input.focus(); };
+$('tapModeBtn').onclick = () => { st.tap = true; render(); };
+$('autoContinueBtn').onclick = () => { st.auto = !st.auto; if (!st.auto) correctAudio.onended = null; renderMode(); save(); };
+$('showHideBtn').onclick = () => { st.show = !st.show; render(); };
+$('restartBtn').onclick = () => {
+  if (!confirm('重新开始作业？当前进度将被清除。')) return;
+  correct.clear(); wrong.clear(); st.done = false; st.i = 0; render(); play();
+};
+input.addEventListener('keydown', e => { if (e.key === 'Enter') checkAnswer(); });
+input.addEventListener('input', () => { card.className = 'card'; });
+num.onchange = () => {
+  if (playing) return;
+  const n = parseInt(num.value, 10) - 1;
+  if (n >= 0 && n < N) { st.i = n; render(); play(); }
+  else { alert(`输入范围： 1 到 ${N}`); num.value = st.i + 1; }
+};
+num.onkeydown = e => { if (!playing) { if (e.key === 'ArrowLeft') move(-1); if (e.key === 'ArrowRight') move(1); } };
+document.addEventListener('keydown', e => {
+  if ((e.ctrlKey || e.metaKey) && !playing) {
+    if (e.key === 'f') { e.preventDefault(); play(); }
+    else if (e.key === '8') { e.preventDefault(); move(-1); }
+    else if (e.key === '9') { e.preventDefault(); move(1); }
+  }
+  if (e.key === 'Escape') $('panel').hidden = true;
+});
 
-    function moveSentence(direction) {
-        currentIndex = (currentIndex + direction + sentences.length) % sentences.length;
-        updateSentenceDisplay();
-        playCurrentSentence();
-    }
+// ===== Nút nổi chỉnh cỡ chữ/giao diện =====
+function setScale(v) {
+  st.scale = Math.min(1.6, Math.max(0.8, Math.round(v * 10) / 10));
+  document.documentElement.style.setProperty('--s', st.scale);
+  $('pct').textContent = Math.round(st.scale * 100) + '%'; save();
+}
+$('fabBtn').onclick = () => { const p = $('panel'); p.hidden = !p.hidden; $('fabBtn').setAttribute('aria-expanded', !p.hidden); };
+$('smaller').onclick = () => setScale(st.scale - 0.1);
+$('bigger').onclick = () => setScale(st.scale + 0.1);
+$('resetSize').onclick = () => setScale(1);
+document.addEventListener('click', e => { if (!$('fab').contains(e.target)) $('panel').hidden = true; });
 
-    function removePunctuation(text) {
-        return text.replace(/[,.!?]/g, '');
-    }
-
-    function checkAnswer() {
-        const userAnswer = removePunctuation(answerInput.value.toLowerCase()).trim();
-        const correctAnswer = removePunctuation(sentences[currentIndex].text.toLowerCase()).trim();
-        
-        if (userAnswer === correctAnswer) {
-            indicator.style.background = '#B7D7AA';
-            correctAudio.play();
-            if (!isFreeMode && !correctSentences.has(currentIndex)) {
-                correctCount++;
-                correctSentences.add(currentIndex);
-                wrongSentences.delete(currentIndex);
-                correctAudio.onended = () => setTimeout(() => moveSentence(1), 200);
-            } else if (isFreeMode && autoContinue) {
-                correctAudio.onended = () => setTimeout(() => moveSentence(1), 200);
-            } else {
-                correctAudio.onended = null;
-            }
-        } else {
-            indicator.style.background = '#CE6D5E';
-            wrongAudio.play();
-            if (!isFreeMode && !correctSentences.has(currentIndex)) {
-                wrongSentences.add(currentIndex);
-            }
-        }
-        if (!isFreeMode) updateScore();
-    }
-
-    async function updateScore() {
-		scoreDisplay.textContent = `${correctCount}/${sentences.length}`;
-		updateWrongSentences();
-		if (correctCount === sentences.length) {
-			try {
-				const completedCount = await incrementCompletedCount();
-				setTimeout(() => {
-					alert(`你是第 ${completedCount} 个完成作业的人！`);
-				}, 100);
-			} catch (error) {
-				console.error('Lỗi khi tăng số đếm:', error);
-				// Không hiển thị thông báo nếu lỗi xảy ra
-			}
-		}
-	}
-
-    function updateWrongSentences() {
-        if (isFreeMode || wrongSentences.size === 0) {
-            wrongSentencesDisplay.style.display = 'none';
-        } else {
-            const wrongList = Array.from(wrongSentences).map(index => index + 1).join('/ ');
-            wrongSentencesDisplay.textContent = `解决问题：${wrongList}`;
-            wrongSentencesDisplay.style.display = 'block';
-        }
-    }
-
-    prevBtn.onclick = () => {
-        moveSentence(-1);
-    };
-
-    nextBtn.onclick = () => {
-        moveSentence(1);
-    };
-
-    replayBtn.onclick = () => {
-        playCurrentSentence();
-    };
-
-    freeModeBtn.onclick = () => {
-        isFreeMode = true;
-        freeModeBtn.classList.add('active-mode');
-        testModeBtn.classList.remove('active-mode');
-        scoreDisplay.style.display = 'none';
-        wrongSentencesDisplay.style.display = 'none';
-        autoContinueBtn.style.display = 'inline';
-        showHideBtn.style.display = 'inline';
-        updateSentenceDisplay();
-    };
-
-    testModeBtn.onclick = () => {
-        isFreeMode = false;
-        testModeBtn.classList.add('active-mode');
-        freeModeBtn.classList.remove('active-mode');
-        scoreDisplay.style.display = 'inline';
-        autoContinueBtn.style.display = 'none';
-        showHideBtn.style.display = 'none';
-        currentIndex = 0;
-        correctCount = 0;
-        correctSentences.clear();
-        wrongSentences.clear();
-        for (let i = 0; i < sentences.length; i++) {
-            wrongSentences.add(i);
-        }
-        updateSentenceDisplay();
-        playCurrentSentence();
-        updateScore();
-    };
-
-    autoContinueBtn.onclick = () => {
-        autoContinue = !autoContinue;
-        autoContinueBtn.classList.toggle('active-mode');
-        if (!autoContinue) {
-            correctAudio.onended = null;
-        }
-    };
-
-    showHideBtn.onclick = () => {
-        showAnswer = !showAnswer;
-        showHideBtn.classList.toggle('active-mode');
-        updateSentenceDisplay();
-    };
-
-    document.addEventListener('keydown', (e) => {
-        if (e.ctrlKey && !isPlaying) {
-            if (e.key === 'f') {
-                e.preventDefault();
-                playCurrentSentence();
-            } else if (e.key === '8') {
-                e.preventDefault();
-                moveSentence(-1);
-            } else if (e.key === '9') {
-                e.preventDefault();
-                moveSentence(1);
-            }
-        }
-    });
-
-    sentenceNumber.onchange = () => {
-        if (!isPlaying) {
-            const num = parseInt(sentenceNumber.value) - 1;
-            if (!isNaN(num) && num >= 0 && num < sentences.length) {
-                currentIndex = num;
-                updateSentenceDisplay();
-                playCurrentSentence();
-            } else {
-                alert(`输入范围： 1 到 ${sentences.length}`);
-                updateSentenceDisplay();
-            }
-        }
-    };
-
-    sentenceNumber.onkeydown = (e) => {
-        if (!isPlaying) {
-            if (e.key === 'ArrowLeft') moveSentence(-1);
-            if (e.key === 'ArrowRight') moveSentence(1);
-        }
-    };
-
-    answerInput.onkeypress = (e) => {
-        if (e.key === 'Enter') checkAnswer();
-    };
-    </script>
+$('total').textContent = N;
+setScale(Number(st.scale) || 1);
+render();
+</script>
 </body>
 </html>
