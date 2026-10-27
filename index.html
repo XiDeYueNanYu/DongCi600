@@ -49,6 +49,7 @@ body{margin:0;background:var(--bg);color:var(--ink);font:1rem/1.5 system-ui,-app
 .chip:active{transform:translateY(1px);box-shadow:none}
 .zone .chip{background:var(--g6);color:#fff;border-color:var(--g7);box-shadow:0 2px 0 var(--g7)}
 .chip:disabled{cursor:default}
+.bank .chip.used{background:var(--g2);color:var(--mut);border-color:var(--g2);box-shadow:none;opacity:.55}
 #wrongSentences{padding:.6rem .8rem;border-radius:.8rem;background:var(--badbg);color:var(--bad);font-weight:600;word-break:break-word}
 footer{text-align:center;color:var(--mut);font-size:.85rem;display:grid;gap:.2rem}
 .kbd{display:none}
@@ -796,9 +797,20 @@ function buildTap() {
 function chip(c, fn) {
   const b = el('button', 'chip', c.w); b.type = 'button'; b.disabled = solved; b.onclick = fn; return b;
 }
+function unplace(c) { placed = placed.filter(x => x !== c); }
 function drawTap() {
-  $('zone').replaceChildren(...placed.map(c => chip(c, () => { if (solved) return; placed = placed.filter(x => x !== c); bank.push(c); card.className = 'card'; drawTap(); })));
-  $('bank').replaceChildren(...bank.map(c => chip(c, () => { if (solved) return; bank = bank.filter(x => x !== c); placed.push(c); card.className = 'card'; drawTap(); if (!bank.length) checkAnswer(); })));
+  $('zone').replaceChildren(...placed.map(c => chip(c, () => { if (solved) return; unplace(c); card.className = 'card'; drawTap(); })));
+  $('bank').replaceChildren(...bank.map(c => {
+    const used = placed.includes(c);
+    const b = chip(c, () => {
+      if (solved) return;
+      if (placed.includes(c)) unplace(c); else placed.push(c);
+      card.className = 'card'; drawTap();
+      if (placed.length === bank.length) checkAnswer();
+    });
+    if (used) { b.classList.add('used'); b.setAttribute('aria-pressed', 'true'); }
+    return b;
+  }));
 }
 
 // ===== Hiển thị =====
@@ -833,7 +845,7 @@ function move(d) { st.i = (st.i + d + N) % N; render(); play(); }
 
 // ===== Kiểm tra đáp án =====
 function checkAnswer() {
-  if (st.tap && (bank.length || solved)) return;
+  if (st.tap && (placed.length < bank.length || solved)) return;
   const right = norm(sentences[st.i].text);
   const ans = st.tap ? placed.map(c => c.w).join(' ') : norm(input.value);
   const ok = ans === right;
@@ -862,9 +874,9 @@ $('prevBtn').onclick = () => move(-1);
 $('nextBtn').onclick = () => move(1);
 $('replayBtn').onclick = play;
 $('checkBtn').onclick = checkAnswer;
-$('checkTapBtn').onclick = () => { if (bank.length) card.className = 'card bad'; else checkAnswer(); };
-$('shuffleBtn').onclick = () => { if (solved) return; bank = bank.concat(placed); placed = []; shuffle(bank); card.className = 'card'; drawTap(); };
-$('clearBtn').onclick = () => { if (solved) return; bank = bank.concat(placed); placed = []; card.className = 'card'; drawTap(); };
+$('checkTapBtn').onclick = () => { if (placed.length < bank.length) card.className = 'card bad'; else checkAnswer(); };
+$('shuffleBtn').onclick = () => { if (solved) return; placed = []; shuffle(bank); card.className = 'card'; drawTap(); };
+$('clearBtn').onclick = () => { if (solved) return; placed = []; card.className = 'card'; drawTap(); };
 $('freeModeBtn').onclick = () => { st.free = true; render(); };
 $('testModeBtn').onclick = () => { st.free = false; render(); };
 $('typeModeBtn').onclick = () => { st.tap = false; render(); input.focus(); };
